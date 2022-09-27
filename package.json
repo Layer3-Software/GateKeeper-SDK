@@ -15,6 +15,7 @@
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
+    "commit": "git-cz",
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
@@ -60,18 +61,27 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "babel-loader": "^8.2.5",
+    "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
+    "semantic-release": "^19.0.5",
     "size-limit": "^8.1.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.4.0",
-    "typescript": "^4.8.3",
-    "semantic-release": "^19.0.5"
+    "typescript": "^4.8.3"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Layer3-Software/KYC-Package.git"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "commitizen": "^4.2.5"
   }
 }
