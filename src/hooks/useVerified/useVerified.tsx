@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 interface statusProps {
   verified: boolean;
@@ -9,16 +9,16 @@ function useVerified(address: string) {
 
   useEffect(() => {
     const detector = async () => {
-      const URL = "https://kyc-backend-api.azurewebsites.net/v1/verify";
+      const URL = 'https://kyc-backend-api.azurewebsites.net/v1/verify';
       const PARAMS = new URLSearchParams({ address }).toString();
       try {
         const response = await fetch(`${URL}?${PARAMS}`, {
-          mode: "cors",
-          credentials: "include",
+          mode: 'cors',
+          credentials: 'include',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          method: "GET",
+          method: 'GET',
         });
         if (response.ok) {
           const status: statusProps = await response.json();

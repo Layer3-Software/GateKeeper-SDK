@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { MODAL_NOT_ALLOWED, WEBSITE } from './utils/constants';
 import accountIcon from './assets/account.png';
+import './LayerModal.css';
 import verifyIcon from './assets/verification.png';
 import timeIcon from './assets/time.png';
 import externalLinkIcon from './assets/linkext.png';
-import './Modal.css';
 import useLocation from './hooks/useLocation';
 import useVerified from './hooks/useVerified';
 import { ModalProps, ModalTextProps } from './LayerModal.d';
@@ -50,7 +50,32 @@ const LayerModal = ({
   return (
     <div>
       {!iFrameOpen ? (
-        <div className="modal">
+        <div
+          style={{
+            zIndex: 9999,
+            width: '480px',
+            height: '800px',
+            position: 'absolute',
+            left: '50%',
+            top: '10%',
+            marginLeft: '-150px',
+            color: '#fff',
+            background: '141724',
+            borderRadius: '12px',
+            fontFamily: `"Albert Sans", sans-serif`,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            padding: '5px',
+            paddingBottom: '20px',
+            boxShadow:
+              '0px 1px 6px rgba(0, 0, 0, 0.1), 0px 3px 8px rgba(0, 0, 0, 0.05)',
+            flex: 'none',
+            order: 0,
+            flexGrow: 0,
+          }}
+          className="modal"
+        >
           <div className="modal-header">
             <img src={verifyIcon} alt="verify" width="32px" height="32px" />
             <h2>{header}</h2>
