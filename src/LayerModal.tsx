@@ -16,23 +16,25 @@ const LayerModal = ({
   account,
 }: ModalProps) => {
   const [iFrameOpen, setIsFrameOpen] = useState(false);
-  const [isClosed, setIsClosed] = useState(false);
+  // const [isClosed, setIsClosed] = useState(false);
   const allowed = useLocation(externalCountries);
   const isVerified = useVerified(account);
 
   if (!account) return <></>;
-  if (isClosed) return <></>;
+  // if (isClosed) return <></>;
   if (!allowed) return <></>;
   if (isVerified) return <></>;
 
   const openIframe = () => {
     setIsFrameOpen(true);
   };
+  console.log('projectId: ', projectId);
+  console.log('kycType: ', kycType);
 
-  const onCloseModal = () => {
-    setIsFrameOpen(false);
-    setIsClosed(true);
-  };
+  // const onCloseModal = () => {
+  //   setIsFrameOpen(false);
+  //   setIsClosed(true);
+  // };
 
   const getText = (): ModalTextProps => {
     return MODAL_NOT_ALLOWED;
@@ -83,14 +85,6 @@ const LayerModal = ({
                 />
               </button>
             </a>
-
-            {/* <button
-              onClick={onCloseModal}
-              className="button-basic"
-              id="btn-browse"
-            >
-              Keep browsing
-            </button> */}
 
             <div className="powered">
               Powered by <span id="kyc">KYCENGINE</span>
