@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { MODAL_NOT_ALLOWED, WEBSITE } from './utils/constants';
-import accountIcon from './assets/account.png';
+import { MODAL_NOT_ALLOWED, WEBSITE } from '../utils/constants';
 import './LayerModal.css';
-import verifyIcon from './assets/verification.png';
-import timeIcon from './assets/time.png';
-import externalLinkIcon from './assets/linkext.png';
-import useLocation from './hooks/useLocation';
-import useVerified from './hooks/useVerified';
+import accountIcon from '../assets/account.png';
+import verifyIcon from '../assets/verification.png';
+import timeIcon from '../assets/time.png';
+import externalLinkIcon from '../assets/linkext.png';
+import useLocation from '../hooks/useLocation';
+import useVerified from '../hooks/useVerified';
 import { ModalProps, ModalTextProps } from './LayerModal.d';
 
 const LayerModal = ({
