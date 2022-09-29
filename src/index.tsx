@@ -1,1 +1,1 @@
-export * from './LayerModal';
+export * from './components';
