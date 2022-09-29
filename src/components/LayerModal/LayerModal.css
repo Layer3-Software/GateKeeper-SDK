@@ -8,8 +8,7 @@
   margin-left: -150px;
   color: #fff;
   background: #141724;
-  border-radius: 6px;
-  font-family: "Albert Sans", sans-serif;
+  font-family: 'Albert Sans', sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,11 +23,10 @@
 .modal-iframe {
   width: 480px;
   height: 800px;
-
   color: #fff;
   background: #141724;
   border-radius: 6px;
-  font-family: "Albert Sans", sans-serif;
+  font-family: 'Albert Sans', sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
