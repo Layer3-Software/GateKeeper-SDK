@@ -16,7 +16,13 @@ function useLocation(externalCountries?: string[]) {
       try {
         const response = await fetch(
           `https://geolocation-db.com/json/${geoApiKey}`,
-          { mode: 'cors' }
+          {
+            mode: 'cors',
+            headers: {
+              'Content-Type':
+                'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+          }
         );
         if (response.ok) {
           const data: GeoProps = await response.json();

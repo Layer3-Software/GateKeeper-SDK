@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Modal from '../src/LayerModal';
+import Modal from '../src/components/LayerModal';
 
 export default {
   title: 'KYC/Modal',

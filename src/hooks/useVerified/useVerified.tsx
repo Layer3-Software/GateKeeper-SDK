@@ -10,7 +10,11 @@ function useVerified(address: string) {
   useEffect(() => {
     const detector = async () => {
       const URL = 'https://kyc-backend-api.azurewebsites.net/v1/verify';
-      const PARAMS = new URLSearchParams({ address }).toString();
+      const domain = window.location.host;
+      const PARAMS = new URLSearchParams({ address, domain }).toString();
+
+      console.log('domain ', domain);
+
       try {
         const response = await fetch(`${URL}?${PARAMS}`, {
           mode: 'cors',
@@ -20,8 +24,11 @@ function useVerified(address: string) {
           },
           method: 'GET',
         });
+
         if (response.ok) {
           const status: statusProps = await response.json();
+          console.log('status ', status);
+
           setIsVerified(status.verified);
         }
       } catch (error) {
