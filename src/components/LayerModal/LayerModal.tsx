@@ -14,11 +14,21 @@ const LayerModal = ({ kycType, geoIds, account }: ModalProps) => {
   // const [isClosed, setIsClosed] = useState(false);
   const allowed = useLocation(geoIds);
   const isVerified = useVerified(account);
+  document.body.style.overflow = 'hidden';
+  if (!account) {
+    document.body.style.overflow = 'visible';
+    return <></>;
+  }
 
-  if (!account) return <></>;
-  // if (isClosed) return <></>;
-  if (!allowed) return <></>;
-  if (isVerified) return <></>;
+  if (!allowed) {
+    document.body.style.overflow = 'visible';
+
+    return <></>;
+  }
+  if (isVerified) {
+    document.body.style.overflow = 'visible';
+    return <></>;
+  }
 
   const openIframe = () => {
     setIsFrameOpen(true);
