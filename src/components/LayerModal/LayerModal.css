@@ -1,3 +1,9 @@
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 .modal {
   z-index: 9999;
   width: 480px;

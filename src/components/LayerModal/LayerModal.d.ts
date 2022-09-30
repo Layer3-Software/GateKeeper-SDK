@@ -1,6 +1,5 @@
 export interface ModalProps {
-  externalCountries?: string[];
-  projectId: string;
+  geoIds?: string[];
   kycType: string[];
   account: string;
 }

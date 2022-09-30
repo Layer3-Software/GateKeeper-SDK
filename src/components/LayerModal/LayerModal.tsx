@@ -9,15 +9,10 @@ import externalLinkIcon from '../../assets/linkext.png';
 import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
 
-const LayerModal = ({
-  kycType,
-  projectId,
-  externalCountries,
-  account,
-}: ModalProps) => {
+const LayerModal = ({ kycType, geoIds, account }: ModalProps) => {
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   // const [isClosed, setIsClosed] = useState(false);
-  const allowed = useLocation(externalCountries);
+  const allowed = useLocation(geoIds);
   const isVerified = useVerified(account);
 
   if (!account) return <></>;
@@ -28,7 +23,7 @@ const LayerModal = ({
   const openIframe = () => {
     setIsFrameOpen(true);
   };
-  console.log('projectId: ', projectId);
+
   console.log('kycType: ', kycType);
 
   // const onCloseModal = () => {

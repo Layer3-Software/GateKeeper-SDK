@@ -14,7 +14,7 @@ module.exports = {
           }),
         ],
         inject: true,
-        extract: true,
+        extract: false,
       }),
       ...config.plugins,
     ];
