@@ -2,6 +2,40 @@
 
 This Package is focus on do verifications from users that use DeFi projects.
 
+## How to use it
+
+To integrate KYC into your project, only need to install the package first and have web3 connected.
+
+```bash
+npm i @nicolimo/kyc-package
+```
+
+If you use yarn.
+
+```bash
+yarn add @nicolimo/kyc-package
+```
+
+Then on your `app` file or a `main` file, import as:
+
+```js
+import { LayerModal } from '@nicolimo/kyc-package';
+// CODE HERE....
+return (
+  <div>
+    <LayerModal account={account} kycType={['DeFi']} />
+  </div>
+);
+```
+
+| Parameter   | Description                  | Type           | Required |
+| ----------- | ---------------------------- | -------------- | -------- |
+| **account** | Wallet Address from the user | `string`       | Yes      |
+| **kycType** | Building description         | `string array` | Yes      |
+| **geoIds**  | Arrays of countries allowed  | `string array` | No       |
+
+**geoIds** by Default as `US`. To set your own array of countries, please use the Alpha-2 codes. [CODES](https://www.iban.com/country-codes)
+
 ## Commands
 
 TSDX scaffolds your new library inside `/src`, and also sets up a [Parcel-based](https://parceljs.org) playground for it inside `/example`.
