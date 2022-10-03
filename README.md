@@ -7,19 +7,19 @@ This Package is focus on do verifications from users that use DeFi projects.
 To integrate KYC into your project, only need to install the package first and have web3 connected.
 
 ```bash
-npm i @nicolimo/kyc-package
+npm i @layer3/kyc-package
 ```
 
 If you use yarn.
 
 ```bash
-yarn add @nicolimo/kyc-package
+yarn add @layer3/kyc-package
 ```
 
 Then on your `app` file or a `main` file, import as:
 
 ```js
-import { LayerModal } from '@nicolimo/kyc-package';
+import { LayerModal } from '@layer3/kyc-package';
 // CODE HERE....
 return (
   <div>
