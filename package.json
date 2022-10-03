@@ -37,7 +37,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "@nicolimo/kyc-package",
+  "name": "@layer3/kyc-package",
   "author": "Nico Limo",
   "module": "dist/kyc-package.esm.js",
   "size-limit": [
