@@ -13,8 +13,6 @@ function useVerified(address: string) {
       const domain = window.location.host;
       const PARAMS = new URLSearchParams({ address, domain }).toString();
 
-      console.log('domain ', domain);
-
       try {
         const response = await fetch(`${URL}?${PARAMS}`, {
           mode: 'cors',
@@ -27,7 +25,6 @@ function useVerified(address: string) {
 
         if (response.ok) {
           const status: statusProps = await response.json();
-          console.log('status ', status);
 
           setIsVerified(status.verified);
         }
