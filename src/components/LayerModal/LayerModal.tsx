@@ -9,12 +9,18 @@ import externalLinkIcon from '../../assets/linkext.png';
 import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
 
-const LayerModal = ({ kycType, geoIds, account }: ModalProps) => {
+const LayerModal = ({
+  kycType,
+  geoIds,
+  account,
+  modalColor = '#141724',
+}: ModalProps) => {
   const [iFrameOpen, setIsFrameOpen] = useState(false);
-  // const [isClosed, setIsClosed] = useState(false);
   const allowed = useLocation(geoIds);
   const isVerified = useVerified(account);
+
   document.body.style.overflow = 'hidden';
+
   if (!account) {
     document.body.style.overflow = 'visible';
     return <></>;
@@ -36,11 +42,6 @@ const LayerModal = ({ kycType, geoIds, account }: ModalProps) => {
 
   console.log('kycType: ', kycType);
 
-  // const onCloseModal = () => {
-  //   setIsFrameOpen(false);
-  //   setIsClosed(true);
-  // };
-
   const getText = (): ModalTextProps => {
     return MODAL_NOT_ALLOWED;
   };
@@ -55,7 +56,7 @@ const LayerModal = ({ kycType, geoIds, account }: ModalProps) => {
   return (
     <div>
       {!iFrameOpen ? (
-        <div className="modal">
+        <div style={{ backgroundColor: modalColor }} className="modal">
           <div className="modal-header">
             <img src={verifyIcon} alt="verify" width="32px" height="32px" />
             <h2>{header}</h2>
@@ -75,7 +76,11 @@ const LayerModal = ({ kycType, geoIds, account }: ModalProps) => {
               <img src={timeIcon} alt="time" width="20px" height="20px" />
               <p id="average">Average verification time: 5 minutes</p>
             </div>
-            <a id="btn-link" href={WEBSITE} target="iframe_a">
+            <a
+              id="btn-link"
+              href={`${WEBSITE}/verification?bg=red`}
+              target="iframe_a"
+            >
               <button
                 onClick={openIframe}
                 className="button-basic"
@@ -99,7 +104,9 @@ const LayerModal = ({ kycType, geoIds, account }: ModalProps) => {
       ) : (
         <div className="modal">
           <iframe
+            id="myframe"
             className="modal-iframe"
+            style={{ backgroundColor: modalColor }}
             name="iframe_a"
             src="target.html"
             frameBorder="0"
