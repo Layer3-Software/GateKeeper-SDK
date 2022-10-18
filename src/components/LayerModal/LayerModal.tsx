@@ -53,6 +53,10 @@ const LayerModal = ({
     return `${start_account}...${end_account}`;
   };
 
+  const params = {
+    bg: modalColor,
+  };
+
   return (
     <div>
       {!iFrameOpen ? (
@@ -76,25 +80,20 @@ const LayerModal = ({
               <img src={timeIcon} alt="time" width="20px" height="20px" />
               <p id="average">Average verification time: 5 minutes</p>
             </div>
-            <a
-              id="btn-link"
-              href={`${WEBSITE}/verification?bg=red`}
-              target="iframe_a"
+
+            <button
+              onClick={openIframe}
+              className="button-basic"
+              id="btn-verify"
             >
-              <button
-                onClick={openIframe}
-                className="button-basic"
-                id="btn-verify"
-              >
-                Start verification
-                <img
-                  src={externalLinkIcon}
-                  alt="time"
-                  width="20px"
-                  height="20px"
-                />
-              </button>
-            </a>
+              Start verification
+              <img
+                src={externalLinkIcon}
+                alt="time"
+                width="20px"
+                height="20px"
+              />
+            </button>
 
             <div className="powered">
               Powered by <span id="kyc">KYCENGINE</span>
@@ -108,7 +107,7 @@ const LayerModal = ({
             className="modal-iframe"
             style={{ backgroundColor: modalColor }}
             name="iframe_a"
-            src="target.html"
+            src={`${WEBSITE}?${new URLSearchParams(params).toString()}`}
             frameBorder="0"
           ></iframe>
         </div>

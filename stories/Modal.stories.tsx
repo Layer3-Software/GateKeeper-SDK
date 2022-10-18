@@ -9,9 +9,11 @@ export default {
 
 const Template: ComponentStory<typeof Modal> = () => {
   const accountVerified = '0xc9f200abB8a628af2ad821755F0119dAed0F5513';
-  const accountNotVerified = '0xc9f200abB8a628af2ad821755F0119dAed0F5515';
+  const accountNotVerified = '0x76b9623D3C55c3cCFe294f53C8E78A892231404F';
 
-  return <Modal kycType={['0']} account={accountVerified} />;
+  return (
+    <Modal kycType={['0']} account={accountNotVerified} modalColor="red" />
+  );
 };
 
 export const ModalTemplate = Template.bind({});
