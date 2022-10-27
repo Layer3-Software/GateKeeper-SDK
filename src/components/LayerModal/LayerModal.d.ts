@@ -1,5 +1,4 @@
 export interface ModalProps {
-  kycType: string[];
   account: string;
   geoIds?: string[];
   modalColor?: string;

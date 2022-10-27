@@ -10,7 +10,6 @@ import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
 
 const LayerModal = ({
-  kycType,
   geoIds,
   account,
   modalColor = '#141724',
@@ -39,8 +38,6 @@ const LayerModal = ({
   const openIframe = () => {
     setIsFrameOpen(true);
   };
-
-  console.log('kycType: ', kycType);
 
   const getText = (): ModalTextProps => {
     return MODAL_NOT_ALLOWED;
@@ -109,6 +106,7 @@ const LayerModal = ({
             name="iframe_a"
             src={`${WEBSITE}?${new URLSearchParams(params).toString()}`}
             frameBorder="0"
+            allow="camera"
           ></iframe>
         </div>
       )}

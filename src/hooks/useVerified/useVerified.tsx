@@ -25,6 +25,8 @@ function useVerified(address: string) {
 
         if (response.ok) {
           const status: statusProps = await response.json();
+          console.log('status ', status);
+          console.log('address ', address);
 
           setIsVerified(status.verified);
         }
