@@ -12,7 +12,10 @@ import useVerified from '../../hooks/useVerified';
 const LayerModal = ({
   geoIds,
   account,
-  modalColor = '#141724',
+  primaryColor = '#059669',
+  textColor = '#e2e8f0',
+  buttonTextColor = '#e2e8f0',
+  backgroundColor = '#141724',
 }: ModalProps) => {
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const allowed = useLocation(geoIds);
@@ -51,13 +54,16 @@ const LayerModal = ({
   };
 
   const params = {
-    bg: modalColor,
+    bgModal: backgroundColor,
+    textColor,
+    buttonTextColor,
+    primaryColor
   };
 
   return (
     <div>
       {!iFrameOpen ? (
-        <div style={{ backgroundColor: modalColor }} className="modal">
+        <div style={{ backgroundColor: backgroundColor }} className="modal">
           <div className="modal-header">
             <img src={verifyIcon} alt="verify" width="32px" height="32px" />
             <h2>{header}</h2>
@@ -102,7 +108,7 @@ const LayerModal = ({
           <iframe
             id="myframe"
             className="modal-iframe"
-            style={{ backgroundColor: modalColor }}
+            style={{ backgroundColor: backgroundColor }}
             name="iframe_a"
             src={`${WEBSITE}?${new URLSearchParams(params).toString()}`}
             frameBorder="0"

@@ -1,7 +1,10 @@
 export interface ModalProps {
   account: string;
   geoIds?: string[];
-  modalColor?: string;
+  backgroundColor?: string;
+  primaryColor?: string;
+  textColor?: string;
+  buttonTextColor?: string;
 }
 
 interface ModalTextProps {

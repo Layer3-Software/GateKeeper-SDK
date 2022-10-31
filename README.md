@@ -1,25 +1,25 @@
 # KYC Package
 
-This Package is focus on do verifications from users that use DeFi projects.
+Integrate and customize the Gatekeeper KYC frontend with your existing frontend.
 
 ## How to use it
 
 To integrate KYC into your project, only need to install the package first and have web3 connected.
 
 ```bash
-npm i @layer3/kyc-package
+npm i @layer3/gatekeeper-sdk
 ```
 
 If you use yarn.
 
 ```bash
-yarn add @layer3/kyc-package
+yarn add @layer3/gatekeeper-sdk
 ```
 
 Then on your `app` file or a `main` file, import as:
 
 ```js
-import { LayerModal } from '@layer3/kyc-package';
+import { LayerModal } from '@layer3/gatekeeper-sdk';
 // CODE HERE....
 return (
   <div>
@@ -28,11 +28,15 @@ return (
 );
 ```
 
-| Parameter   | Description                  | Type           | Required |
-| ----------- | ---------------------------- | -------------- | -------- |
-| **account** | Wallet Address from the user | `string`       | Yes      |
-| **kycType** | Building description         | `string array` | Yes      |
-| **geoIds**  | Arrays of countries allowed  | `string array` | No       |
+| Parameter           | Description                   | Type           | Required |
+| ------------------- | ----------------------------- | -------------- | -------- |
+| **account**         | Wallet Address from the user  | `string`       | Yes      |
+| **kycType**         | Building description          | `string array` | Yes      |
+| **geoIds**          | Arrays of countries allowed   | `string array` | No       |
+| **backgroundColor** | Background color of the modal | `string`       | No       |
+| **textColor**       | Color for the body text       | `string`       | No       |
+| **buttonTextColor** | Color for button texts        | `string`       | No       |
+| **primaryColor**    | Primary button, info color    | `string`       | No       |
 
 **geoIds** by Default as `US`. To set your own array of countries, please use the Alpha-2 codes. [CODES](https://www.iban.com/country-codes)
 
