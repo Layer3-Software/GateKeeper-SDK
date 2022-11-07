@@ -1,1 +1,1 @@
-export const DEFAULT_COUNTRY = ["US", "AR"];
+export const DEFAULT_COUNTRY = ['US', 'CA'];
