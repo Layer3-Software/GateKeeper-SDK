@@ -53,11 +53,13 @@ const LayerModal = ({
     return `${start_account}...${end_account}`;
   };
 
+  const IS_POPUP = 'true';
   const params = {
     bgModal: backgroundColor,
     textColor,
     buttonTextColor,
-    primaryColor
+    primaryColor,
+    IS_POPUP,
   };
 
   return (
