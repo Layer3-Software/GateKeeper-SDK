@@ -60,6 +60,7 @@ const LayerModal = ({
     buttonTextColor,
     primaryColor,
     IS_POPUP,
+    address: account,
   };
 
   return (
