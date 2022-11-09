@@ -16,24 +16,20 @@ const LayerModal = ({
   textColor = '#e2e8f0',
   buttonTextColor = '#e2e8f0',
   backgroundColor = '#141724',
+  screening = false,
+  screeningCallback = () => {},
 }: ModalProps) => {
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const allowed = useLocation(geoIds);
-  const isVerified = useVerified(account);
+  const isVerified = useVerified(
+    account,
+    screening.toString(),
+    screeningCallback
+  );
 
   document.body.style.overflow = 'hidden';
 
-  if (!account) {
-    document.body.style.overflow = 'visible';
-    return <></>;
-  }
-
-  if (!allowed) {
-    document.body.style.overflow = 'visible';
-
-    return <></>;
-  }
-  if (isVerified) {
+  if (!account || !allowed || isVerified) {
     document.body.style.overflow = 'visible';
     return <></>;
   }

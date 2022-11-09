@@ -28,15 +28,19 @@ return (
 );
 ```
 
-| Parameter           | Description                   | Type           | Required |
-| ------------------- | ----------------------------- | -------------- | -------- |
-| **account**         | Wallet Address from the user  | `string`       | Yes      |
-| **kycType**         | Building description          | `string array` | Yes      |
-| **geoIds**          | Arrays of countries allowed   | `string array` | No       |
-| **backgroundColor** | Background color of the modal | `string`       | No       |
-| **textColor**       | Color for the body text       | `string`       | No       |
-| **buttonTextColor** | Color for button texts        | `string`       | No       |
-| **primaryColor**    | Primary button, info color    | `string`       | No       |
+| Parameter             | Description                             | Type           | Required |
+| -------------------   | -----------------------------           | -------------- | -------- |
+| **account**           | Wallet Address from the user            | `string`       | Yes      |
+| **kycType**           | Building description                    | `string array` | Yes      |
+| **geoIds**            | Arrays of countries allowed             | `string array` | No       |
+| **backgroundColor**   | Background color of the modal           | `string`       | No       |
+| **textColor**         | Color for the body text                 | `string`       | No       |
+| **buttonTextColor**   | Color for button texts                  | `string`       | No       |
+| **primaryColor**      | Primary button, info color              | `string`       | No       |
+| **screening**         | Perform additional screening on wallets | `boolean`      | No       |
+| **screeningCallback** | Callback ran if wallet fails screening  | `void()`       | No*      |
+
+\* `screeningCallback` is required if screening is set to `true` 
 
 **geoIds** by Default as `US`. To set your own array of countries, please use the Alpha-2 codes. [CODES](https://www.iban.com/country-codes)
 

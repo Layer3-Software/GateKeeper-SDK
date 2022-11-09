@@ -16,6 +16,7 @@
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "commit": "git-cz",
+    "prettier:fix": "prettier --write src/**/*.{ts,tsx,js,jsx,json}",
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
