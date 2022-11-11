@@ -5,6 +5,8 @@ export interface ModalProps {
   primaryColor?: string;
   textColor?: string;
   buttonTextColor?: string;
+  screening?: boolean;
+  screeningCallback?: () => void;
 }
 
 interface ModalTextProps {
