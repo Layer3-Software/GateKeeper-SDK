@@ -8,7 +8,7 @@ export default {
 } as ComponentMeta<typeof Modal>;
 
 const Template: ComponentStory<typeof Modal> = () => {
-  const accountNotVerified = '0xAc4b0639A5b6509134fB3AB37A2BBc410974a0eb';
+  const accountNotVerified = '0x76b9623D3C55c3cCFe294f53C8E78A892231404F';
 
   return <Modal account={accountNotVerified} />;
 };

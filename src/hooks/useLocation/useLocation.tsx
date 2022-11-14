@@ -13,26 +13,31 @@ function useLocation(externalCountries?: string[]) {
 
   useEffect(() => {
     const detector = async () => {
+      console.log('location ', location);
       try {
-        const response = await fetch(
-          `https://geolocation-db.com/json/${geoApiKey}`,
-          {
-            mode: 'cors',
-            headers: {
-              'Content-Type':
-                'application/x-www-form-urlencoded; charset=UTF-8',
-            },
-          }
-        );
-        if (response.ok) {
-          const data: GeoProps = await response.json();
-          const countries =
-            externalCountries && externalCountries.length
-              ? externalCountries
-              : DEFAULT_COUNTRY;
-          if (countries.includes(data.country_code)) setAllowed(true);
+        if (location.hostname === 'localhost') {
+          setAllowed(true);
         } else {
-          setAllowed(false);
+          const response = await fetch(
+            `https://geolocation-db.com/json/${geoApiKey}`,
+            {
+              mode: 'cors',
+              headers: {
+                'Content-Type':
+                  'application/x-www-form-urlencoded; charset=UTF-8',
+              },
+            }
+          );
+          if (response.ok) {
+            const data: GeoProps = await response.json();
+            const countries =
+              externalCountries && externalCountries.length
+                ? externalCountries
+                : DEFAULT_COUNTRY;
+            if (countries.includes(data.country_code)) setAllowed(true);
+          } else {
+            setAllowed(false);
+          }
         }
       } catch (error) {
         setAllowed(false);

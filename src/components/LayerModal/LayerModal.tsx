@@ -62,7 +62,10 @@ const LayerModal = ({
   return (
     <div>
       {!iFrameOpen ? (
-        <div style={{ backgroundColor: backgroundColor }} className="modal">
+        <div
+          style={{ backgroundColor: backgroundColor, color: textColor }}
+          className="modal"
+        >
           <div className="modal-header">
             <img src={verifyIcon} alt="verify" width="32px" height="32px" />
             <h2>{header}</h2>
@@ -78,12 +81,16 @@ const LayerModal = ({
             </div>
           </div>
           <div className="modal-footer">
-            <div className="modal-average">
+            <div
+              className="modal-average"
+              style={{ color: buttonTextColor, backgroundColor: primaryColor }}
+            >
               <img src={timeIcon} alt="time" width="20px" height="20px" />
               <p id="average">Average verification time: 5 minutes</p>
             </div>
 
             <button
+              style={{ color: buttonTextColor, backgroundColor: primaryColor }}
               onClick={openIframe}
               className="button-basic"
               id="btn-verify"
