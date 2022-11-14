@@ -19,28 +19,64 @@ yarn add @layer3/gatekeeper-sdk
 Then on your `app` file or a `main` file, import as:
 
 ```js
-import { LayerModal } from '@layer3/gatekeeper-sdk';
+import { GateKeeperModal } from '@layer3/gatekeeper-sdk';
 // CODE HERE....
+const showMintRequirements = (data: {
+    [t: string]: boolean
+}) => {
+    const finalResult = Object.values(data).every((value) => value);
+
+    if (finalResult) {
+        // Do something on success
+        console.log("All requirements are met");
+    } else {
+        // Do something on failure
+        console.log("Not all requirements are met");
+    }
+
+    if (!data["exampleId"]) {
+        // Do something on failure
+        console.log("CheckId is not met");
+    } else {
+        // Do something on success
+        console.log("CheckId is met");
+    }
+}
 return (
   <div>
-    <LayerModal account={account} kycType={['DeFi']} />
+ <GateKeeper account={address} checkIds={["KYC", "exampleId"]} checkCallback={showMintRequirements} customization={{
+            primaryColor: "#000000",
+            backgroundColor: "#FFFFFF",
+            buttonTextColor: "#FFFFFF",
+            textColor: "#000000",
+        }}>
   </div>
 );
 ```
 
 | Parameter             | Description                             | Type           | Required |
-| -------------------   | -----------------------------           | -------------- | -------- |
+| --------------------- | --------------------------------------- | -------------- | -------- |
 | **account**           | Wallet Address from the user            | `string`       | Yes      |
-| **kycType**           | Building description                    | `string array` | Yes      |
 | **geoIds**            | Arrays of countries allowed             | `string array` | No       |
+| **checkIds**          | Arrays of Ids                           | `string array` | Yes      |
+| **customization**     | Color properties explained below        | `Object`       | No       |
 | **backgroundColor**   | Background color of the modal           | `string`       | No       |
 | **textColor**         | Color for the body text                 | `string`       | No       |
 | **buttonTextColor**   | Color for button texts                  | `string`       | No       |
 | **primaryColor**      | Primary button, info color              | `string`       | No       |
 | **screening**         | Perform additional screening on wallets | `boolean`      | No       |
-| **screeningCallback** | Callback ran if wallet fails screening  | `void()`       | No*      |
+| **screeningCallback** | Callback ran if wallet fails screening  | `void()`       | No\*     |
 
-\* `screeningCallback` is required if screening is set to `true` 
+\* `screeningCallback` is required if screening is set to `true`
+
+**Customization**
+
+| Parameter           | Description                   | Type     | Required |
+| ------------------- | ----------------------------- | -------- | -------- |
+| **backgroundColor** | Background color of the modal | `string` | No       |
+| **textColor**       | Color for the body text       | `string` | No       |
+| **buttonTextColor** | Color for button texts        | `string` | No       |
+| **primaryColor**    | Primary button, info color    | `string` | No       |
 
 **geoIds** by Default as `US`. To set your own array of countries, please use the Alpha-2 codes. [CODES](https://www.iban.com/country-codes)
 

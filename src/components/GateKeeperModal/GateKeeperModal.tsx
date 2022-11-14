@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { MODAL_NOT_ALLOWED, WEBSITE } from '../..//utils/constants';
-import './LayerModal.css';
-import { ModalProps, ModalTextProps } from './LayerModal.d';
+import {
+  DEFAULT_COLORS,
+  MODAL_NOT_ALLOWED,
+  WEBSITE,
+} from '../..//utils/constants';
+import './GateKeeperModal.css';
+import { ModalProps, ModalTextProps } from './GateKeeperModal.d';
 import accountIcon from '../../assets/account.png';
 import verifyIcon from '../../assets/verification.png';
 import timeIcon from '../../assets/time.png';
@@ -9,13 +13,12 @@ import externalLinkIcon from '../../assets/linkext.png';
 import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
 
-const LayerModal = ({
+const GateKeeperModal = ({
   geoIds,
   account,
-  primaryColor = '#059669',
-  textColor = '#e2e8f0',
-  buttonTextColor = '#e2e8f0',
-  backgroundColor = '#141724',
+  checkIds,
+  checkCallback,
+  customization,
   screening = false,
   screeningCallback = () => {},
 }: ModalProps) => {
@@ -48,13 +51,18 @@ const LayerModal = ({
     const end_account = account.slice(-4);
     return `${start_account}...${end_account}`;
   };
-
-  const IS_POPUP = 'true';
-  const params = {
-    bgModal: backgroundColor,
-    textColor,
+  const {
+    backgroundColor,
     buttonTextColor,
     primaryColor,
+    textColor,
+  } = customization ? customization : DEFAULT_COLORS;
+  const IS_POPUP = 'true';
+  const params = {
+    bgModal: backgroundColor ?? DEFAULT_COLORS.backgroundColor,
+    textColor: textColor ?? DEFAULT_COLORS.textColor,
+    buttonTextColor: buttonTextColor ?? DEFAULT_COLORS.buttonTextColor,
+    primaryColor: primaryColor ?? DEFAULT_COLORS.primaryColor,
     IS_POPUP,
     address: account,
   };
@@ -128,4 +136,4 @@ const LayerModal = ({
   );
 };
 
-export default LayerModal;
+export default GateKeeperModal;

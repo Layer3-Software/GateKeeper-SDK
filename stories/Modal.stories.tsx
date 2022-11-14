@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Modal from '../src/components/LayerModal';
+import Modal from '../src/components/GateKeeperModal';
 
 export default {
   title: 'KYC/Modal',
@@ -10,7 +10,7 @@ export default {
 const Template: ComponentStory<typeof Modal> = () => {
   const accountNotVerified = '0x76b9623D3C55c3cCFe294f53C8E78A892231404F';
 
-  return <Modal account={accountNotVerified} />;
+  return <Modal account={accountNotVerified} checkIds={['KYC', 'exampleId']} />;
 };
 
 export const ModalTemplate = Template.bind({});

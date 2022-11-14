@@ -1,1 +1,1 @@
-export { default as LayerModal } from './LayerModal';
+export { default as GateKeeperModal } from './GateKeeperModal';

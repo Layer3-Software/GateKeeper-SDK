@@ -1,10 +1,14 @@
 export interface ModalProps {
   account: string;
   geoIds?: string[];
-  backgroundColor?: string;
-  primaryColor?: string;
-  textColor?: string;
-  buttonTextColor?: string;
+  checkIds: string[];
+  checkCallback?: any;
+  customization?: {
+    backgroundColor?: string;
+    primaryColor?: string;
+    textColor?: string;
+    buttonTextColor?: string;
+  };
   screening?: boolean;
   screeningCallback?: () => void;
 }
