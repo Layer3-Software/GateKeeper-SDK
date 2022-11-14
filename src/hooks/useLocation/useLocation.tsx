@@ -13,7 +13,6 @@ function useLocation(externalCountries?: string[]) {
 
   useEffect(() => {
     const detector = async () => {
-      console.log('location ', location);
       try {
         if (location.hostname === 'localhost') {
           setAllowed(true);

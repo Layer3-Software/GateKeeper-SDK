@@ -34,8 +34,6 @@ function useVerified(
 
         if (response.ok) {
           const status: statusProps = await response.json();
-          console.log('status ', status);
-          console.log('address ', address);
 
           if (screening === 'true' && !status.screening) {
             screeningCallback();
