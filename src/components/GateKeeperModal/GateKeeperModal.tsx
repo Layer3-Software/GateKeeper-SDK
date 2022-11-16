@@ -30,6 +30,9 @@ const GateKeeperModal = ({
     screeningCallback
   );
 
+  console.log('checkIds ', checkIds);
+  console.log('checkCallback ', checkCallback);
+
   document.body.style.overflow = 'hidden';
 
   if (!account || !allowed || isVerified) {
