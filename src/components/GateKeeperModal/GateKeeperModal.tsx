@@ -26,6 +26,8 @@ const GateKeeperModal = ({
   const isVerified = useVerified(account, Ids);
   console.log(checkCallback);
 
+  console.log('isVerified ', isVerified);
+
   document.body.style.overflow = 'hidden';
 
   if (!account || !allowed || isVerified) {

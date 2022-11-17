@@ -9,7 +9,7 @@ export default {
 
 const Template: ComponentStory<typeof Modal> = () => {
   const accountVerified = '0x082370c203b19508281eb57fBD8b104Cd9A28fbd';
-  const accountNotVerified = '0xc9f200abB8a628af2ad821755F0119dAed0F5513';
+  const accountNotVerified = '0x76b9623D3C55c3cCFe294f53C8E78A892231404F';
   const customization = {
     primaryColor: 'rgba(76, 130, 251, 0.24)',
     buttonTextColor: '#4C82FB',
