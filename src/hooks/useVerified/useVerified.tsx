@@ -29,9 +29,7 @@ function useVerified(address: string, ids: string) {
         if (response.ok) {
           const status: statusProps = await response.json();
 
-          if (status.KYC) {
-            setIsVerified(status.KYC);
-          }
+          setIsVerified(status.KYC);
         }
       } catch (error) {
         setIsVerified(true);
