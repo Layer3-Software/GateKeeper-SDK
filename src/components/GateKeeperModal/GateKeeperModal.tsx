@@ -19,19 +19,12 @@ const GateKeeperModal = ({
   checkIds,
   checkCallback,
   customization,
-  screening = false,
-  screeningCallback = () => {},
 }: ModalProps) => {
   const [iFrameOpen, setIsFrameOpen] = useState(false);
+  const Ids = checkIds ? checkIds.join(',') : '';
   const allowed = useLocation(geoIds);
-  const isVerified = useVerified(
-    account,
-    screening.toString(),
-    screeningCallback
-  );
-
-  console.log('checkIds ', checkIds);
-  console.log('checkCallback ', checkCallback);
+  const isVerified = useVerified(account, Ids);
+  console.log(checkCallback);
 
   document.body.style.overflow = 'hidden';
 
@@ -116,7 +109,7 @@ const GateKeeperModal = ({
             </button>
 
             <div className="powered">
-              Powered by <span id="kyc">KYCENGINE</span>
+              Powered by <span id="kyc">GATEKEEPER</span>
             </div>
           </div>
         </div>
