@@ -9,8 +9,6 @@ export interface ModalProps {
     textColor?: string;
     buttonTextColor?: string;
   };
-  screening?: boolean;
-  screeningCallback?: () => void;
 }
 
 interface ModalTextProps {

@@ -2,24 +2,18 @@ import { useEffect, useState } from 'react';
 
 interface statusProps {
   verified: boolean;
-  screening?: boolean;
+  KYC: boolean;
 }
 
-function useVerified(
-  address: string,
-  screening: string,
-  screeningCallback: Function
-) {
+function useVerified(address: string, ids: string) {
   const [isVerified, setIsVerified] = useState(true);
 
   useEffect(() => {
     const detector = async () => {
-      const URL = 'https://kyc-backend-api.azurewebsites.net/v1/verify';
-      const domain = window.location.host;
+      const URL = 'https://kyc-backend-api.azurewebsites.net/v1/check';
       const PARAMS = new URLSearchParams({
         address,
-        screening,
-        domain,
+        ids,
       }).toString();
 
       try {
@@ -35,11 +29,9 @@ function useVerified(
         if (response.ok) {
           const status: statusProps = await response.json();
 
-          if (screening === 'true' && !status.screening) {
-            screeningCallback();
+          if (status.KYC) {
+            setIsVerified(status.KYC);
           }
-
-          setIsVerified(status.verified);
         }
       } catch (error) {
         setIsVerified(true);
