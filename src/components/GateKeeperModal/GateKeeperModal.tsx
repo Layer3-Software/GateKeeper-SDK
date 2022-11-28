@@ -23,10 +23,7 @@ const GateKeeperModal = ({
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const Ids = checkIds ? checkIds.join(',') : '';
   const allowed = useLocation(geoIds);
-  const isVerified = useVerified(account, Ids);
-  console.log(checkCallback);
-
-  console.log('isVerified ', isVerified);
+  const isVerified = useVerified(account, Ids, checkCallback);
 
   document.body.style.overflow = 'hidden';
 

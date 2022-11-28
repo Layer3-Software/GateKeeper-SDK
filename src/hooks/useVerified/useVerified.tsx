@@ -5,7 +5,7 @@ interface statusProps {
   KYC: boolean;
 }
 
-function useVerified(address: string, ids: string) {
+function useVerified(address: string, ids: string, checkCallback: any) {
   const [isVerified, setIsVerified] = useState(true);
 
   useEffect(() => {
@@ -28,14 +28,17 @@ function useVerified(address: string, ids: string) {
 
         if (response.ok) {
           const status: statusProps = await response.json();
-
           setIsVerified(status.KYC);
         }
       } catch (error) {
         setIsVerified(true);
       }
     };
-    detector();
+    if (checkCallback) {
+      checkCallback();
+    } else {
+      detector();
+    }
   }, [address]);
 
   return isVerified;
