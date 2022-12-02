@@ -8,10 +8,10 @@ import './GateKeeperModal.css';
 import { ModalProps, ModalTextProps } from './GateKeeperModal.d';
 import accountIcon from '../../assets/account.png';
 import verifyIcon from '../../assets/verification.png';
-import timeIcon from '../../assets/time.png';
 import externalLinkIcon from '../../assets/linkext.png';
 import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
+import Clock from '../Clock';
 
 const GateKeeperModal = ({
   geoIds,
@@ -88,7 +88,8 @@ const GateKeeperModal = ({
               className="modal-average"
               style={{ color: buttonTextColor, backgroundColor: primaryColor }}
             >
-              <img src={timeIcon} alt="time" width="20px" height="20px" />
+              <Clock color={buttonTextColor} />
+
               <p id="average">Average verification time: 5 minutes</p>
             </div>
 
