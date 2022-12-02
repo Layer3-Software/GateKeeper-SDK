@@ -7,11 +7,11 @@ import {
 import './GateKeeperModal.css';
 import { ModalProps, ModalTextProps } from './GateKeeperModal.d';
 import accountIcon from '../../assets/account.png';
-import verifyIcon from '../../assets/verification.png';
 import externalLinkIcon from '../../assets/linkext.png';
 import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
 import Clock from '../Clock';
+import ShieldUser from '../ShieldUser';
 
 const GateKeeperModal = ({
   geoIds,
@@ -70,7 +70,7 @@ const GateKeeperModal = ({
           className="modal"
         >
           <div className="modal-header">
-            <img src={verifyIcon} alt="verify" width="32px" height="32px" />
+            <ShieldUser background={buttonTextColor} />
             <h2>{header}</h2>
           </div>
           <div className="modal-body">
@@ -109,7 +109,7 @@ const GateKeeperModal = ({
             </button>
 
             <div className="powered">
-              Powered by <span id="kyc">GATEKEEPER</span>
+              Powered by <span id="kyc">GateKeeper</span>
             </div>
           </div>
         </div>
