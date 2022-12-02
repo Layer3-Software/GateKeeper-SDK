@@ -8,6 +8,8 @@ import './GateKeeperModal.css';
 import { ModalProps, ModalTextProps } from './GateKeeperModal.d';
 import accountIcon from '../../assets/account.png';
 import externalLinkIcon from '../../assets/linkext.png';
+import logotext from '../../assets/logotext.png';
+
 import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
 import Clock from '../Clock';
@@ -71,10 +73,12 @@ const GateKeeperModal = ({
         >
           <div className="modal-header">
             <ShieldUser background={buttonTextColor} />
+
             <h2>{header}</h2>
           </div>
           <div className="modal-body">
             <img src={accountIcon} width="256px" alt="account" />
+
             <div className="body-texts">
               <h2>{title}</h2>
               <p>{description}</p>
@@ -109,7 +113,13 @@ const GateKeeperModal = ({
             </button>
 
             <div className="powered">
-              Powered by <span id="kyc">GateKeeper</span>
+              <div>Powered by </div>
+              <img
+                style={{ marginLeft: '5px' }}
+                src={logotext}
+                alt="logo"
+                width="120px"
+              />
             </div>
           </div>
         </div>

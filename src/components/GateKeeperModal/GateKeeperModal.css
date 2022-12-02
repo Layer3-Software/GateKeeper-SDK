@@ -174,7 +174,10 @@ body {
 }
 
 .powered {
-  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   font-size: 14px;
   color: #94a3b8;
+  height: 60px;
 }
