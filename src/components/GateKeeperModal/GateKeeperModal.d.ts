@@ -3,6 +3,7 @@ export interface ModalProps {
   geoIds?: string[];
   checkIds: string[];
   checkCallback?: any;
+  polygonId?: boolean;
   customization?: {
     backgroundColor?: string;
     primaryColor?: string;

@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
-import {
-  DEFAULT_COLORS,
-  MODAL_NOT_ALLOWED,
-  WEBSITE,
-} from '../..//utils/constants';
+import { DEFAULT_COLORS, WEBSITE } from '../..//utils/constants';
 import './GateKeeperModal.css';
-import { ModalProps, ModalTextProps } from './GateKeeperModal.d';
+import { ModalProps } from './GateKeeperModal.d';
 import accountIcon from '../../assets/account.png';
 import externalLinkIcon from '../../assets/linkext.png';
 import logotext from '../../assets/logotext.png';
-
 import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
-import Clock from '../Clock';
-import ShieldUser from '../ShieldUser';
+import Icons from '../Icons';
 
 const GateKeeperModal = ({
   geoIds,
   account,
+  polygonId,
   checkIds,
   checkCallback,
   customization,
@@ -25,7 +20,9 @@ const GateKeeperModal = ({
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const Ids = checkIds ? checkIds.join(',') : '';
   const allowed = useLocation(geoIds);
-  const isVerified = useVerified(account, Ids, checkCallback);
+  const { isVerified, checksStatus } = useVerified(account, Ids, checkCallback);
+  const IS_POPUP = 'true';
+  const isKycNeeded = checksStatus.KYC === false;
 
   document.body.style.overflow = 'hidden';
 
@@ -34,35 +31,33 @@ const GateKeeperModal = ({
     return <></>;
   }
 
-  const openIframe = () => {
-    setIsFrameOpen(true);
-  };
+  const openIframe = () => setIsFrameOpen(true);
 
-  const getText = (): ModalTextProps => {
-    return MODAL_NOT_ALLOWED;
-  };
-  const { header, title, description } = getText();
-
-  const shortAccount = () => {
-    const start_account = account.slice(0, 6);
-    const end_account = account.slice(-4);
-    return `${start_account}...${end_account}`;
-  };
   const {
     backgroundColor,
     buttonTextColor,
     primaryColor,
     textColor,
   } = customization ? customization : DEFAULT_COLORS;
-  const IS_POPUP = 'true';
+
   const params = {
     bgModal: backgroundColor ?? DEFAULT_COLORS.backgroundColor,
     textColor: textColor ?? DEFAULT_COLORS.textColor,
     buttonTextColor: buttonTextColor ?? DEFAULT_COLORS.buttonTextColor,
     primaryColor: primaryColor ?? DEFAULT_COLORS.primaryColor,
     IS_POPUP,
+    KYC: isKycNeeded ? 'true' : 'false',
+    polygonId: polygonId ? 'true' : 'false',
     address: account,
   };
+
+  const ee = [
+    {
+      type: 'KYC',
+      onClick: () => console.log('kyc'),
+    },
+    { type: 'PolygonId', onClick: () => console.log('otro') },
+  ];
 
   return (
     <div>
@@ -71,32 +66,26 @@ const GateKeeperModal = ({
           style={{ backgroundColor: backgroundColor, color: textColor }}
           className="modal"
         >
-          <div className="modal-header">
-            <ShieldUser background={buttonTextColor} />
-
-            <h2>{header}</h2>
-          </div>
           <div className="modal-body">
-            <img src={accountIcon} width="256px" alt="account" />
+            <img src={accountIcon} width="260px" alt="account" />
 
-            <div className="body-texts">
-              <h2>{title}</h2>
-              <p>{description}</p>
-              <div className="body-wallet">
-                <p>{shortAccount()}</p>
-              </div>
+            <div className="modal-text">
+              <h2>Let’s start your journey</h2>
+              <p>
+                We need you to go through our simple and quick KYC and Polygon
+                ID verification process to continue.
+              </p>
             </div>
+
+            {ee.map(item => (
+              <button className="item" onClick={item.onClick}>
+                <Icons checkType={item.type} />
+                <h4>{item.type}</h4>
+              </button>
+            ))}
           </div>
+
           <div className="modal-footer">
-            <div
-              className="modal-average"
-              style={{ color: buttonTextColor, backgroundColor: primaryColor }}
-            >
-              <Clock color={buttonTextColor} />
-
-              <p id="average">Average verification time: 5 minutes</p>
-            </div>
-
             <button
               style={{ color: buttonTextColor, backgroundColor: primaryColor }}
               onClick={openIframe}
