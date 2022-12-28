@@ -7,11 +7,12 @@ import externalLinkIcon from '../../assets/linkext.png';
 import logotext from '../../assets/logotext.png';
 import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
-import checkIcon from '../../assets/check.png';
 import useSteps from '../../hooks/useSteps';
+import CheckStatus from '../../assets/checkStatus';
 
 export interface Steps {
   type: string;
+  complete: boolean;
 }
 
 const GateKeeperModal = ({
@@ -33,6 +34,12 @@ const GateKeeperModal = ({
   const { currentStep } = useSteps();
 
   const openIframe = () => setIsFrameOpen(true);
+  const closeIframe = () => setIsFrameOpen(false);
+
+  const updateSteps = (currentStep: Steps) => {
+    const rest = steps.filter(step => step.type !== currentStep.type);
+    setSteps([...rest, { type: currentStep.type, complete: true }]);
+  };
 
   const {
     backgroundColor,
@@ -72,8 +79,8 @@ const GateKeeperModal = ({
 
   useEffect(() => {
     // KYC first as default
-    const KYC = { type: 'KYC' };
-    const polygonID = { type: 'PolygonId' };
+    const KYC = { type: 'KYC', complete: false };
+    const polygonID = { type: 'PolygonId', complete: false };
 
     if (polygonId && needCompleteKyc) {
       setSteps([KYC, polygonID]);
@@ -92,6 +99,22 @@ const GateKeeperModal = ({
   }, [checksStatus]);
 
   const buttonText = `Start ${steps[currentStep]?.type}`;
+
+  window.addEventListener('message', ({ data }) => {
+    try {
+      const dataObj = JSON.parse(data);
+
+      if (dataObj.type === 'POLYGON') {
+        if (dataObj.isClaimSuccessful) {
+          console.log('CLAIM SUCCESS', steps[currentStep]);
+          updateSteps(steps[currentStep]);
+          closeIframe();
+        } else {
+          console.log('CLAIM NOT SUCCESS');
+        }
+      }
+    } catch (error) {}
+  });
 
   if (!account || !allowed || isVerified) {
     document.body.style.overflow = 'visible';
@@ -117,10 +140,12 @@ const GateKeeperModal = ({
                 className={`item ${currentStep === i - 1 ? 'disabled' : ''}`}
                 key={`${item}${i}`}
               >
-                <img src={checkIcon} height="26px" width="26px" alt="Check" />
+                <CheckStatus color={item.complete ? '#059669' : 'white'} />
                 <h4>
                   {i + 1}. {item.type}
                 </h4>
+
+                <></>
               </div>
             ))}
           </div>
