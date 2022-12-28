@@ -6,13 +6,14 @@ body {
 .modal {
   z-index: 9999;
   width: 480px;
-  min-height: 600px;
+  min-height: 650px;
   position: absolute;
   left: 45%;
   top: 3%;
   margin-left: -150px;
   color: #fff;
   font-family: 'Albert Sans', sans-serif;
+  border: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,10 +25,11 @@ body {
 }
 .modal-iframe {
   width: 480px;
-  min-height: 600px;
+  min-height: 650px;
   color: #fff;
   background: #141724;
-  border-radius: 6px;
+  border-radius: 12px;
+  border: none;
   font-family: 'Albert Sans', sans-serif;
   display: flex;
   flex-direction: column;
@@ -52,7 +54,8 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 45px;
+  margin-top: 60px;
+  margin-bottom: 20px;
 }
 
 .modal-body > h2 {
@@ -70,8 +73,8 @@ body {
 
 .modal-text {
   text-align: center;
-  width: 80%;
-  padding: 10px 40px;
+  width: 70%;
+  padding: 20px 0px;
 }
 
 .modal-footer {
@@ -138,25 +141,20 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  border: 1px solid #475569;
   width: 65%;
-  height: 50px;
+  height: 30px;
   margin-bottom: 10px;
-  border: none;
   border-radius: 4px;
   padding: 10px;
-  background-color: #475569;
+  background-color: #1e293b;
 }
 
 h4 {
   color: white;
 }
 
-.item:hover {
-  opacity: 0.8;
-  cursor: pointer;
-}
-
-.item:disabled {
+.disabled {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;

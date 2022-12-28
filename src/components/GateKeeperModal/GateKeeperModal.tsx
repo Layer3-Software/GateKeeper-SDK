@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { DEFAULT_COLORS, WEBSITE } from '../..//utils/constants';
+import React, { useEffect, useState } from 'react';
+import { DEFAULT_COLORS } from '../..//utils/constants';
 import './GateKeeperModal.css';
 import { ModalProps } from './GateKeeperModal.d';
 import accountIcon from '../../assets/account.png';
@@ -7,7 +7,12 @@ import externalLinkIcon from '../../assets/linkext.png';
 import logotext from '../../assets/logotext.png';
 import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
-import Icons from '../Icons';
+import checkIcon from '../../assets/check.png';
+import useSteps from '../../hooks/useSteps';
+
+export interface Steps {
+  type: string;
+}
 
 const GateKeeperModal = ({
   geoIds,
@@ -21,15 +26,11 @@ const GateKeeperModal = ({
   const Ids = checkIds ? checkIds.join(',') : '';
   const allowed = useLocation(geoIds);
   const { isVerified, checksStatus } = useVerified(account, Ids, checkCallback);
+  const [steps, setSteps] = useState<Steps[]>([]);
   const IS_POPUP = 'true';
-  const isKycNeeded = checksStatus.KYC === false;
-
+  const needCompleteKyc = checksStatus.KYC === false;
   document.body.style.overflow = 'hidden';
-
-  if (!account || !allowed || isVerified) {
-    document.body.style.overflow = 'visible';
-    return <></>;
-  }
+  const { currentStep } = useSteps();
 
   const openIframe = () => setIsFrameOpen(true);
 
@@ -46,19 +47,56 @@ const GateKeeperModal = ({
     buttonTextColor: buttonTextColor ?? DEFAULT_COLORS.buttonTextColor,
     primaryColor: primaryColor ?? DEFAULT_COLORS.primaryColor,
     IS_POPUP,
-    KYC: isKycNeeded ? 'true' : 'false',
+    KYC: needCompleteKyc ? 'true' : 'false',
     polygonId: polygonId ? 'true' : 'false',
     address: account,
   };
 
-  const ee = [
-    {
-      type: 'KYC',
-      onClick: () => console.log('kyc'),
-    },
-    { type: 'PolygonId', onClick: () => console.log('otro') },
-  ];
+  const getDescription = () => {
+    let dinamicPart: string = '';
 
+    if (needCompleteKyc) {
+      dinamicPart = 'KYC';
+    }
+
+    if (polygonId) {
+      dinamicPart = 'PolygonID';
+    }
+
+    if (needCompleteKyc && polygonId) {
+      dinamicPart = 'KYC and PolygonID';
+    }
+
+    return `We need you to go through our simple and quick ${dinamicPart} verification process to continue.`;
+  };
+
+  useEffect(() => {
+    // KYC first as default
+    const KYC = { type: 'KYC' };
+    const polygonID = { type: 'PolygonId' };
+
+    if (polygonId && needCompleteKyc) {
+      setSteps([KYC, polygonID]);
+      return;
+    }
+
+    if (polygonId) {
+      setSteps([polygonID]);
+      return;
+    }
+
+    if (needCompleteKyc) {
+      setSteps([KYC]);
+      return;
+    }
+  }, [checksStatus]);
+
+  const buttonText = `Start ${steps[currentStep]?.type}`;
+
+  if (!account || !allowed || isVerified) {
+    document.body.style.overflow = 'visible';
+    return <></>;
+  }
   return (
     <div>
       {!iFrameOpen ? (
@@ -71,17 +109,19 @@ const GateKeeperModal = ({
 
             <div className="modal-text">
               <h2>Let’s start your journey</h2>
-              <p>
-                We need you to go through our simple and quick KYC and Polygon
-                ID verification process to continue.
-              </p>
+              <p>{getDescription()}</p>
             </div>
 
-            {ee.map(item => (
-              <button className="item" onClick={item.onClick}>
-                <Icons checkType={item.type} />
-                <h4>{item.type}</h4>
-              </button>
+            {steps.map((item, i) => (
+              <div
+                className={`item ${currentStep === i - 1 ? 'disabled' : ''}`}
+                key={`${item}${i}`}
+              >
+                <img src={checkIcon} height="26px" width="26px" alt="Check" />
+                <h4>
+                  {i + 1}. {item.type}
+                </h4>
+              </div>
             ))}
           </div>
 
@@ -92,7 +132,7 @@ const GateKeeperModal = ({
               className="button-basic"
               id="btn-verify"
             >
-              Start verification
+              {buttonText}
               <img
                 src={externalLinkIcon}
                 alt="time"
@@ -119,10 +159,12 @@ const GateKeeperModal = ({
             className="modal-iframe"
             style={{ backgroundColor: backgroundColor }}
             name="iframe_a"
-            src={`${WEBSITE}?${new URLSearchParams(params).toString()}`}
+            src={`http://localhost:3000/?${new URLSearchParams(
+              params
+            ).toString()}`}
             frameBorder="0"
             allow="camera"
-          ></iframe>
+          />
         </div>
       )}
 
