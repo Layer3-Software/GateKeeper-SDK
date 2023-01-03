@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { DEFAULT_COLORS } from '../..//utils/constants';
+import { DEFAULT_COLORS, WEBSITE } from '../..//utils/constants';
 import './GateKeeperModal.css';
 import { ModalProps } from './GateKeeperModal.d';
 import accountIcon from '../../assets/account.png';
@@ -284,9 +284,7 @@ const GateKeeperModal = ({
             className="modal-iframe"
             style={{ backgroundColor: backgroundColor }}
             name="iframe_a"
-            src={`http://localhost:3000/?${new URLSearchParams(
-              params
-            ).toString()}`}
+            src={`${WEBSITE}?${new URLSearchParams(params).toString()}`}
             frameBorder="0"
             allow="camera"
           />
