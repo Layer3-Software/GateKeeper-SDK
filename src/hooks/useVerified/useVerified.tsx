@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { check } from '../../utils/backendCalls';
 
-interface statusProps {
+export interface statusProps {
   [typeOfCheck: string]: boolean; // KYC: true/false
 }
 

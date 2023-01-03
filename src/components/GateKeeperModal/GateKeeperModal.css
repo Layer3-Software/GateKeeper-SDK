@@ -16,7 +16,7 @@ body {
   border: none;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1), 0px 3px 8px rgba(0, 0, 0, 0.05);
   border-radius: 12px;
   flex: none;
@@ -33,7 +33,7 @@ body {
   font-family: 'Albert Sans', sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex: none;
   order: 0;
   flex-grow: 0;
@@ -51,17 +51,15 @@ body {
 .modal-body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
   margin-top: 60px;
-  margin-bottom: 20px;
 }
 
 .modal-body > h2 {
   font-size: 24px;
   font-weight: 600;
-  /* margin-left: 5px; */
 }
 
 .modal-body > p {
