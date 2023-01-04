@@ -44,7 +44,12 @@ const showMintRequirements = (data: {
 }
 return (
   <div>
- <GateKeeper account={address} checkIds={["KYC", "exampleId"]} checkCallback={showMintRequirements} customization={{
+ <GateKeeper
+    account={address}
+    checkIds={["KYC", "exampleId"]}
+    polygonId={false}
+    checkCallback={showMintRequirements}
+    customization={{
             primaryColor: "#000000",
             backgroundColor: "#FFFFFF",
             buttonTextColor: "#FFFFFF",
@@ -57,6 +62,7 @@ return (
 | Parameter             | Description                             | Type           | Required |
 | --------------------- | --------------------------------------- | -------------- | -------- |
 | **account**           | Wallet Address from the user            | `string`       | Yes      |
+| **polygonId**         | Boolean to allow polygon claim          | `boolean`      | No       |
 | **geoIds**            | Arrays of countries allowed             | `string array` | No       |
 | **checkIds**          | Arrays of Ids                           | `string array` | Yes      |
 | **customization**     | Color properties explained below        | `Object`       | No       |

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Modal from '../src/components/GateKeeperModal';
+import { DEFAULT_COLORS } from '../src/utils/constants';
 
 export default {
   title: 'KYC/Modal',
@@ -8,19 +9,25 @@ export default {
 } as ComponentMeta<typeof Modal>;
 
 const Template: ComponentStory<typeof Modal> = () => {
-  const accountNotVerified = '0x76b9623D3C55c3cCFe294f53C8E78A892231404F';
+  const accountNotVerified = '0xe0FF5244D2be4a676475d9282aB9CFB6fe2322bB';
   const customization = {
-    primaryColor: 'rgba(76, 130, 251, 0.24)',
-    buttonTextColor: '#4C82FB',
-    backgroundColor: '#0d1117',
-    textColor: 'rgb(255, 255, 255)',
+    primaryColor: DEFAULT_COLORS.primaryColor,
+    buttonTextColor: DEFAULT_COLORS.buttonTextColor,
+    backgroundColor: DEFAULT_COLORS.backgroundColor,
+    textColor: DEFAULT_COLORS.textColor,
   };
+
+  const kycCheck = 'e4536424-e6e2-4a4e-bae9-c2de803e2250';
+  const geoIdCheck = '8f3fab01-3ead-4a9f-b11d-de6bfb8b5159';
+
+  const checks = [kycCheck, geoIdCheck];
 
   return (
     <Modal
       account={accountNotVerified}
-      checkIds={['0d0cf1c6-8c89-4ca6-b1f4-61652f42f7a4']}
+      checkIds={checks}
       customization={customization}
+      polygonId
     />
   );
 };

@@ -1,11 +1,7 @@
-export const MODAL_NOT_ALLOWED = {
-  header: 'Verification required',
-  title: `Get KYC to use GateKeeper`,
-  description:
-    'Your location does not allow access without successful verification. Verify yourself and your wallet now with our KYC partner GateKeeper.',
-};
-
+export const BACKEND_URL = 'https://kyc-backend-api.azurewebsites.net/v1/';
 export const WEBSITE = 'https://black-smoke-0ba344710.2.azurestaticapps.net';
+
+export const GEO_API_KEY = '8dd79c70-0801-11ec-a29f-e381a788c2c0';
 
 export const DEFAULT_COLORS = {
   primaryColor: '#059669',

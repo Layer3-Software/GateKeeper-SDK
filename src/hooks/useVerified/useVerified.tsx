@@ -1,47 +1,31 @@
 import { useEffect, useState } from 'react';
+import { check } from '../../utils/backendCalls';
 
-interface statusProps {
-  verified: boolean;
-  KYC: boolean;
+export interface statusProps {
+  [typeOfCheck: string]: boolean; // KYC: true/false
 }
 
 function useVerified(address: string, ids: string, checkCallback: any) {
   const [isVerified, setIsVerified] = useState(true);
+  const [checksStatus, setChecksStatus] = useState<statusProps>({});
 
   useEffect(() => {
     const detector = async () => {
-      const URL = 'https://kyc-backend-api.azurewebsites.net/v1/check';
-      const PARAMS = new URLSearchParams({
-        address,
-        ids,
-      }).toString();
+      const response = await check(address, ids);
 
       try {
-        const response = await fetch(`${URL}?${PARAMS}`, {
-          mode: 'cors',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'GET',
-        });
-
-        if (response.ok) {
-          const status: statusProps = await response.json();
-          setIsVerified(status.KYC);
-        }
+        const status = response as statusProps;
+        setChecksStatus(status);
+        setIsVerified(!Object.values(status).some(val => val === false));
       } catch (error) {
         setIsVerified(true);
       }
     };
-    if (checkCallback) {
-      checkCallback();
-    } else {
-      detector();
-    }
+    if (checkCallback) checkCallback();
+    else detector();
   }, [address]);
 
-  return isVerified;
+  return { isVerified, checksStatus };
 }
 
 export default useVerified;

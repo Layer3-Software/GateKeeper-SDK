@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { GEO_API_KEY } from '../../utils/constants';
 import { DEFAULT_COUNTRY } from '../../utils/countrys';
 
 interface GeoProps {
@@ -9,8 +10,6 @@ interface GeoProps {
 function useLocation(externalCountries?: string[]) {
   const [allowed, setAllowed] = useState(false);
 
-  const geoApiKey = '8dd79c70-0801-11ec-a29f-e381a788c2c0';
-
   useEffect(() => {
     const detector = async () => {
       try {
@@ -18,7 +17,7 @@ function useLocation(externalCountries?: string[]) {
           setAllowed(true);
         } else {
           const response = await fetch(
-            `https://geolocation-db.com/json/${geoApiKey}`,
+            `https://geolocation-db.com/json/${GEO_API_KEY}`,
             {
               mode: 'cors',
               headers: {
