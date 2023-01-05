@@ -4,7 +4,7 @@ import ErrorIcon from '../../assets/error.png';
 
 interface Props {
   failedCheck: string;
-  goBackCallback: () => void;
+  goBackCallback?: () => void;
 }
 
 const ErrorScreen = ({ failedCheck, goBackCallback }: Props) => {
@@ -23,11 +23,17 @@ const ErrorScreen = ({ failedCheck, goBackCallback }: Props) => {
           Oh no!
         </h1>
 
-        <p>{`We’re sorry, but something went wrong with your ${failedCheck}.`}</p>
+        <h3>{`We’re sorry, but something went wrong with your ${failedCheck}.`}</h3>
       </div>
-      <button onClick={goBackCallback} className="button-basic" id="btn-verify">
-        Try again!
-      </button>
+      {goBackCallback ? (
+        <button
+          onClick={goBackCallback}
+          className="button-basic"
+          id="btn-verify"
+        >
+          Try again!
+        </button>
+      ) : null}
     </div>
   );
 };

@@ -19,6 +19,9 @@ export interface Steps {
 export enum Types {
   POLYGON_ID = 'PolygonID',
   KYC = 'KYC',
+  GEOID = 'geoId',
+  OFAC = 'OFAC',
+  NTF = 'NFT',
 }
 
 const GateKeeperModal = ({
@@ -196,6 +199,22 @@ const GateKeeperModal = ({
     setStepIndex(0);
   };
 
+  if (checksStatus[Types.GEOID] === false) {
+    const item = Object.keys(checksStatus).find(key => {
+      if (key === (Types.KYC || Types.OFAC)) return;
+      return checksStatus[key] === false;
+    });
+
+    return (
+      <div
+        style={{ backgroundColor: backgroundColor, color: textColor }}
+        className="modal"
+      >
+        <ErrorScreen failedCheck={item || ''} />
+      </div>
+    );
+  }
+
   if (!account || !allowed || isVerified) {
     document.body.style.overflow = 'visible';
     return <></>;
@@ -209,7 +228,7 @@ const GateKeeperModal = ({
           className="modal"
         >
           {error ? (
-            <ErrorScreen failedCheck="KYC" goBackCallback={onGoBack} />
+            <ErrorScreen failedCheck={error} goBackCallback={onGoBack} />
           ) : (
             <>
               <div className="modal-body">
@@ -289,7 +308,7 @@ const GateKeeperModal = ({
             className="modal-iframe"
             style={{ backgroundColor: backgroundColor }}
             name="iframe_a"
-            src={`${WEBSITE}?${new URLSearchParams(params).toString()}`}
+            src={`${WEBSITE}/?${new URLSearchParams(params).toString()}`}
             frameBorder="0"
             allow="camera"
           />
