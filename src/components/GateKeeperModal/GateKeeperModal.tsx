@@ -32,7 +32,12 @@ const GateKeeperModal = ({
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const Ids = checkIds ? checkIds.join(',') : '';
   const allowed = useLocation(geoIds);
-  const { isVerified, checksStatus } = useVerified(account, Ids, checkCallback);
+  const { isVerified, checksStatus } = useVerified(
+    account,
+    Ids,
+    Boolean(polygonId),
+    checkCallback
+  );
   const IS_POPUP = 'true';
   const needCompleteKyc = checksStatus.KYC === false;
   document.body.style.overflow = 'hidden';
