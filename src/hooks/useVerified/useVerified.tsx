@@ -21,7 +21,13 @@ function useVerified(address: string, ids: string, checkCallback: any) {
         setIsVerified(true);
       }
     };
-    if (checkCallback) checkCallback();
+
+    const customCallBack = async () => {
+      const response: statusProps = (await check(address, ids)) || {};
+      checkCallback(response);
+    };
+
+    if (checkCallback) customCallBack();
     else detector();
   }, [address]);
 
