@@ -1,23 +1,34 @@
 import { useEffect, useState } from 'react';
 import { check } from '../../utils/backendCalls';
 
+interface Error {
+  error: string;
+}
 export interface statusProps {
   [typeOfCheck: string]: boolean; // KYC: true/false
 }
 
-function useVerified(address: string, ids: string, checkCallback: any) {
+const ONE_CHECK_ERROR = 'Specify at least one check';
+
+function useVerified(
+  address: string,
+  ids: string,
+  hasPolygonID: boolean,
+  checkCallback: any
+) {
   const [isVerified, setIsVerified] = useState(true);
   const [checksStatus, setChecksStatus] = useState<statusProps>({});
 
   useEffect(() => {
     const detector = async () => {
-      const response = await check(address, ids);
+      const response: statusProps & Error = await check(address, ids);
 
       try {
-        const status = response as statusProps;
-        setChecksStatus(status);
-        setIsVerified(!Object.values(status).some(val => val === false));
+        setChecksStatus(response);
+        setIsVerified(!Object.values(response).some(val => val === false));
       } catch (error) {
+        if (response.error === ONE_CHECK_ERROR && hasPolygonID) return;
+
         setIsVerified(true);
       }
     };
