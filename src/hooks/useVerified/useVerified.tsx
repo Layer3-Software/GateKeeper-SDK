@@ -24,11 +24,12 @@ function useVerified(
       const response: statusProps & Error = await check(address, ids);
 
       try {
+        if (response.error === ONE_CHECK_ERROR && hasPolygonID) {
+          return setIsVerified(false);
+        }
         setChecksStatus(response);
         setIsVerified(!Object.values(response).some(val => val === false));
       } catch (error) {
-        if (response.error === ONE_CHECK_ERROR && hasPolygonID) return;
-
         setIsVerified(true);
       }
     };
