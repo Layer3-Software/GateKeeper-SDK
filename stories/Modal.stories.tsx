@@ -17,7 +17,7 @@ const Template: ComponentStory<typeof Modal> = () => {
     textColor: DEFAULT_COLORS.textColor,
   };
 
-  const kycCheck = 'e4536424-e6e2-4a4e-bae9-c2de803e2250';
+  const kycCheck = '7f689d77-f77f-4e72-ba00-9824db3ea4bb';
   const geoIdCheck = '8f3fab01-3ead-4a9f-b11d-de6bfb8b5159';
 
   const checks = [kycCheck, geoIdCheck];
