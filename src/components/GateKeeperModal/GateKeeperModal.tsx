@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { DEFAULT_COLORS, WEBSITE } from '../..//utils/constants';
 import './GateKeeperModal.css';
-import { KeyBooleanPair, ModalProps, Steps, Types } from './GateKeeperModal.d';
 import accountIcon from '../../assets/account.png';
 import externalLinkIcon from '../../assets/linkext.png';
 import logotext from '../../assets/logotext.png';
@@ -10,6 +9,7 @@ import useVerified from '../../hooks/useVerified';
 import CheckStatus from '../../assets/checkStatus';
 import SuccessIcon from '../../assets/success.png';
 import ErrorScreen from '../ErrorScreen';
+import { ModalProps, Steps, KeyBooleanPair, Types } from '.';
 
 const GateKeeperModal = ({
   geoIds,
@@ -37,7 +37,6 @@ const GateKeeperModal = ({
   const [error, setError] = useState('');
   const [steps, setSteps] = useState<Steps[]>([]);
   const [sucessSteps, setSucessSteps] = useState<KeyBooleanPair>({});
-
   const updateSteps = (currentStep: Steps) => {
     if (currentStep.complete) return;
     const rest = steps.filter(step => step.type !== currentStep.type);

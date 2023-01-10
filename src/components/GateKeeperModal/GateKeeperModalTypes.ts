@@ -12,7 +12,7 @@ export interface ModalProps {
   };
 }
 
-interface ModalTextProps {
+export interface ModalTextProps {
   header: string;
   title: string;
   description: string;
