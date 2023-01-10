@@ -35,6 +35,7 @@ const GateKeeperModal = ({
   const closeIframe = () => setIsFrameOpen(false);
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [error, setError] = useState('');
+  const [closeSdk, setCloseSdk] = useState(false);
   const [steps, setSteps] = useState<Steps[]>([]);
   const [sucessSteps, setSucessSteps] = useState<KeyBooleanPair>({});
   const updateSteps = (currentStep: Steps) => {
@@ -43,6 +44,8 @@ const GateKeeperModal = ({
     setSteps([{ type: currentStep.type, complete: true }, ...rest]);
     setStepIndex(prevStep => prevStep + 1);
   };
+
+  const closeModal = () => setCloseSdk(true);
 
   useEffect(() => {
     const stepsArr =
@@ -160,6 +163,10 @@ const GateKeeperModal = ({
     setStepIndex(0);
   };
 
+  if (closeSdk) {
+    return <></>;
+  }
+
   if (!account || isVerified) {
     document.body.style.overflow = 'visible';
     return <></>;
@@ -182,14 +189,6 @@ const GateKeeperModal = ({
         <ErrorScreen failedCheck={item || ''} />
       </div>
     );
-  }
-
-  const [closeSdk, setCloseSdk] = useState(false);
-
-  const closeModal = () => setCloseSdk(true);
-
-  if (!closeSdk) {
-    return <></>;
   }
 
   return (
