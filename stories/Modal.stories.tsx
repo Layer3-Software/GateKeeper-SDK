@@ -21,7 +21,7 @@ const Template: ComponentStory<typeof Modal> = () => {
   const geoIdCheck = 'cca78470-d508-43c3-aa59-64bfbe90b5a2';
   const ofac = '7ae838ad-7d40-4c08-9eb1-8f999ae6ed4f';
 
-  const checks = [kycCheck];
+  const checks = [geoIdCheck];
 
   return (
     <Modal
@@ -29,6 +29,7 @@ const Template: ComponentStory<typeof Modal> = () => {
       checkIds={checks}
       geoIds={['']}
       customization={customization}
+      polygonId
     />
   );
 };
