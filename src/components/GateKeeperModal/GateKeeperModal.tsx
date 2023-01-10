@@ -184,6 +184,14 @@ const GateKeeperModal = ({
     );
   }
 
+  const [closeSdk, setCloseSdk] = useState(false);
+
+  const closeModal = () => setCloseSdk(true);
+
+  if (!closeSdk) {
+    return <></>;
+  }
+
   return (
     <div>
       {!iFrameOpen ? (
@@ -235,11 +243,7 @@ const GateKeeperModal = ({
                     color: buttonTextColor,
                     backgroundColor: primaryColor,
                   }}
-                  onClick={
-                    hasCompleteAllSteps
-                      ? () => console.log('Close modal')
-                      : openIframe
-                  }
+                  onClick={hasCompleteAllSteps ? closeModal : openIframe}
                   className="button-basic"
                   id="btn-verify"
                 >
