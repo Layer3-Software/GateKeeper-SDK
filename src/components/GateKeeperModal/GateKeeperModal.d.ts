@@ -17,3 +17,20 @@ interface ModalTextProps {
   title: string;
   description: string;
 }
+
+export interface KeyBooleanPair {
+  [key: string]: boolean;
+}
+
+export interface Steps {
+  type: string;
+  complete: boolean;
+}
+
+export enum Types {
+  PolygonID = 'PolygonID',
+  KYC = 'KYC',
+  geoId = 'geoId',
+  OFAC = 'OFAC',
+  NTF = 'NFT',
+}

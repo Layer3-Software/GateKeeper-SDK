@@ -9,7 +9,7 @@ export default {
 } as ComponentMeta<typeof Modal>;
 
 const Template: ComponentStory<typeof Modal> = () => {
-  const accountNotVerified = '0xe0FF5244D2be4a676475d9282aB9CFB6fe2322bB';
+  const accountNotVerified = '0x227A176b0FD6F852322123698722F25046EB309A';
   const customization = {
     primaryColor: DEFAULT_COLORS.primaryColor,
     buttonTextColor: DEFAULT_COLORS.buttonTextColor,
@@ -17,17 +17,18 @@ const Template: ComponentStory<typeof Modal> = () => {
     textColor: DEFAULT_COLORS.textColor,
   };
 
-  const kycCheck = '7f689d77-f77f-4e72-ba00-9824db3ea4bb';
-  const geoIdCheck = '8f3fab01-3ead-4a9f-b11d-de6bfb8b5159';
+  const kycCheck = '724119ab-e1cb-4162-a92d-767dfce9e7be';
+  const geoIdCheck = 'cca78470-d508-43c3-aa59-64bfbe90b5a2';
+  const ofac = '7ae838ad-7d40-4c08-9eb1-8f999ae6ed4f';
 
-  const checks = [kycCheck, geoIdCheck];
+  const checks = [kycCheck];
 
   return (
     <Modal
       account={accountNotVerified}
       checkIds={checks}
+      geoIds={['']}
       customization={customization}
-      polygonId
     />
   );
 };

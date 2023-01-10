@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { DEFAULT_COLORS, WEBSITE } from '../..//utils/constants';
 import './GateKeeperModal.css';
-import { ModalProps } from './GateKeeperModal.d';
+import { KeyBooleanPair, ModalProps, Steps, Types } from './GateKeeperModal.d';
 import accountIcon from '../../assets/account.png';
 import externalLinkIcon from '../../assets/linkext.png';
 import logotext from '../../assets/logotext.png';
@@ -10,19 +10,6 @@ import useVerified from '../../hooks/useVerified';
 import CheckStatus from '../../assets/checkStatus';
 import SuccessIcon from '../../assets/success.png';
 import ErrorScreen from '../ErrorScreen';
-
-export interface Steps {
-  type: string;
-  complete: boolean;
-}
-
-export enum Types {
-  POLYGON_ID = 'PolygonID',
-  KYC = 'KYC',
-  GEOID = 'geoId',
-  OFAC = 'OFAC',
-  NTF = 'NFT',
-}
 
 const GateKeeperModal = ({
   geoIds,
@@ -49,9 +36,7 @@ const GateKeeperModal = ({
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [error, setError] = useState('');
   const [steps, setSteps] = useState<Steps[]>([]);
-  const [sucessSteps, setSucessSteps] = useState<{ [key: string]: boolean }>(
-    {}
-  );
+  const [sucessSteps, setSucessSteps] = useState<KeyBooleanPair>({});
 
   const updateSteps = (currentStep: Steps) => {
     if (currentStep.complete) return;
@@ -61,41 +46,37 @@ const GateKeeperModal = ({
   };
 
   useEffect(() => {
-    const KYC = { type: Types.KYC, complete: false };
-    const polygonID = { type: Types.POLYGON_ID, complete: false };
+    const stepsArr =
+      polygonId && needCompleteKyc
+        ? [
+            { type: Types.KYC, complete: false },
+            { type: Types.PolygonID, complete: false },
+          ]
+        : polygonId
+        ? [{ type: Types.PolygonID, complete: false }]
+        : needCompleteKyc
+        ? [{ type: Types.KYC, complete: false }]
+        : [];
 
-    if (polygonId && needCompleteKyc) {
-      setSteps([KYC, polygonID]);
-      setSucessSteps({
-        [Types.POLYGON_ID]: false,
-        [Types.KYC]: false,
-      });
-      return;
-    }
+    setSteps(stepsArr);
 
-    if (polygonId) {
-      setSteps([polygonID]);
-      setSucessSteps({ [Types.POLYGON_ID]: false });
-      return;
-    }
+    const successSteps = stepsArr.reduce((acc, step) => {
+      acc[step.type] = false;
+      return acc;
+    }, {} as KeyBooleanPair);
 
-    if (needCompleteKyc) {
-      setSteps([KYC]);
-      setSucessSteps({ [Types.KYC]: false });
-      return;
-    }
+    setSucessSteps(successSteps);
   }, [checksStatus]);
 
   useEffect(() => {
     window.addEventListener('message', recieveMessage);
-
     return () => {
       window.removeEventListener('message', recieveMessage);
     };
   }, [steps]);
 
   const shouldShowKyc = steps[stepIndex]?.type === Types.KYC;
-  const shouldShowPolygon = steps[stepIndex]?.type === Types.POLYGON_ID;
+  const shouldShowPolygon = steps[stepIndex]?.type === Types.PolygonID;
   const hasCompleteOneStep = Object.values(sucessSteps).some(step => step);
   const hasCompleteAllSteps = Object.values(sucessSteps).every(step => step);
 
@@ -118,48 +99,37 @@ const GateKeeperModal = ({
   };
 
   const getDescription = () => {
-    let dinamicPart: string = '';
-
-    if (needCompleteKyc) {
-      dinamicPart = 'KYC';
-    }
-
-    if (polygonId) {
-      dinamicPart = 'PolygonID';
-    }
-
-    if (needCompleteKyc && polygonId) {
-      dinamicPart = 'KYC and PolygonID';
-    }
-
+    let dinamicPart =
+      needCompleteKyc && polygonId
+        ? 'KYC and PolygonID'
+        : needCompleteKyc
+        ? 'KYC'
+        : 'PolygonID';
     return `We need you to go through our simple and quick ${dinamicPart} verification process to continue.`;
   };
 
   const getSuccessDescription = () => {
     if (hasCompleteAllSteps) return 'You have completed all checks!';
 
-    if (steps.length === 1) {
-      // We handle cases where there is only one step with a single check
-      if (sucessSteps[Types.KYC]) {
-        return 'You have completed the KYC verification process.';
-      }
-
-      if (sucessSteps[Types.POLYGON_ID]) {
-        return 'You have completed the PolygonId process.';
-      }
+    if (!sucessSteps[Types.KYC] && !sucessSteps[Types.PolygonID]) {
+      return '';
     }
 
-    if (sucessSteps[Types.KYC]) {
-      return `You have completed the KYC verification process. Let's go
-       through the Polygon ID process.`;
-    }
+    const message = `You have completed the ${
+      sucessSteps[Types.KYC]
+        ? 'KYC verification process.'
+        : 'PolygonId process.'
+    }`;
 
-    if (sucessSteps[Types.POLYGON_ID]) {
-      return `You have completed the PolygonId process. Let's go
-       through the KYC process.`;
+    if (steps.length > 1) {
+      return `${message} Let's go through the ${
+        sucessSteps[Types.KYC]
+          ? 'PolygonId process.'
+          : 'KYC verification process.'
+      }`;
+    } else {
+      return message;
     }
-
-    return '';
   };
 
   const buttonText = steps[stepIndex]?.type
@@ -170,25 +140,17 @@ const GateKeeperModal = ({
     (data: MessageEvent) => {
       try {
         const dataObj = JSON.parse(data.data);
-        if (dataObj.type === Types.POLYGON_ID) {
-          if (dataObj.isClaimSuccessful) {
-            updateSteps(steps[stepIndex]);
-            setSucessSteps({ ...sucessSteps, [Types.POLYGON_ID]: true });
-            closeIframe();
-          }
-          return;
-        }
+        const { type } = dataObj;
 
-        if (dataObj.type === Types.KYC) {
-          if (dataObj.isVerified) {
-            updateSteps(steps[stepIndex]);
-            setSucessSteps({ ...sucessSteps, [Types.KYC]: true });
-            closeIframe();
-          } else {
-            setError(Types.KYC);
-            closeIframe();
-          }
+        if (![Types.KYC, Types.PolygonID].includes(type)) return;
+
+        if (dataObj.isClaimSuccessful || dataObj.isVerified) {
+          updateSteps(steps[stepIndex]);
+          setSucessSteps({ ...sucessSteps, [type]: true });
+        } else {
+          setError(type);
         }
+        closeIframe();
       } catch (error) {}
     },
     [steps, stepIndex]
@@ -199,9 +161,17 @@ const GateKeeperModal = ({
     setStepIndex(0);
   };
 
-  if (checksStatus[Types.GEOID] === false) {
+  if (!account || isVerified) {
+    document.body.style.overflow = 'visible';
+    return <></>;
+  }
+
+  const failedChecks =
+    checksStatus.OFAC === false || (!allowed && checksStatus.geoId === false);
+
+  if (failedChecks) {
     const item = Object.keys(checksStatus).find(key => {
-      if (key === (Types.KYC || Types.OFAC)) return;
+      if (key === Types.KYC) return;
       return checksStatus[key] === false;
     });
 
@@ -213,11 +183,6 @@ const GateKeeperModal = ({
         <ErrorScreen failedCheck={item || ''} />
       </div>
     );
-  }
-
-  if (!account || !allowed || isVerified) {
-    document.body.style.overflow = 'visible';
-    return <></>;
   }
 
   return (
@@ -273,7 +238,7 @@ const GateKeeperModal = ({
                   }}
                   onClick={
                     hasCompleteAllSteps
-                      ? () => console.log('closee modal')
+                      ? () => console.log('Close modal')
                       : openIframe
                   }
                   className="button-basic"
