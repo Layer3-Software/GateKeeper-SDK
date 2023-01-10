@@ -21,7 +21,7 @@ const GateKeeperModal = ({
 }: ModalProps) => {
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const Ids = checkIds ? checkIds.join(',') : '';
-  const allowed = useLocation(geoIds);
+  const geoBlockPassed = useLocation(geoIds);
   const { isVerified, checksStatus } = useVerified(
     account,
     Ids,
@@ -38,6 +38,7 @@ const GateKeeperModal = ({
   const [closeSdk, setCloseSdk] = useState(false);
   const [steps, setSteps] = useState<Steps[]>([]);
   const [sucessSteps, setSucessSteps] = useState<KeyBooleanPair>({});
+
   const updateSteps = (currentStep: Steps) => {
     if (currentStep.complete) return;
     const rest = steps.filter(step => step.type !== currentStep.type);
@@ -167,13 +168,14 @@ const GateKeeperModal = ({
     return <></>;
   }
 
-  if (!account || isVerified) {
+  if (!account || isVerified || geoBlockPassed) {
     document.body.style.overflow = 'visible';
     return <></>;
   }
 
   const failedChecks =
-    checksStatus.OFAC === false || (!allowed && checksStatus.geoId === false);
+    checksStatus.OFAC === false ||
+    (!geoBlockPassed && checksStatus.geoId === false);
 
   if (failedChecks) {
     const item = Object.keys(checksStatus).find(key => {
