@@ -63,7 +63,6 @@ return (
 | --------------------- | --------------------------------------- | -------------- | -------- |
 | **account**           | Wallet Address from the user            | `string`       | Yes      |
 | **polygonId**         | Boolean to allow polygon claim          | `boolean`      | No       |
-| **geoIds**            | Arrays of countries allowed             | `string array` | No       |
 | **checkIds**          | Arrays of Ids                           | `string array` | Yes      |
 | **customization**     | Color properties explained below        | `Object`       | No       |
 | **backgroundColor**   | Background color of the modal           | `string`       | No       |

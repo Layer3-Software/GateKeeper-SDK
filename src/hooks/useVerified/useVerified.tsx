@@ -27,8 +27,9 @@ function useVerified(
         if (response.error === ONE_CHECK_ERROR && hasPolygonID) {
           return setIsVerified(false);
         }
+
         setChecksStatus(response);
-        setIsVerified(!Object.values(response).some(val => val === false));
+        setIsVerified(Object.values(response).every(val => val === true));
       } catch (error) {
         setIsVerified(true);
       }

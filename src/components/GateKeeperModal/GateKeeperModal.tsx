@@ -4,7 +4,6 @@ import './GateKeeperModal.css';
 import accountIcon from '../../assets/account.png';
 import externalLinkIcon from '../../assets/linkext.png';
 import logotext from '../../assets/logotext.png';
-import useLocation from '../../hooks/useLocation';
 import useVerified from '../../hooks/useVerified';
 import CheckStatus from '../../assets/checkStatus';
 import SuccessIcon from '../../assets/success.png';
@@ -12,16 +11,15 @@ import ErrorScreen from '../ErrorScreen';
 import { ModalProps, Steps, KeyBooleanPair, Types } from '.';
 
 const GateKeeperModal = ({
-  geoIds,
   account,
   polygonId,
   checkIds,
   checkCallback,
   customization,
 }: ModalProps) => {
+  document.body.style.overflow = 'hidden';
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const Ids = checkIds ? checkIds.join(',') : '';
-  const geoBlockPassed = useLocation(geoIds);
   const { isVerified, checksStatus } = useVerified(
     account,
     Ids,
@@ -30,7 +28,6 @@ const GateKeeperModal = ({
   );
   const IS_POPUP = 'true';
   const needCompleteKyc = checksStatus.KYC === false;
-  document.body.style.overflow = 'hidden';
   const openIframe = () => setIsFrameOpen(true);
   const closeIframe = () => setIsFrameOpen(false);
   const [stepIndex, setStepIndex] = useState<number>(0);
@@ -164,18 +161,8 @@ const GateKeeperModal = ({
     setStepIndex(0);
   };
 
-  if (closeSdk) {
-    return <></>;
-  }
-
-  if (!account || isVerified || geoBlockPassed) {
-    document.body.style.overflow = 'visible';
-    return <></>;
-  }
-
   const failedChecks =
-    checksStatus.OFAC === false ||
-    (!geoBlockPassed && checksStatus.geoId === false);
+    checksStatus.OFAC === false || checksStatus.geoId === false;
 
   if (failedChecks) {
     const item = Object.keys(checksStatus).find(key => {
@@ -191,6 +178,16 @@ const GateKeeperModal = ({
         <ErrorScreen failedCheck={item || ''} />
       </div>
     );
+  }
+
+  if (closeSdk) {
+    document.body.style.overflow = 'visible';
+    return <></>;
+  }
+
+  if (!account || isVerified) {
+    document.body.style.overflow = 'visible';
+    return <></>;
   }
 
   return (
