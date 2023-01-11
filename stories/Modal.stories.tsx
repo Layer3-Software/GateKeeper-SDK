@@ -20,9 +20,9 @@ const Template: ComponentStory<typeof Modal> = () => {
   const kycCheck = '9f376739-5d9e-4e12-9bdc-4498a8203883';
   const geoIdCheck = 'aee00f30-1928-4ba3-97aa-823dd0b62572';
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
-  const nft = '3e0f0dd0-85b3-402e-b68e-80e62b3dfb87';
+  const nft = 'e896b4a3-31e1-419d-bb32-f81ad6c37d92';
 
-  const checks = [ofac, geoIdCheck];
+  const checks = [nft];
 
   return (
     <Modal
