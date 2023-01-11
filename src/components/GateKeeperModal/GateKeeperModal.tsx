@@ -161,10 +161,12 @@ const GateKeeperModal = ({
     setStepIndex(0);
   };
 
-  const failedChecks =
-    checksStatus.OFAC === false || checksStatus.geoId === false;
+  const showFailScreen =
+    checksStatus.OFAC === false ||
+    checksStatus.geoId === false ||
+    checksStatus.error;
 
-  if (failedChecks) {
+  if (showFailScreen) {
     const item = Object.keys(checksStatus).find(key => {
       if (key === Types.KYC) return;
       return checksStatus[key] === false;
@@ -175,7 +177,10 @@ const GateKeeperModal = ({
         style={{ backgroundColor: backgroundColor, color: textColor }}
         className="modal"
       >
-        <ErrorScreen failedCheck={item || ''} />
+        <ErrorScreen
+          failedCheck={item || (checksStatus.error as string)}
+          isApiError={!!checksStatus.error}
+        />
       </div>
     );
   }
@@ -185,7 +190,7 @@ const GateKeeperModal = ({
     return <></>;
   }
 
-  if (!account || isVerified) {
+  if (!account || (isVerified && !polygonId)) {
     document.body.style.overflow = 'visible';
     return <></>;
   }

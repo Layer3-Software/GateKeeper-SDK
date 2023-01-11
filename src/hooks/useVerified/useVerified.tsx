@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
 import { check } from '../../utils/backendCalls';
+import { ONE_CHECK_ERROR } from '../../utils/constants';
 
 interface Error {
   error: string;
 }
 export interface statusProps {
-  [typeOfCheck: string]: boolean; // KYC: true/false
+  [typeOfCheck: string]: boolean | string;
 }
 
-const ONE_CHECK_ERROR = 'Specify at least one check';
-
-function useVerified(
+const useVerified = (
   address: string,
   ids: string,
   hasPolygonID: boolean,
   checkCallback: any
-) {
+) => {
   const [isVerified, setIsVerified] = useState(true);
   const [checksStatus, setChecksStatus] = useState<statusProps>({});
 
@@ -45,6 +44,6 @@ function useVerified(
   }, [address]);
 
   return { isVerified, checksStatus };
-}
+};
 
 export default useVerified;

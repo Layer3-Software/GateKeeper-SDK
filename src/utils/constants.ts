@@ -9,3 +9,5 @@ export const DEFAULT_COLORS = {
   buttonTextColor: '#e2e8f0',
   backgroundColor: '#141724',
 };
+
+export const ONE_CHECK_ERROR = 'Specify at least one check';

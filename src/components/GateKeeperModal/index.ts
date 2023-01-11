@@ -5,4 +5,4 @@ export {
   KeyBooleanPair,
   Steps,
   Types,
-} from './GateKeeperModalTypes';
+} from './types';

@@ -17,11 +17,12 @@ const Template: ComponentStory<typeof Modal> = () => {
     textColor: DEFAULT_COLORS.textColor,
   };
 
-  const kycCheck = '576cf5c8-3dac-4c03-9e15-ae3afaeb9917';
-  const geoIdCheck = '63e61579-3238-488e-9e14-909328f69397';
-  const ofac = 'c7fd2eb3-692b-4a88-a2d7-844f3ae83bc1';
+  const kycCheck = '9f376739-5d9e-4e12-9bdc-4498a8203883';
+  const geoIdCheck = 'aee00f30-1928-4ba3-97aa-823dd0b62572';
+  const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
+  const nft = '3e0f0dd0-85b3-402e-b68e-80e62b3dfb87';
 
-  const checks = [geoIdCheck];
+  const checks = [ofac, geoIdCheck];
 
   return (
     <Modal
