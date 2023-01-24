@@ -132,6 +132,7 @@ body {
   font-size: 14px;
   color: #94a3b8;
   height: 60px;
+  margin-top: 10px;
 }
 
 .item {
@@ -139,17 +140,11 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #475569;
   width: 65%;
   height: 30px;
   margin-bottom: 10px;
   border-radius: 4px;
   padding: 10px;
-  background-color: #1e293b;
-}
-
-h4 {
-  color: white;
 }
 
 .disabled {

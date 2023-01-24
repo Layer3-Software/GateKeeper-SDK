@@ -228,6 +228,10 @@ const GateKeeperModal = ({
 
                 {steps.map((item, i) => (
                   <div
+                    style={{
+                      color: buttonTextColor,
+                      backgroundColor: primaryColor,
+                    }}
                     className={`item ${stepIndex === i - 1 ? 'disabled' : ''}`}
                     key={`${item}${i}`}
                   >
@@ -261,12 +265,21 @@ const GateKeeperModal = ({
 
                 <div className="powered">
                   <div>Powered by </div>
-                  <img
-                    style={{ marginLeft: '5px' }}
-                    src={logotext}
-                    alt="logo"
-                    width="120px"
-                  />
+                  <div
+                    style={{
+                      backgroundColor: `${primaryColor}`,
+                      borderRadius: '5px',
+                      marginLeft: '5px',
+                      padding: '2px',
+                    }}
+                  >
+                    <img
+                      style={{ marginLeft: '5px' }}
+                      src={logotext}
+                      alt="logo"
+                      width="120px"
+                    />
+                  </div>
                 </div>
               </div>
             </>

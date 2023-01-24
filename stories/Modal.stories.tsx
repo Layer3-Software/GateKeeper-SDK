@@ -22,13 +22,29 @@ const Template: ComponentStory<typeof Modal> = () => {
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
   const nft = 'e896b4a3-31e1-419d-bb32-f81ad6c37d92';
 
-  const checks = [nft];
+  const checks = [''];
 
+  // Uniswap colors
+  const darkMode = {
+    primaryColor: 'rgba(76, 130, 251, 0.24)',
+    buttonTextColor: '#4C82FB',
+    backgroundColor: '#0d1117',
+    textColor: 'rgb(255, 255, 255)',
+  };
+  const lightMode = {
+    primaryColor: 'rgba(251, 17, 142, 0.24)',
+    buttonTextColor: '#FB138E',
+    backgroundColor: 'rgb(255, 255, 255)',
+    textColor: 'rgb(13, 17, 28)',
+  };
+
+  const lightModeOn = false;
   return (
     <Modal
       account={accountNotVerified}
       checkIds={checks}
-      customization={customization}
+      polygonId
+      customization={lightModeOn ? lightMode : darkMode}
     />
   );
 };
