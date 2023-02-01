@@ -34,3 +34,10 @@ export enum Types {
   OFAC = 'OFAC',
   NTF = 'NFT',
 }
+
+export interface TCheck {
+  _id: string;
+  type: string;
+  active: boolean;
+  options: string[];
+}

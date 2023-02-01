@@ -27,3 +27,7 @@ export const getPolygonClaims = () => {
 export const check = (address: string, ids: string) => {
   return makeRequest('/check', 'GET', { address, ids });
 };
+
+export const getChecks = () => {
+  return makeRequest('/checks', 'GET');
+};

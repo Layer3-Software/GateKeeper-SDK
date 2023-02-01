@@ -17,12 +17,12 @@ const Template: ComponentStory<typeof Modal> = () => {
     textColor: DEFAULT_COLORS.textColor,
   };
 
-  const kycCheck = '9f376739-5d9e-4e12-9bdc-4498a8203883';
+  const kycCheck = 'b415c1d5-40e7-42c7-8398-18563ffcfbf4';
   const geoIdCheck = 'aee00f30-1928-4ba3-97aa-823dd0b62572';
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
   const nft = 'e896b4a3-31e1-419d-bb32-f81ad6c37d92';
 
-  const checks = [''];
+  const checks = [kycCheck];
 
   // Uniswap colors
   const darkMode = {
@@ -43,7 +43,6 @@ const Template: ComponentStory<typeof Modal> = () => {
     <Modal
       account={accountNotVerified}
       checkIds={checks}
-      polygonId
       customization={lightModeOn ? lightMode : darkMode}
     />
   );
