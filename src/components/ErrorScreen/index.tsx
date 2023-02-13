@@ -7,10 +7,12 @@ interface Props {
   goBackCallback?: () => void;
   isApiError?: boolean;
   nftClaimLink?: string;
+  customization?: any;
 }
 
 const ErrorScreen = ({
   failedCheck,
+  customization,
   isApiError,
   goBackCallback,
   nftClaimLink,
@@ -53,7 +55,10 @@ const ErrorScreen = ({
         <button
           onClick={() => window.open(nftClaimLink, '_blank')}
           className="button-basic"
-          id="btn-success"
+          style={{
+            color: customization.buttonTextColor,
+            backgroundColor: customization.primaryColor,
+          }}
         >
           Claim NFT
         </button>

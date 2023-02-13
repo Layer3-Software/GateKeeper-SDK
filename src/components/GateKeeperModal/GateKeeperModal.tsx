@@ -182,6 +182,7 @@ const GateKeeperModal = ({
         className="modal"
       >
         <ErrorScreen
+          customization={customization ? customization : DEFAULT_COLORS}
           nftClaimLink={nftClaimLinks && nftClaimLinks[nftFailed].claimLink}
           failedCheck={item || ((checksStatus.error as unknown) as string)}
           isApiError={!!checksStatus.error}
