@@ -26,7 +26,7 @@ const ErrorScreen = ({
       <div className="modal-text">
         <h1
           style={{
-            borderBottom: '3px solid #059669',
+            borderBottom: `3px solid ${customization.primaryColor}`,
             display: 'inline-block',
             gap: '10px',
             lineHeight: '2em',
@@ -45,7 +45,10 @@ const ErrorScreen = ({
         <button
           onClick={goBackCallback}
           className="button-basic"
-          id="btn-success"
+          style={{
+            color: customization.buttonTextColor,
+            backgroundColor: customization.primaryColor,
+          }}
         >
           Try again!
         </button>

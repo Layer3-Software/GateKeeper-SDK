@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof Modal> = () => {
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
   const nft = '1f5da523-d65c-4862-b07c-3c780fca53f4';
 
-  const checks = [nft, kycCheck];
+  const checks = [nft];
 
   // Uniswap colors
   const darkMode = {
@@ -45,7 +45,7 @@ const Template: ComponentStory<typeof Modal> = () => {
     },
   };
 
-  const lightModeOn = false;
+  const lightModeOn = true;
   return (
     <Modal
       account={accountNotVerified}

@@ -23,11 +23,11 @@ const transformData = (checksResult: ChecksResponse) => {
 };
 
 const findFailedNft = (response: ChecksResponse) => {
-  const nftId = Object.keys(response.type).find(
-    key => response.type[key] === 'NFT'
+  const nftId = Object.keys(response?.type || {}).find(
+    key => response?.type[key] === 'NFT'
   );
 
-  if (nftId && response.hasOwnProperty(nftId)) {
+  if (nftId && response?.hasOwnProperty(nftId)) {
     if (response[nftId] === false) return nftId;
     return '';
   }
