@@ -29,8 +29,6 @@ const GateKeeperModal = ({
     nftClaimLinks
   );
 
-  console.log(nftClaimLinks, 'nftClaimLinks');
-
   const IS_POPUP = 'true';
   const needCompleteKyc = checksStatus.KYC === false;
   const openIframe = () => setIsFrameOpen(true);
