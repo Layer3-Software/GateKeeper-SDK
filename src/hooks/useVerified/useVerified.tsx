@@ -21,6 +21,18 @@ const transformData = (checksResult: ChecksResponse) => {
   return transformedData as KeyBooleanPair;
 };
 
+const findFailedNft = (response: ChecksResponse) => {
+  const nftId = Object.keys(response.type).find(
+    key => response.type[key] === 'NFT'
+  );
+
+  if (nftId && response.hasOwnProperty(nftId)) {
+    if (response[nftId] === false) return nftId;
+    return '';
+  }
+  return '';
+};
+
 const useVerified = (
   address: string,
   ids: string,
@@ -28,12 +40,16 @@ const useVerified = (
   checkCallback: any
 ) => {
   const [isVerified, setIsVerified] = useState(true);
+  const [nftFailed, setNftFailed] = useState('');
   const [checksStatus, setChecksStatus] = useState<KeyBooleanPair>({});
 
   useEffect(() => {
     const detector = async () => {
       const response: ChecksResponse & Error = await check(address, ids);
 
+      const idFailed = findFailedNft(response);
+
+      setNftFailed(idFailed);
       try {
         if (response.error === ONE_CHECK_ERROR && hasPolygonID) {
           return setIsVerified(false);
@@ -58,7 +74,7 @@ const useVerified = (
     else detector();
   }, [address]);
 
-  return { isVerified, checksStatus };
+  return { isVerified, checksStatus, nftFailed };
 };
 
 export default useVerified;

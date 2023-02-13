@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof Modal> = () => {
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
   const nft = '1f5da523-d65c-4862-b07c-3c780fca53f4';
 
-  const checks = [nft];
+  const checks = [nft, kycCheck];
 
   // Uniswap colors
   const darkMode = {
@@ -38,11 +38,19 @@ const Template: ComponentStory<typeof Modal> = () => {
     textColor: 'rgb(13, 17, 28)',
   };
 
+  const nftsClaimLinks = {
+    [nft]: {
+      claimLink:
+        'https://opensea.io/assets?search[query]=0xdb46d1dc155634fbc732f92e853b10b288ad5a1d',
+    },
+  };
+
   const lightModeOn = false;
   return (
     <Modal
       account={accountNotVerified}
       checkIds={checks}
+      nftClaimLinks={nftsClaimLinks}
       customization={lightModeOn ? lightMode : darkMode}
     />
   );

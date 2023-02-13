@@ -4,6 +4,11 @@ export interface ModalProps {
   checkIds: string[];
   checkCallback?: any;
   polygonId?: boolean;
+  nftClaimLinks?: {
+    [checkId: string]: {
+      claimLink: string;
+    };
+  };
   customization?: {
     backgroundColor?: string;
     primaryColor?: string;

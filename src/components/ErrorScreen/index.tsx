@@ -6,9 +6,15 @@ interface Props {
   failedCheck: string;
   goBackCallback?: () => void;
   isApiError?: boolean;
+  nftClaimLink?: string;
 }
 
-const ErrorScreen = ({ failedCheck, isApiError, goBackCallback }: Props) => {
+const ErrorScreen = ({
+  failedCheck,
+  isApiError,
+  goBackCallback,
+  nftClaimLink,
+}: Props) => {
   const failCheck = `${failedCheck.toUpperCase()} check failed`;
   const apiError = `Error: ${failedCheck}`;
 
@@ -37,11 +43,19 @@ const ErrorScreen = ({ failedCheck, isApiError, goBackCallback }: Props) => {
         <button
           onClick={goBackCallback}
           className="button-basic"
-          id="btn-verify"
+          id="btn-success"
         >
           Try again!
         </button>
       ) : null}
+
+      <button
+        onClick={() => window.open(nftClaimLink, '_blank')}
+        className="button-basic"
+        id="btn-success"
+      >
+        Claim NFT
+      </button>
     </div>
   );
 };

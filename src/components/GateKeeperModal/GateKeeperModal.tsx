@@ -16,11 +16,12 @@ const GateKeeperModal = ({
   checkIds,
   checkCallback,
   customization,
+  nftClaimLinks,
 }: ModalProps) => {
   document.body.style.overflow = 'hidden';
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const Ids = checkIds ? checkIds.join(',') : '';
-  const { isVerified, checksStatus } = useVerified(
+  const { isVerified, checksStatus, nftFailed } = useVerified(
     account,
     Ids,
     Boolean(polygonId),
@@ -180,6 +181,7 @@ const GateKeeperModal = ({
         className="modal"
       >
         <ErrorScreen
+          nftClaimLink={nftClaimLinks && nftClaimLinks[nftFailed].claimLink}
           failedCheck={item || ((checksStatus.error as unknown) as string)}
           isApiError={!!checksStatus.error}
         />
@@ -254,7 +256,7 @@ const GateKeeperModal = ({
                   }}
                   onClick={hasCompleteAllSteps ? closeModal : openIframe}
                   className="button-basic"
-                  id="btn-verify"
+                  id="btn-success"
                 >
                   {buttonText}
                   <img
@@ -295,7 +297,6 @@ const GateKeeperModal = ({
             style={{ backgroundColor: backgroundColor }}
             name="iframe_a"
             src={`${WEBSITE}/?${new URLSearchParams(params).toString()}`}
-            frameBorder="0"
             allow="camera"
           />
         </div>
