@@ -25,8 +25,11 @@ const GateKeeperModal = ({
     account,
     Ids,
     Boolean(polygonId),
-    checkCallback
+    checkCallback,
+    nftClaimLinks
   );
+
+  console.log(nftClaimLinks, 'nftClaimLinks');
 
   const IS_POPUP = 'true';
   const needCompleteKyc = checksStatus.KYC === false;

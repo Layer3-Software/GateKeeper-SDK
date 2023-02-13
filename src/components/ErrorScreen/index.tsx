@@ -49,13 +49,15 @@ const ErrorScreen = ({
         </button>
       ) : null}
 
-      <button
-        onClick={() => window.open(nftClaimLink, '_blank')}
-        className="button-basic"
-        id="btn-success"
-      >
-        Claim NFT
-      </button>
+      {nftClaimLink ? (
+        <button
+          onClick={() => window.open(nftClaimLink, '_blank')}
+          className="button-basic"
+          id="btn-success"
+        >
+          Claim NFT
+        </button>
+      ) : null}
     </div>
   );
 };

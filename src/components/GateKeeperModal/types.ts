@@ -4,16 +4,18 @@ export interface ModalProps {
   checkIds: string[];
   checkCallback?: any;
   polygonId?: boolean;
-  nftClaimLinks?: {
-    [checkId: string]: {
-      claimLink: string;
-    };
-  };
+  nftClaimLinks?: nftClaimLinksInterface;
   customization?: {
     backgroundColor?: string;
     primaryColor?: string;
     textColor?: string;
     buttonTextColor?: string;
+  };
+}
+
+export interface nftClaimLinksInterface {
+  [checkId: string]: {
+    claimLink: string;
   };
 }
 

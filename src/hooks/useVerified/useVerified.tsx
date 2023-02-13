@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   ChecksResponse,
   KeyBooleanPair,
+  nftClaimLinksInterface,
 } from '../../components/GateKeeperModal/types';
 import { check } from '../../utils/backendCalls';
 import { ONE_CHECK_ERROR } from '../../utils/constants';
@@ -37,7 +38,8 @@ const useVerified = (
   address: string,
   ids: string,
   hasPolygonID: boolean,
-  checkCallback: any
+  checkCallback: any,
+  nftClaimLinks: nftClaimLinksInterface | undefined
 ) => {
   const [isVerified, setIsVerified] = useState(true);
   const [nftFailed, setNftFailed] = useState('');
@@ -47,9 +49,11 @@ const useVerified = (
     const detector = async () => {
       const response: ChecksResponse & Error = await check(address, ids);
 
-      const idFailed = findFailedNft(response);
+      if (nftClaimLinks) {
+        const idFailed = findFailedNft(response);
+        setNftFailed(idFailed);
+      }
 
-      setNftFailed(idFailed);
       try {
         if (response.error === ONE_CHECK_ERROR && hasPolygonID) {
           return setIsVerified(false);
