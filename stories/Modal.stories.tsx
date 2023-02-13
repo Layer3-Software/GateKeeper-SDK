@@ -9,7 +9,7 @@ export default {
 } as ComponentMeta<typeof Modal>;
 
 const Template: ComponentStory<typeof Modal> = () => {
-  const accountNotVerified = '0x227A176b0FD6F851322123698722F25046EB309A';
+  const accountNotVerified = '0xe0FF5244D2be4a676475d9282aB9CFB6fe2322bB';
   const customization = {
     primaryColor: DEFAULT_COLORS.primaryColor,
     buttonTextColor: DEFAULT_COLORS.buttonTextColor,
@@ -17,12 +17,12 @@ const Template: ComponentStory<typeof Modal> = () => {
     textColor: DEFAULT_COLORS.textColor,
   };
 
-  const kycCheck = '024841b1-593e-45f5-ae99-2310359bf954';
+  const kycCheck = 'e4cce52a-d330-4978-b250-6c6d5626b42e';
   const geoIdCheck = 'aee00f30-1928-4ba3-97aa-823dd0b62572';
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
-  const nft = 'e896b4a3-31e1-419d-bb32-f81ad6c37d92';
+  const nft = '1f5da523-d65c-4862-b07c-3c780fca53f4';
 
-  const checks = [kycCheck];
+  const checks = [nft];
 
   // Uniswap colors
   const darkMode = {

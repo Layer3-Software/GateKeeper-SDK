@@ -1,27 +1,24 @@
 import { useEffect, useState } from 'react';
-import { KeyBooleanPair, TCheck } from '../../components/GateKeeperModal/types';
-import { check, getChecks } from '../../utils/backendCalls';
+import {
+  ChecksResponse,
+  KeyBooleanPair,
+} from '../../components/GateKeeperModal/types';
+import { check } from '../../utils/backendCalls';
 import { ONE_CHECK_ERROR } from '../../utils/constants';
 
 interface Error {
   error: string;
 }
-export interface statusProps {
-  [checkID: string]: boolean | string;
-}
 
-const buildChecksStatus = (checksStatus: statusProps, userChecks: TCheck[]) => {
-  let res: KeyBooleanPair = {};
-  userChecks.forEach(check => {
-    const statusIds = Object.keys(checksStatus);
-
-    const find = statusIds.find(checkId => checkId === check._id);
-    if (find) {
-      res[check.type] = Boolean(checksStatus[check._id]);
+const transformData = (checksResult: ChecksResponse) => {
+  const transformedData: any = {};
+  for (const key in checksResult) {
+    if (key !== 'type') {
+      transformedData[checksResult.type[key]] = checksResult[key];
     }
-  });
+  }
 
-  return res;
+  return transformedData as KeyBooleanPair;
 };
 
 const useVerified = (
@@ -31,29 +28,29 @@ const useVerified = (
   checkCallback: any
 ) => {
   const [isVerified, setIsVerified] = useState(true);
-  const [checksStatus, setChecksStatus] = useState<statusProps>({});
+  const [checksStatus, setChecksStatus] = useState<KeyBooleanPair>({});
 
   useEffect(() => {
     const detector = async () => {
-      const response: statusProps & Error = await check(address, ids);
-      const userChecks: TCheck[] = await getChecks();
+      const response: ChecksResponse & Error = await check(address, ids);
 
       try {
         if (response.error === ONE_CHECK_ERROR && hasPolygonID) {
           return setIsVerified(false);
         }
 
-        const status = buildChecksStatus(response, userChecks);
+        const status = transformData(response);
 
         setChecksStatus(status);
-        setIsVerified(Object.values(response).every(val => val === true));
+        setIsVerified(Object.values(status).every(val => val === true));
       } catch (error) {
         setIsVerified(true);
       }
     };
 
     const customCallBack = async () => {
-      const response: statusProps = (await check(address, ids)) || {};
+      const response: ChecksResponse & Error =
+        (await check(address, ids)) || {};
       checkCallback(response);
     };
 

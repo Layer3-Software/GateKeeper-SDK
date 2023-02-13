@@ -26,6 +26,7 @@ const GateKeeperModal = ({
     Boolean(polygonId),
     checkCallback
   );
+
   const IS_POPUP = 'true';
   const needCompleteKyc = checksStatus.KYC === false;
   const openIframe = () => setIsFrameOpen(true);
@@ -163,6 +164,7 @@ const GateKeeperModal = ({
 
   const showFailScreen =
     checksStatus.OFAC === false ||
+    checksStatus.NFT === false ||
     checksStatus.geoId === false ||
     checksStatus.error;
 
@@ -178,7 +180,7 @@ const GateKeeperModal = ({
         className="modal"
       >
         <ErrorScreen
-          failedCheck={item || (checksStatus.error as string)}
+          failedCheck={item || ((checksStatus.error as unknown) as string)}
           isApiError={!!checksStatus.error}
         />
       </div>

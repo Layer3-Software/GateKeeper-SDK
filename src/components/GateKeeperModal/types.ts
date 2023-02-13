@@ -18,6 +18,13 @@ export interface ModalTextProps {
   description: string;
 }
 
+export type ChecksResponse = {
+  type: {
+    [key: string]: string;
+  };
+  [key: string]: boolean | object;
+};
+
 export interface KeyBooleanPair {
   [key: string]: boolean;
 }
