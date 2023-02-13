@@ -10,7 +10,6 @@ const makeRequest = (url: string, method: string, body?: any) => {
   return fetch(BACKEND_URL + finalURL, {
     method,
     mode: 'cors',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
