@@ -23,10 +23,34 @@ export const getPolygonClaims = () => {
   return makeRequest('/claims', 'GET');
 };
 
-export const check = (address: string, ids: string) => {
+export const doChecksCheck = (address: string, ids: string) => {
   return makeRequest('/check', 'GET', { address, ids });
 };
 
-export const getChecks = () => {
-  return makeRequest('/checks', 'GET');
+export const doRoleCheck = (role: string) => {
+  return makeRequest('/checkRole', 'GET', { role });
+};
+
+export const getNonce = (address: string) => {
+  return makeRequest('/wallets/nonce', 'GET', { address });
+};
+
+export const login = (
+  walletAddress: string,
+  signature: string,
+  forApp?: boolean
+) => {
+  return makeRequest('/wallets/login', 'POST', {
+    walletAddress,
+    signature,
+    forApp,
+  });
+};
+
+export const register = (address: string, signature: string, appId: any) => {
+  return makeRequest('/users/register', 'POST', { address, signature, appId });
+};
+
+export const authenticateDomain = (domain: string) => {
+  return makeRequest('/authenticate', 'GET', { domain });
 };

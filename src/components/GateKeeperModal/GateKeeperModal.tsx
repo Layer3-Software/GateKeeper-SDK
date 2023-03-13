@@ -9,6 +9,11 @@ import CheckStatus from '../../assets/checkStatus';
 import SuccessIcon from '../../assets/success.png';
 import ErrorScreen from '../ErrorScreen';
 import { ModalProps, Steps, KeyBooleanPair, Types } from '.';
+import useAuth from '../../hooks/useAuth';
+import {
+  getDescription,
+  getSuccessDescription,
+} from '../../utils/ModalFunctions';
 
 const GateKeeperModal = ({
   account,
@@ -17,36 +22,32 @@ const GateKeeperModal = ({
   checkCallback,
   customization,
   nftClaimLinks,
+  roles,
 }: ModalProps) => {
   document.body.style.overflow = 'hidden';
+
   const [iFrameOpen, setIsFrameOpen] = useState(false);
-  const Ids = checkIds ? checkIds.join(',') : '';
-  const { isVerified, checksStatus, nftFailed } = useVerified(
+  const { doLogin, isLoggedIn, loginStatus } = useAuth();
+  const { checksStatus, isVerified, nftFailed } = useVerified(
     account,
-    Ids,
+    checkIds,
+    roles,
     Boolean(polygonId),
     checkCallback,
     nftClaimLinks
   );
 
-  const IS_POPUP = 'true';
-  const needCompleteKyc = checksStatus.KYC === false;
-  const openIframe = () => setIsFrameOpen(true);
-  const closeIframe = () => setIsFrameOpen(false);
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [error, setError] = useState('');
   const [closeSdk, setCloseSdk] = useState(false);
   const [steps, setSteps] = useState<Steps[]>([]);
   const [sucessSteps, setSucessSteps] = useState<KeyBooleanPair>({});
 
-  const updateSteps = (currentStep: Steps) => {
-    if (currentStep.complete) return;
-    const rest = steps.filter(step => step.type !== currentStep.type);
-    setSteps([{ type: currentStep.type, complete: true }, ...rest]);
-    setStepIndex(prevStep => prevStep + 1);
-  };
-
+  const openIframe = () => setIsFrameOpen(true);
+  const closeIframe = () => setIsFrameOpen(false);
   const closeModal = () => setCloseSdk(true);
+
+  const IS_POPUP = 'true';
 
   useEffect(() => {
     const stepsArr =
@@ -72,11 +73,14 @@ const GateKeeperModal = ({
   }, [checksStatus]);
 
   useEffect(() => {
-    window.addEventListener('message', recieveMessage);
+    window.addEventListener('message', receiveMessage);
     return () => {
-      window.removeEventListener('message', recieveMessage);
+      window.removeEventListener('message', receiveMessage);
     };
   }, [steps]);
+
+  const needCompleteKyc = checksStatus.KYC === false;
+  console.log('needCompleteKyc', needCompleteKyc);
 
   const shouldShowKyc = steps[stepIndex]?.type === Types.KYC;
   const shouldShowPolygon = steps[stepIndex]?.type === Types.PolygonID;
@@ -101,48 +105,14 @@ const GateKeeperModal = ({
     address: account,
   };
 
-  const getDescription = () => {
-    let dinamicPart =
-      needCompleteKyc && polygonId
-        ? 'KYC and PolygonID'
-        : needCompleteKyc
-        ? 'KYC'
-        : 'PolygonID';
-    return `We need you to go through our simple and quick ${dinamicPart} verification process to continue.`;
-  };
-
-  const getSuccessDescription = () => {
-    if (hasCompleteAllSteps) return 'You have completed all checks!';
-
-    if (!sucessSteps[Types.KYC] && !sucessSteps[Types.PolygonID]) {
-      return '';
-    }
-
-    const message = `You have completed the ${
-      sucessSteps[Types.KYC]
-        ? 'KYC verification process.'
-        : 'PolygonId process.'
-    }`;
-
-    if (steps.length > 1) {
-      return `${message} Let's go through the ${
-        sucessSteps[Types.KYC]
-          ? 'PolygonId process.'
-          : 'KYC verification process.'
-      }`;
-    } else {
-      return message;
-    }
-  };
-
   const buttonText = steps[stepIndex]?.type
     ? `Start ${steps[stepIndex]?.type}`
     : `Continue`;
 
-  const recieveMessage = useCallback(
+  const receiveMessage = useCallback(
     (data: MessageEvent) => {
       try {
-        const dataObj = JSON.parse(data.data);
+        const dataObj = JSON.parse(data?.data);
         const { type } = dataObj;
 
         if (![Types.KYC, Types.PolygonID].includes(type)) return;
@@ -159,67 +129,50 @@ const GateKeeperModal = ({
     [steps, stepIndex]
   );
 
+  const updateSteps = (currentStep: Steps) => {
+    if (currentStep.complete) return;
+    const rest = steps.filter(step => step.type !== currentStep.type);
+    setSteps([{ type: currentStep.type, complete: true }, ...rest]);
+    setStepIndex(prevStep => prevStep + 1);
+  };
+
   const onGoBack = () => {
     setError('');
     setStepIndex(0);
   };
 
-  const showFailScreen =
-    checksStatus.OFAC === false ||
-    checksStatus.NFT === false ||
-    checksStatus.geoId === false ||
-    checksStatus.error;
+  const description = getDescription(needCompleteKyc, !!polygonId);
+  const successDescription = getSuccessDescription(
+    sucessSteps,
+    hasCompleteAllSteps,
+    steps.length
+  );
 
-  if (showFailScreen) {
-    const item = Object.keys(checksStatus).find(key => {
-      if (key === Types.KYC) return;
-      return checksStatus[key] === false;
-    });
+  const { OFAC, NFT, geoId, error: errorOnChecks } = checksStatus;
 
+  const SHOW_FAIL_SCREEN = !OFAC || !NFT || !geoId || errorOnChecks;
+
+  ///////////// screen //////////
+
+  const MainScreen = () => {
     return (
       <div
         style={{ backgroundColor: backgroundColor, color: textColor }}
         className="modal"
       >
-        <ErrorScreen
-          customization={customization ? customization : DEFAULT_COLORS}
-          nftClaimLink={nftClaimLinks && nftClaimLinks[nftFailed].claimLink}
-          failedCheck={item || ((checksStatus.error as unknown) as string)}
-          isApiError={!!checksStatus.error}
-        />
-      </div>
-    );
-  }
-
-  if (closeSdk) {
-    document.body.style.overflow = 'visible';
-    return <></>;
-  }
-
-  if (!account || (isVerified && !polygonId)) {
-    document.body.style.overflow = 'visible';
-    return <></>;
-  }
-
-  return (
-    <div>
-      {!iFrameOpen ? (
-        <div
-          style={{ backgroundColor: backgroundColor, color: textColor }}
-          className="modal"
-        >
-          {error ? (
-            <ErrorScreen failedCheck={error} goBackCallback={onGoBack} />
-          ) : (
-            <>
-              <div className="modal-body">
+        {error ? (
+          <ErrorScreen failedCheck={error} goBackCallback={onGoBack} />
+        ) : (
+          <>
+            <div className="modal-body">
+              <>
                 {!hasCompleteOneStep ? (
                   <>
                     <img src={accountIcon} width="260px" alt="account" />
 
                     <div className="modal-text">
                       <h2>Let’s start your journey</h2>
-                      <p>{getDescription()}</p>
+                      <p>{description}</p>
                     </div>
                   </>
                 ) : (
@@ -227,7 +180,7 @@ const GateKeeperModal = ({
                     <img src={SuccessIcon} alt="successIcon" />
                     <div className="modal-text">
                       <h2>Yeah! You did it!</h2>
-                      <p>{getSuccessDescription()}</p>
+                      <p>{successDescription}</p>
                     </div>
                   </>
                 )}
@@ -249,61 +202,134 @@ const GateKeeperModal = ({
                     <></>
                   </div>
                 ))}
-              </div>
-              <div className="modal-footer">
-                <button
-                  style={{
-                    color: buttonTextColor,
-                    backgroundColor: primaryColor,
-                  }}
-                  onClick={hasCompleteAllSteps ? closeModal : openIframe}
-                  className="button-basic"
-                  id="btn-success"
-                >
-                  {buttonText}
-                  <img
-                    src={externalLinkIcon}
-                    alt="time"
-                    width="20px"
-                    height="20px"
-                  />
-                </button>
+              </>
+              )
+            </div>
 
-                <div className="powered">
-                  <div>Powered by </div>
-                  <div
-                    style={{
-                      backgroundColor: `${primaryColor}`,
-                      borderRadius: '5px',
-                      marginLeft: '5px',
-                      padding: '2px',
-                    }}
-                  >
-                    <img
-                      style={{ marginLeft: '5px' }}
-                      src={logotext}
-                      alt="logo"
-                      width="120px"
-                    />
-                  </div>
+            <div className="modal-footer">
+              <button
+                style={{
+                  color: buttonTextColor,
+                  backgroundColor: primaryColor,
+                }}
+                onClick={hasCompleteAllSteps ? closeModal : openIframe}
+                className="button-basic"
+                id="btn-success"
+              >
+                {buttonText}
+                <img
+                  src={externalLinkIcon}
+                  alt="time"
+                  width="20px"
+                  height="20px"
+                />
+              </button>
+
+              <div className="powered">
+                <div>Powered by </div>
+                <div
+                  style={{
+                    backgroundColor: `${primaryColor}`,
+                    borderRadius: '5px',
+                    marginLeft: '5px',
+                    padding: '2px',
+                  }}
+                >
+                  <img
+                    style={{ marginLeft: '5px' }}
+                    src={logotext}
+                    alt="logo"
+                    width="120px"
+                  />
                 </div>
               </div>
-            </>
-          )}
-        </div>
-      ) : (
-        <div className="modal">
-          <iframe
-            id="myframe"
-            className="modal-iframe"
-            style={{ backgroundColor: backgroundColor }}
-            name="iframe_a"
-            src={`${WEBSITE}/?${new URLSearchParams(params).toString()}`}
-            allow="camera"
-          />
-        </div>
-      )}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
 
+  const WebsiteIframe = () => {
+    return (
+      <div className="modal">
+        <iframe
+          id="myframe"
+          className="modal-iframe"
+          style={{ backgroundColor: backgroundColor }}
+          name="iframe_a"
+          src={`${WEBSITE}/?${new URLSearchParams(params).toString()}`}
+          allow="camera"
+        />
+      </div>
+    );
+  };
+
+  console.log(isLoggedIn, 'islogin');
+
+  // Case user not login
+  if (!isLoggedIn) {
+    return (
+      <div
+        style={{ backgroundColor: backgroundColor, color: textColor }}
+        className="modal"
+      >
+        <div className="modal-body">
+          <button
+            id="btn-success"
+            style={{ color: buttonTextColor, backgroundColor: primaryColor }}
+            onClick={doLogin}
+            className="button-basic"
+          >
+            Login
+          </button>
+          <div className="modal-text">
+            <h2>{loginStatus}</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // case user pass all checks
+  if (closeSdk || (isVerified && !polygonId)) {
+    console.log('entre en pass');
+
+    // we show the scrollbar so the user can scroll
+    document.body.style.overflow = 'visible';
+    return null;
+  }
+
+  // case: errors on checks
+  if (SHOW_FAIL_SCREEN) {
+    console.log('entre en fail');
+
+    const item = Object.keys(checksStatus).find(key => {
+      if (key === Types.KYC) return;
+      return checksStatus[key] === false;
+    });
+    console.log(item, 'item');
+    console.log(checksStatus, 'checksStatus');
+
+    return (
+      <div
+        style={{ backgroundColor: backgroundColor, color: textColor }}
+        className="modal"
+      >
+        <ErrorScreen
+          customization={customization ? customization : DEFAULT_COLORS}
+          nftClaimLink={nftClaimLinks && nftClaimLinks[nftFailed]?.claimLink}
+          failedCheck={item}
+          isApiError={!!checksStatus.error}
+        />
+      </div>
+    );
+  }
+
+  // handling iframe
+  return (
+    <div>
+      {!iFrameOpen ? <MainScreen /> : <WebsiteIframe />}
       <div className="bg" />
     </div>
   );

@@ -9,7 +9,7 @@ export default {
 } as ComponentMeta<typeof Modal>;
 
 const Template: ComponentStory<typeof Modal> = () => {
-  const accountNotVerified = '0xe0FF5244D2be4a676475d9282aB9CFB6fe2322bB';
+  const accountNotVerified = '0x85d6298705d6b9885Eaa2de262df9442353d0218';
   const customization = {
     primaryColor: DEFAULT_COLORS.primaryColor,
     buttonTextColor: DEFAULT_COLORS.buttonTextColor,
@@ -20,9 +20,10 @@ const Template: ComponentStory<typeof Modal> = () => {
   const kycCheck = 'e4cce52a-d330-4978-b250-6c6d5626b42e';
   const geoIdCheck = 'aee00f30-1928-4ba3-97aa-823dd0b62572';
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
-  const nft = '1f5da523-d65c-4862-b07c-3c780fca53f4';
+  const nft = '669498c4-604c-4ac0-8c7e-48c816c86f60';
 
-  const checks = [nft];
+  const roles = ['test!'];
+  const checks = [kycCheck];
 
   // Uniswap colors
   const darkMode = {
@@ -50,6 +51,7 @@ const Template: ComponentStory<typeof Modal> = () => {
     <Modal
       account={accountNotVerified}
       checkIds={checks}
+      roles={roles}
       nftClaimLinks={nftsClaimLinks}
       customization={lightModeOn ? lightMode : darkMode}
     />
