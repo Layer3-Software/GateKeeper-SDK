@@ -26,7 +26,6 @@ const useAuth = () => {
 
         // If nonce is undefined, the address is not registered
         if (nonce === undefined || nonce === null) {
-          console.log('nonce is null');
           const signature = await signer.signMessage(SIGN_MESSAGE);
           const session = await register(address, signature, appId);
 
@@ -34,7 +33,6 @@ const useAuth = () => {
 
           if (session.token) {
             setIsLoggedIn(true);
-            console.log('user Registered');
             return setLoginStatus('User registered');
           }
         }
@@ -48,8 +46,7 @@ const useAuth = () => {
         if (res.error) return setLoginStatus(res.error);
 
         if (res.isUser) {
-          setIsLoggedIn(true);
-          return setLoginStatus('Login success');
+          return setIsLoggedIn(true);
         }
       }
       return setLoginStatus('Missing required connections fields');

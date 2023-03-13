@@ -1,6 +1,11 @@
 import { BACKEND_URL } from './constants';
 
-const makeRequest = (url: string, method: string, body?: any) => {
+const makeRequest = (
+  url: string,
+  method: string,
+  body?: any,
+  credentials?: boolean
+) => {
   const isGETmethod = method === 'GET';
 
   const finalURL = isGETmethod
@@ -10,6 +15,7 @@ const makeRequest = (url: string, method: string, body?: any) => {
   return fetch(BACKEND_URL + finalURL, {
     method,
     mode: 'cors',
+    credentials: credentials ? 'include' : 'omit',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -28,7 +34,7 @@ export const doChecksCheck = (address: string, ids: string) => {
 };
 
 export const doRoleCheck = (role: string) => {
-  return makeRequest('/checkRole', 'GET', { role });
+  return makeRequest('/checkRole', 'GET', { role }, true);
 };
 
 export const getNonce = (address: string) => {

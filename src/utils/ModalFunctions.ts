@@ -39,3 +39,18 @@ export const getSuccessDescription = (
       }`
     : message;
 };
+
+export const getStepsArr = (polygonId: boolean, needCompleteKyc: boolean) => {
+  if (polygonId && needCompleteKyc) {
+    return [
+      { type: Types.KYC, complete: false },
+      { type: Types.PolygonID, complete: false },
+    ];
+  } else if (polygonId) {
+    return [{ type: Types.PolygonID, complete: false }];
+  } else if (needCompleteKyc) {
+    return [{ type: Types.KYC, complete: false }];
+  } else {
+    return [];
+  }
+};

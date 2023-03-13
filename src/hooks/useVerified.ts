@@ -5,7 +5,6 @@ import {
   nftClaimLinksInterface,
 } from '../components/GateKeeperModal/types';
 import { doChecksCheck, doRoleCheck } from '../utils/backendCalls';
-import { ONE_CHECK_ERROR } from '../utils/constants';
 
 interface Error {
   error: string;
@@ -38,66 +37,105 @@ const useVerified = (
   address: string,
   checksIds: string[] = [],
   roles: string[] = [],
-  hasPolygonID: boolean,
   checkCallback: any,
   nftClaimLinks: nftClaimLinksInterface | undefined
 ) => {
   const [isVerified, setIsVerified] = useState(true);
   const [nftFailed, setNftFailed] = useState('');
-  const [checksStatus, setChecksStatus] = useState<KeyBooleanPair>({});
+  const [status, setStatus] = useState<{
+    someItemFailed: boolean;
+    failedItem: string | undefined;
+    response: KeyBooleanPair;
+  }>({
+    someItemFailed: false,
+    failedItem: undefined,
+    response: {},
+  });
+  const [apiError, setApiError] = useState('');
   const idsToCheck = checksIds ? checksIds.join(',') : '';
 
-  const isVerifiedByRoles = async (): Promise<boolean> => {
+  const checkRoles = async () => {
     try {
-      for (const role of roles) {
-        console.log(role, 'role');
+      const res = await Promise.all(roles.map(async role => doRoleCheck(role)));
 
-        const res = await doRoleCheck(role);
-        console.log(res, 'res');
+      const errorOnCalls = res.find(res => res.error);
+
+      if (errorOnCalls) {
+        setApiError(errorOnCalls.error);
+        setIsVerified(false);
+        return;
       }
 
-      return false;
-    } catch (error) {
-      console.error(`Error on isVerifiedByRoles", ${error}`);
+      const allRolePassed = res.every(res => res.passed === true);
 
-      return false;
+      if (allRolePassed) {
+        setIsVerified(true);
+        return;
+      }
+
+      setStatus({
+        someItemFailed: true,
+        failedItem: 'Roles',
+        response: {},
+      });
+      setIsVerified(false);
+    } catch (error) {
+      console.error(`Error on check roles:", ${error}`);
+      setIsVerified(true);
+    }
+  };
+
+  const cheksIds = async () => {
+    try {
+      const checksResponse: ChecksResponse & Error = await doChecksCheck(
+        address,
+        idsToCheck
+      );
+
+      if (nftClaimLinks) {
+        const idFailed = findFailedNft(checksResponse);
+        setNftFailed(idFailed);
+      }
+
+      if (checksResponse?.error) {
+        setApiError(checksResponse.error);
+        return setIsVerified(false);
+      }
+
+      const status = transformData(checksResponse);
+
+      const notPassedCheck = Object.keys(status).find(key => {
+        if (key === 'KYC') return;
+        return status[key as keyof typeof status] === false;
+      });
+
+      setStatus({
+        someItemFailed: Boolean(notPassedCheck),
+        failedItem: notPassedCheck,
+        response: status,
+      });
+
+      const allChecksPassed = Object.values(status).every(val => val === true);
+      if (allChecksPassed) setIsVerified(true);
+
+      return setIsVerified(false);
+    } catch (error) {
+      setIsVerified(true);
     }
   };
 
   useEffect(() => {
     const detector = async () => {
-      try {
-        const checksResponse: ChecksResponse & Error = await doChecksCheck(
-          address,
-          idsToCheck
-        );
-
-        // const isValidByRoles =
-        // await isVerifiedByRoles();
-
-        if (nftClaimLinks) {
-          const idFailed = findFailedNft(checksResponse);
-          setNftFailed(idFailed);
-        }
-
-        if (checksResponse.error === ONE_CHECK_ERROR && hasPolygonID) {
-          return setIsVerified(false);
-        }
-
-        const status = transformData(checksResponse);
-
-        setChecksStatus(status);
-        setIsVerified(Object.values(status).every(val => val === true));
-      } catch (error) {
-        setIsVerified(true);
-      }
+      if (checksIds.length) return await cheksIds();
+      else return await checkRoles();
     };
 
     const customCallBack = async () => {
-      const response: ChecksResponse & Error = await doChecksCheck(
-        address,
-        idsToCheck
-      );
+      let response: any;
+
+      if (checksIds.length) response = await cheksIds();
+      else response = await checkRoles();
+
       checkCallback(response || {});
     };
 
@@ -105,7 +143,7 @@ const useVerified = (
     else detector();
   }, [address]);
 
-  return { isVerified, checksStatus, nftFailed };
+  return { isVerified, status, nftFailed, apiError };
 };
 
 export default useVerified;
