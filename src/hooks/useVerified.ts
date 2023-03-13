@@ -5,6 +5,7 @@ import {
   nftClaimLinksInterface,
 } from '../components/GateKeeperModal/types';
 import { doChecksCheck, doRoleCheck } from '../utils/backendCalls';
+import { ONE_CHECK_ERROR } from '../utils/constants';
 
 interface Error {
   error: string;
@@ -38,6 +39,7 @@ const useVerified = (
   checksIds: string[] = [],
   roles: string[] = [],
   checkCallback: any,
+  hasPolygonID: boolean,
   nftClaimLinks: nftClaimLinksInterface | undefined
 ) => {
   const [isVerified, setIsVerified] = useState(true);
@@ -95,6 +97,10 @@ const useVerified = (
       if (nftClaimLinks) {
         const idFailed = findFailedNft(checksResponse);
         setNftFailed(idFailed);
+      }
+
+      if (checksResponse?.error === ONE_CHECK_ERROR && hasPolygonID) {
+        return setIsVerified(false);
       }
 
       if (checksResponse?.error) {

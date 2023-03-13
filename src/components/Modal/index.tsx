@@ -31,7 +31,14 @@ const Modal = ({
     isVerified,
     nftFailed,
     apiError,
-  } = useVerified(account, checkIds, roles, checkCallback, nftClaimLinks);
+  } = useVerified(
+    account,
+    checkIds,
+    roles,
+    checkCallback,
+    Boolean(polygonId),
+    nftClaimLinks
+  );
 
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [error, setError] = useState('');

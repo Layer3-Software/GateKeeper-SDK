@@ -1,14 +1,14 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Modal from '../src/components/GateKeeperModal';
+import GatekeeperModal from '../src/components/GateKeeperModal';
 import { DEFAULT_COLORS } from '../src/utils/constants';
 
 export default {
   title: 'KYC/Modal',
-  component: Modal,
-} as ComponentMeta<typeof Modal>;
+  component: GatekeeperModal,
+} as ComponentMeta<typeof GatekeeperModal>;
 
-const Template: ComponentStory<typeof Modal> = () => {
+const Template: ComponentStory<typeof GatekeeperModal> = () => {
   const accountNotVerified = '0x85d6298705d6b9885Eaa2de262df9442353d0218';
   const customization = {
     primaryColor: DEFAULT_COLORS.primaryColor,
@@ -52,7 +52,7 @@ const Template: ComponentStory<typeof Modal> = () => {
 
   const lightModeOn = false;
   return (
-    <Modal
+    <GatekeeperModal
       account={accountNotVerified}
       checkIds={checks}
       roles={roles}
