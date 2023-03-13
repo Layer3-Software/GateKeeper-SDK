@@ -3,7 +3,7 @@ import '../GateKeeperModal/GateKeeperModal.css';
 import ErrorIcon from '../../assets/error.png';
 
 interface Props {
-  failedCheck: string;
+  failedCheck?: string;
   goBackCallback?: () => void;
   isApiError?: boolean;
   nftClaimLink?: string;
@@ -17,7 +17,7 @@ const ErrorScreen = ({
   goBackCallback,
   nftClaimLink,
 }: Props) => {
-  const failCheck = `${failedCheck.toUpperCase()} check failed`;
+  const failCheck = `${failedCheck?.toUpperCase()} check failed`;
   const apiError = `Error: ${failedCheck}`;
 
   return (
@@ -26,7 +26,7 @@ const ErrorScreen = ({
       <div className="modal-text">
         <h1
           style={{
-            borderBottom: `3px solid ${customization.primaryColor}`,
+            borderBottom: `3px solid ${customization?.primaryColor}`,
             display: 'inline-block',
             gap: '10px',
             lineHeight: '2em',

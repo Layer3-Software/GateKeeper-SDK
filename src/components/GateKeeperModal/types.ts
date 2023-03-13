@@ -1,7 +1,8 @@
 export interface ModalProps {
   account: string;
   geoIds?: string[];
-  checkIds: string[];
+  checkIds?: string[];
+  roles?: string[];
   checkCallback?: any;
   polygonId?: boolean;
   nftClaimLinks?: nftClaimLinksInterface;
