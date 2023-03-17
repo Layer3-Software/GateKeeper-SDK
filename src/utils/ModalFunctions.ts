@@ -1,4 +1,4 @@
-import { KeyBooleanPair, Types } from '../components/GateKeeperModal';
+import { KeyBooleanPair, Types } from '../types';
 
 export const getDescription = (
   kycCompleted: boolean,

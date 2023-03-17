@@ -1,55 +1,47 @@
 import React from 'react';
-import { DEFAULT_COLORS } from '../..//utils/constants';
-import './GateKeeperModal.css';
-import { ModalProps } from '.';
+import { DEFAULT_COLORS } from '../../utils/constants';
+import '../styles.css';
 import useAuth from '../../hooks/useAuth';
 import Modal from '../Modal';
 import accountIcon from '../../assets/account.png';
+import { ModalProps } from '../../types';
+import Container from '../Container';
 
 const GateKeeperModal = ({
   account,
   polygonId,
-  checkIds,
+  checksIds,
   checkCallback,
   customization,
   nftClaimLinks,
   roles,
 }: ModalProps) => {
-  const { doLogin, isLoggedIn, loginStatus } = useAuth();
   document.body.style.overflow = 'hidden';
 
-  const {
-    backgroundColor,
-    buttonTextColor,
-    primaryColor,
-    textColor,
-  } = customization ? customization : DEFAULT_COLORS;
+  const { doLogin, isLoggedIn, loginStatus } = useAuth();
+
+  const { backgroundColor, buttonTextColor, primaryColor, textColor } =
+    customization || DEFAULT_COLORS;
 
   if (!isLoggedIn) {
     return (
-      <div
-        style={{ backgroundColor: backgroundColor, color: textColor }}
-        className="modal"
-      >
+      <Container bgColor={backgroundColor!} textColor={textColor!}>
         <div className="modal-body">
-          <>
-            <img src={accountIcon} width="260px" alt="account" />
-
-            <div className="modal-text">
-              <h2>Let’s start your journey</h2>
-            </div>
-          </>
+          <div className="modal-text">
+            <img src={accountIcon} width="260px" alt="Account" />
+            <h2>Let’s start your journey</h2>
+          </div>
           <button
             id="btn-success"
-            style={{ color: buttonTextColor, backgroundColor: primaryColor }}
             onClick={doLogin}
             className="button-basic"
+            style={{ color: buttonTextColor, backgroundColor: primaryColor }}
           >
             Login
           </button>
           <h3 style={{ marginTop: '15px' }}>{loginStatus}</h3>
         </div>
-      </div>
+      </Container>
     );
   }
 
@@ -57,7 +49,7 @@ const GateKeeperModal = ({
     <Modal
       account={account}
       checkCallback={checkCallback}
-      checkIds={checkIds}
+      checksIds={checksIds}
       roles={roles}
       customization={customization}
       polygonId={polygonId}

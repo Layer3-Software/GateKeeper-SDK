@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 import {
   ChecksResponse,
+  IuseVerified,
   KeyBooleanPair,
-  nftClaimLinksInterface,
-} from '../components/GateKeeperModal/types';
-import { doChecksCheck, doRoleCheck } from '../utils/backendCalls';
-import { ONE_CHECK_ERROR } from '../utils/constants';
+  PolygonAuthorizationResponse,
+} from '../types';
+import {
+  doChecksCheck,
+  doRoleCheck,
+  polyogonAuth,
+} from '../utils/backendCalls';
+import { ONE_CHECK_ERROR, POLYGON_DID_ERROR } from '../utils/constants';
 
 interface Error {
   error: string;
@@ -34,63 +39,122 @@ const findFailedNft = (response: ChecksResponse) => {
   return '';
 };
 
-const useVerified = (
-  address: string,
-  checksIds: string[] = [],
-  roles: string[] = [],
-  checkCallback: any,
-  hasPolygonID: boolean,
-  nftClaimLinks: nftClaimLinksInterface | undefined
-) => {
+const useVerified = ({
+  account,
+  checkCallback,
+  checksIds,
+  roles,
+  nftClaimLinks,
+  hasPolygonID,
+}: IuseVerified) => {
   const [isVerified, setIsVerified] = useState(true);
   const [nftFailed, setNftFailed] = useState('');
   const [status, setStatus] = useState<{
-    someItemFailed: boolean;
-    failedItem: string | undefined;
-    response: KeyBooleanPair;
+    response: KeyBooleanPair | PolygonAuthorizationResponse | any;
+    someItemFailed?: boolean;
+    failedItem?: string | undefined;
+    shouldGetDID?: boolean;
+    showVcModal?: boolean;
   }>({
     someItemFailed: false,
     failedItem: undefined,
+    shouldGetDID: false,
     response: {},
+    showVcModal: false,
   });
   const [apiError, setApiError] = useState('');
   const idsToCheck = checksIds ? checksIds.join(',') : '';
 
-  const checkRoles = async () => {
-    try {
-      const res = await Promise.all(roles.map(async role => doRoleCheck(role)));
+  const callWithDryRun = async (fn: Function, dryRun: boolean) => {
+    const res = await Promise.all(roles.map(async role => fn(role, dryRun)));
 
-      const errorOnCalls = res.find(res => res.error);
+    const errorOnCalls = res.find(res => res.error);
 
-      if (errorOnCalls) {
-        setApiError(errorOnCalls.error);
+    if (errorOnCalls) {
+      if (errorOnCalls?.error === POLYGON_DID_ERROR) {
+        const res = await polyogonAuth();
         setIsVerified(false);
+        setStatus({
+          showVcModal: true,
+          shouldGetDID: true,
+          response: res,
+        });
         return;
       }
 
-      const allRolePassed = res.every(res => res.passed === true);
-
-      if (allRolePassed) {
-        setIsVerified(true);
-        return;
-      }
-
-      setStatus({
-        someItemFailed: true,
-        failedItem: 'Roles',
-        response: {},
-      });
+      setApiError(errorOnCalls.error);
       setIsVerified(false);
+      return;
+    }
+
+    return res;
+  };
+
+  const checkRolesDryRunFalse = async () => {
+    try {
+      const res = await callWithDryRun(doRoleCheck, false);
+
+      if (res) {
+        const allRolesSuccess = res.every(res => res.passed === true);
+
+        if (allRolesSuccess) {
+          const vcIdsArray = res.map(res => res.vcs[0]);
+
+          if (!vcIdsArray) {
+            setIsVerified(true);
+            return;
+          }
+
+          setStatus({
+            showVcModal: true,
+            response: { vcIdsArray },
+          });
+          return;
+        }
+
+        setStatus({
+          someItemFailed: true,
+          failedItem: 'Roles',
+          response: {},
+        });
+        setIsVerified(false);
+      }
+
+      return;
     } catch (error) {
       console.error(`Error on check roles:", ${error}`);
-      setIsVerified(true);
+      setIsVerified(false);
+    }
+  };
+
+  const checkRoles = async () => {
+    try {
+      const res = await callWithDryRun(doRoleCheck, true);
+
+      if (res) {
+        const allRolesPassed = res.every(res => res.passed === true);
+
+        if (allRolesPassed) {
+          return await checkRolesDryRunFalse();
+        }
+
+        setStatus({
+          someItemFailed: true,
+          failedItem: 'Roles',
+          response: {},
+        });
+        setIsVerified(false);
+      }
+    } catch (error) {
+      console.error(`Error on check roles:", ${error}`);
+      setIsVerified(false);
     }
   };
 
   const cheksIds = async () => {
     try {
       const checksResponse: ChecksResponse & Error = await doChecksCheck(
-        address,
+        account,
         idsToCheck
       );
 
@@ -147,7 +211,7 @@ const useVerified = (
 
     if (checkCallback) customCallBack();
     else detector();
-  }, [address]);
+  }, [account]);
 
   return { isVerified, status, nftFailed, apiError };
 };

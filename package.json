@@ -55,11 +55,11 @@
     "@babel/core": "^7.19.1",
     "@rollup/plugin-image": "^2.1.1",
     "@size-limit/preset-small-lib": "^8.1.0",
-    "@storybook/addon-essentials": "^6.5.12",
+    "@storybook/addon-essentials": "^6.5.16",
     "@storybook/addon-info": "^5.3.21",
-    "@storybook/addon-links": "^6.5.12",
-    "@storybook/addons": "^6.5.12",
-    "@storybook/react": "^6.5.12",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/addons": "^6.5.16",
+    "@storybook/react": "^6.5.16",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.12",
@@ -97,6 +97,8 @@
   "dependencies": {
     "@ethersproject/providers": "^5.7.2",
     "@metamask/detect-provider": "^2.0.0",
-    "commitizen": "^4.2.5"
+    "commitizen": "^4.2.5",
+    "qrcode.react": "^3.1.0",
+    "socket.io-client": "^4.5.2"
   }
 }

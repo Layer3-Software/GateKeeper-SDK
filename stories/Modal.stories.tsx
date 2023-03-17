@@ -22,9 +22,7 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
   const nft = '669498c4-604c-4ac0-8c7e-48c816c86f60';
 
-  const role1 = 'f10543de-b5e0-426d-986e-6d4ecdcb10e6';
-  // const role2 = '0174a672-f900-41b2-aeb4-86a9073ec9c0';
-  // const role3 = '7de606d4-2416-4938-8e3b-77a9e3e409cc';
+  const role1 = 'afa303b5-5f40-4692-8870-54157b0292fc';
 
   const roles = [role1];
   const checks = [];
@@ -54,7 +52,7 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
   return (
     <GatekeeperModal
       account={accountNotVerified}
-      checkIds={checks}
+      checksIds={checks}
       roles={roles}
       nftClaimLinks={nftsClaimLinks}
       customization={lightModeOn ? lightMode : darkMode}

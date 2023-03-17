@@ -11,7 +11,7 @@ body {
   left: 45%;
   top: 3%;
   margin-left: -150px;
-  color: #fff;
+  color: #ffff;
   font-family: 'Albert Sans', sans-serif;
   border: none;
   display: flex;
@@ -23,6 +23,7 @@ body {
   order: 0;
   flex-grow: 0;
 }
+
 .modal-iframe {
   width: 480px;
   min-height: 650px;
@@ -39,6 +40,7 @@ body {
   border: 0px;
   flex-grow: 0;
 }
+
 .bg {
   z-index: 9998;
   position: absolute;
@@ -52,10 +54,10 @@ body {
 .modal-body {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 60px;
+  height: 100%;
 }
 
 .modal-body > h2 {
@@ -66,7 +68,10 @@ body {
 .modal-body > p {
   font-size: 16px;
   line-height: 22px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   color: #e2e8f0;
 }
 
@@ -152,4 +157,13 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.link:visited {
+  color: #ffff;
+}
+
+.link:hover {
+  color: rgb(76, 130, 251);
+  text-decoration: underline;
 }
