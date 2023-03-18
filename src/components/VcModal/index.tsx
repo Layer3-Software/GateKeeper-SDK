@@ -34,18 +34,16 @@ const VcModal = ({
       setShowQrCode(false);
       setIsLoading(true);
 
-      setTimeout(async () => {
-        if (roles) {
-          const res = await Promise.all(
-            roles.map(async role => doRoleCheck(role, false))
-          );
-          if (res) {
-            const vcIdsArray = res.map(res => res.vcs[0]);
-            setVcIdsArray(vcIdsArray);
-            setIsLoading(false);
-          }
+      if (roles) {
+        const res = await Promise.all(
+          roles.map(async role => doRoleCheck(role, false))
+        );
+        if (res) {
+          const vcIdsArray = res.map(res => res.vcs[0]);
+          setVcIdsArray(vcIdsArray);
+          setIsLoading(false);
         }
-      }, 5000);
+      }
     }
   };
 
@@ -84,7 +82,7 @@ const VcModal = ({
         <div className="modal-body">
           <img src={GateKeeperLogo} alt="GateKeeper logo" />
           <div className="modal-text">
-            <h2>Claim yours VC IDS</h2>
+            <h2>Claim your VCs</h2>
             {isLoading ? <h3>fetching links...</h3> : null}
 
             <div>

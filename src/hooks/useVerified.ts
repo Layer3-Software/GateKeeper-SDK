@@ -65,39 +65,39 @@ const useVerified = ({
   const [apiError, setApiError] = useState('');
   const idsToCheck = checksIds ? checksIds.join(',') : '';
 
-  const callWithDryRun = async (fn: Function, dryRun: boolean) => {
-    const res = await Promise.all(roles.map(async role => fn(role, dryRun)));
-
-    const errorOnCalls = res.find(res => res.error);
-
-    if (errorOnCalls) {
-      if (errorOnCalls?.error === POLYGON_DID_ERROR) {
-        const res = await polyogonAuth();
-        setIsVerified(false);
-        setStatus({
-          showVcModal: true,
-          shouldGetDID: true,
-          response: res,
-        });
-        return;
-      }
-
-      setApiError(errorOnCalls.error);
-      setIsVerified(false);
-      return;
-    }
-
-    return res;
-  };
-
-  const checkRolesDryRunFalse = async () => {
+  const checkRoles = async (dryRun: boolean) => {
     try {
-      const res = await callWithDryRun(doRoleCheck, false);
+      const res = await Promise.all(
+        roles.map(async role => doRoleCheck(role, dryRun))
+      );
 
       if (res) {
-        const allRolesSuccess = res.every(res => res.passed === true);
+        const errorOnCalls = res.find(res => res.error);
+        if (errorOnCalls) {
+          if (errorOnCalls?.error === POLYGON_DID_ERROR) {
+            const res = await polyogonAuth();
+            setIsVerified(false);
+            setStatus({
+              showVcModal: true,
+              shouldGetDID: true,
+              response: res,
+            });
+            return;
+          }
 
-        if (allRolesSuccess) {
+          setApiError(errorOnCalls.error);
+          setIsVerified(false);
+          return;
+        }
+
+        const allRolesPassed = res.every(res => res.passed === true);
+
+        if (allRolesPassed && dryRun) {
+          await checkRoles(false);
+          return;
+        }
+
+        if (allRolesPassed && !dryRun) {
           const vcIdsArray = res.map(res => res.vcs[0]);
 
           if (!vcIdsArray) {
@@ -118,32 +118,7 @@ const useVerified = ({
           response: {},
         });
         setIsVerified(false);
-      }
-
-      return;
-    } catch (error) {
-      console.error(`Error on check roles:", ${error}`);
-      setIsVerified(false);
-    }
-  };
-
-  const checkRoles = async () => {
-    try {
-      const res = await callWithDryRun(doRoleCheck, true);
-
-      if (res) {
-        const allRolesPassed = res.every(res => res.passed === true);
-
-        if (allRolesPassed) {
-          return await checkRolesDryRunFalse();
-        }
-
-        setStatus({
-          someItemFailed: true,
-          failedItem: 'Roles',
-          response: {},
-        });
-        setIsVerified(false);
+        return;
       }
     } catch (error) {
       console.error(`Error on check roles:", ${error}`);
@@ -197,14 +172,14 @@ const useVerified = ({
   useEffect(() => {
     const detector = async () => {
       if (checksIds.length) return await cheksIds();
-      else return await checkRoles();
+      else return await checkRoles(true);
     };
 
     const customCallBack = async () => {
       let response: any;
 
       if (checksIds.length) response = await cheksIds();
-      else response = await checkRoles();
+      else response = await checkRoles(true);
 
       checkCallback(response || {});
     };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles.css';
 import { QRCodeSVG } from 'qrcode.react';
 import GateKeeperLogo from '../../assets/logotext.png';
@@ -14,7 +14,9 @@ const QrCode = ({
 }: QrcodeProps) => {
   const { backgroundColor, textColor } = customization;
 
-  openPolygonSocket({ id: qrData.sessionId, callback: handleSocketResponse });
+  useEffect(() => {
+    openPolygonSocket({ id: qrData.sessionId, callback: handleSocketResponse });
+  }, []);
 
   const qrValue = JSON.stringify(qrData.request);
   return (

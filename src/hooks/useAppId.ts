@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { authenticateDomain } from '../utils/backendCalls';
 
-// const ROOT_DOMAIN =
-//   document.location?.ancestorOrigins[0]
-//     ?.replace('https://', '')
-//     ?.replace('http://', '') ||
-//   document.location.hostname
-//     .split('.')
-//     .reverse()
-//     .splice(0, 2)
-//     .reverse()
-//     .join('.');
+const ROOT_DOMAIN =
+  document.location?.ancestorOrigins[0]
+    ?.replace('https://', '')
+    ?.replace('http://', '') ||
+  document.location.hostname
+    .split('.')
+    .reverse()
+    .splice(0, 2)
+    .reverse()
+    .join('.');
 
 const useAppId = () => {
   const [appId, setAppId] = useState('');
@@ -19,7 +19,7 @@ const useAppId = () => {
     const ancestorOrigins = document.location.ancestorOrigins[0];
     if (ancestorOrigins) {
       const checkDomainAuthentication = async () => {
-        const { appId } = await authenticateDomain('localhost');
+        const { appId } = await authenticateDomain(ROOT_DOMAIN);
         setAppId(appId);
       };
 
