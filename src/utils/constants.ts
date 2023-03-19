@@ -14,3 +14,4 @@ export const DEFAULT_COLORS = {
 export const SIGN_MESSAGE = 'Only sign if you are trying to login to KYC.';
 
 export const ONE_CHECK_ERROR = 'Specify at least one check';
+export const POLYGON_DID_ERROR = 'This role requires a Polygon DID';

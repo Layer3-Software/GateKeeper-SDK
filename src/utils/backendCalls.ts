@@ -1,10 +1,13 @@
+import { PolygonAuthorizationResponse } from '../types';
 import { BACKEND_URL } from './constants';
 
 const makeRequest = (
   url: string,
   method: string,
   body?: any,
-  credentials?: boolean
+  options?: {
+    credentials?: boolean;
+  }
 ) => {
   const isGETmethod = method === 'GET';
 
@@ -15,7 +18,7 @@ const makeRequest = (
   return fetch(BACKEND_URL + finalURL, {
     method,
     mode: 'cors',
-    credentials: credentials ? 'include' : 'omit',
+    credentials: options?.credentials ? 'include' : 'include',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -33,8 +36,13 @@ export const doChecksCheck = (address: string, ids: string) => {
   return makeRequest('/check', 'GET', { address, ids });
 };
 
-export const doRoleCheck = (role: string) => {
-  return makeRequest('/checkRole', 'GET', { role }, true);
+export const doRoleCheck = (role: string, dryRun?: boolean) => {
+  return makeRequest(
+    '/checkRole',
+    'GET',
+    { role, dryRun },
+    { credentials: true }
+  );
 };
 
 export const getNonce = (address: string) => {
@@ -59,4 +67,8 @@ export const register = (address: string, signature: string, appId: any) => {
 
 export const authenticateDomain = (domain: string) => {
   return makeRequest('/authenticate', 'GET', { domain });
+};
+
+export const polyogonAuth = (): Promise<PolygonAuthorizationResponse> => {
+  return makeRequest('/users/polygon', 'GET', {}, { credentials: true });
 };

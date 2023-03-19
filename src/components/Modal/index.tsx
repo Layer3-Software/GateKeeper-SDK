@@ -13,44 +13,59 @@ import {
   getSuccessDescription,
 } from '../../utils/ModalFunctions';
 import ErrorScreen from '../ErrorScreen';
-import { ModalProps, Steps, KeyBooleanPair, Types } from '../GateKeeperModal';
+import VcModal from '../VcModal';
+import {
+  ModalProps,
+  Steps,
+  KeyBooleanPair,
+  Types,
+  IuseVerified,
+} from '../../types';
+import Container from '../../components/Container';
 
 const Modal = ({
   account,
-  checkIds,
+  checksIds,
   checkCallback,
   nftClaimLinks,
   polygonId,
   customization,
   roles,
 }: ModalProps) => {
+  const IS_POPUP = 'true';
   const { isLoggedIn } = useAuth();
   const [iFrameOpen, setIsFrameOpen] = useState(false);
-  const {
-    status: { response, someItemFailed, failedItem },
-    isVerified,
-    nftFailed,
-    apiError,
-  } = useVerified(
-    account,
-    checkIds,
-    roles,
-    checkCallback,
-    Boolean(polygonId),
-    nftClaimLinks
-  );
-
   const [stepIndex, setStepIndex] = useState<number>(0);
-  const [error, setError] = useState('');
+  const [errorOnParent, setErrorOnParent] = useState('');
   const [closeSdk, setCloseSdk] = useState(false);
   const [steps, setSteps] = useState<Steps[]>([]);
   const [sucessSteps, setSucessSteps] = useState<KeyBooleanPair>({});
+  const hasPolygonID = Boolean(polygonId);
+
+  const paramsToVerified: IuseVerified = {
+    account,
+    checksIds: checksIds || [],
+    roles: roles || [],
+    checkCallback,
+    hasPolygonID,
+    nftClaimLinks,
+  };
+
+  const { status, isVerified, nftFailed, apiError } = useVerified(
+    paramsToVerified
+  );
+
+  const {
+    response,
+    someItemFailed,
+    failedItem,
+    showVcModal,
+    shouldGetDID,
+  } = status;
 
   const openIframe = () => setIsFrameOpen(true);
   const closeIframe = () => setIsFrameOpen(false);
   const closeModal = () => setCloseSdk(true);
-
-  const IS_POPUP = 'true';
 
   useEffect(() => {
     const stepsArr = getStepsArr(Boolean(polygonId), needCompleteKyc);
@@ -71,18 +86,15 @@ const Modal = ({
     };
   }, [steps]);
 
-  const needCompleteKyc = response?.KYC === false;
+  const needCompleteKyc =
+    !showVcModal && (response as KeyBooleanPair).KYC === false;
   const shouldShowKyc = steps[stepIndex]?.type === Types.KYC;
   const shouldShowPolygon = steps[stepIndex]?.type === Types.PolygonID;
   const hasCompleteOneStep = Object.values(sucessSteps).some(step => step);
   const hasCompleteAllSteps = Object.values(sucessSteps).every(step => step);
 
-  const {
-    backgroundColor,
-    buttonTextColor,
-    primaryColor,
-    textColor,
-  } = customization ? customization : DEFAULT_COLORS;
+  const { backgroundColor, buttonTextColor, primaryColor, textColor } =
+    customization || DEFAULT_COLORS;
 
   const params = {
     bgModal: backgroundColor ?? DEFAULT_COLORS.backgroundColor,
@@ -111,7 +123,7 @@ const Modal = ({
           updateSteps(steps[stepIndex]);
           setSucessSteps({ ...sucessSteps, [type]: true });
         } else {
-          setError(type);
+          setErrorOnParent(type);
         }
         closeIframe();
       } catch (error) {}
@@ -127,7 +139,7 @@ const Modal = ({
   };
 
   const onGoBack = () => {
-    setError('');
+    setErrorOnParent('');
     setStepIndex(0);
   };
 
@@ -138,7 +150,8 @@ const Modal = ({
     steps.length
   );
 
-  const SHOW_FAIL_SCREEN = someItemFailed || apiError;
+  const SHOW_FAIL_SCREEN = someItemFailed || apiError || errorOnParent;
+  const SHOW_VC_MODAL = showVcModal;
 
   const MainScreen = () => {
     return (
@@ -146,96 +159,91 @@ const Modal = ({
         style={{ backgroundColor: backgroundColor, color: textColor }}
         className="modal"
       >
-        {error ? (
-          <ErrorScreen failedCheck={error} goBackCallback={onGoBack} />
-        ) : (
-          <>
-            <div className="modal-body">
-              <>
-                {!hasCompleteOneStep ? (
-                  <>
-                    <img src={accountIcon} width="260px" alt="account" />
-
-                    <div className="modal-text">
-                      <h2>Let’s start your journey</h2>
-                      <p>{description}</p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <img src={SuccessIcon} alt="successIcon" />
-                    <div className="modal-text">
-                      <h2>Yeah! You did it!</h2>
-                      <p>{successDescription}</p>
-                    </div>
-                  </>
-                )}
-
-                {steps.map((item, i) => (
-                  <div
-                    style={{
-                      color: buttonTextColor,
-                      backgroundColor: primaryColor,
-                    }}
-                    className={`item ${stepIndex === i - 1 ? 'disabled' : ''}`}
-                    key={`${item}${i}`}
-                  >
-                    <CheckStatus color={item.complete ? '#059669' : 'white'} />
-                    <h4>
-                      {i + 1}. {item.type}
-                    </h4>
+        <>
+          <div className="modal-body">
+            <>
+              {!hasCompleteOneStep ? (
+                <>
+                  <img src={accountIcon} width="260px" alt="account" />
+                  <div className="modal-text">
+                    <h2>Let’s start your journey</h2>
+                    <p>{description}</p>
                   </div>
-                ))}
-              </>
-            </div>
+                </>
+              ) : (
+                <div>
+                  <img src={SuccessIcon} alt="successIcon" />
+                  <div className="modal-text">
+                    <h2>Yeah! You did it!</h2>
+                    <p>{successDescription}</p>
+                  </div>
+                </div>
+              )}
 
-            <div className="modal-footer">
-              <button
-                style={{
-                  color: buttonTextColor,
-                  backgroundColor: primaryColor,
-                }}
-                onClick={hasCompleteAllSteps ? closeModal : openIframe}
-                className="button-basic"
-                id="btn-success"
-              >
-                {buttonText}
-                <img
-                  src={externalLinkIcon}
-                  alt="time"
-                  width="20px"
-                  height="20px"
-                />
-              </button>
-
-              <div className="powered">
-                <div>Powered by </div>
+              {steps.map((item, i) => (
                 <div
                   style={{
-                    backgroundColor: `${primaryColor}`,
-                    borderRadius: '5px',
-                    marginLeft: '5px',
-                    padding: '2px',
+                    color: buttonTextColor,
+                    backgroundColor: primaryColor,
                   }}
+                  className={`item ${stepIndex === i - 1 ? 'disabled' : ''}`}
+                  key={`${item}${i}`}
                 >
-                  <img
-                    style={{ marginLeft: '5px' }}
-                    src={logotext}
-                    alt="logo"
-                    width="120px"
-                  />
+                  <CheckStatus color={item.complete ? '#059669' : 'white'} />
+                  <h4>
+                    {i + 1}. {item.type}
+                  </h4>
                 </div>
+              ))}
+            </>
+          </div>
+
+          <div className="modal-footer">
+            <button
+              style={{
+                color: buttonTextColor,
+                backgroundColor: primaryColor,
+              }}
+              onClick={hasCompleteAllSteps ? closeModal : openIframe}
+              className="button-basic"
+              id="btn-success"
+            >
+              {buttonText}
+              <img
+                src={externalLinkIcon}
+                alt="time"
+                width="20px"
+                height="20px"
+              />
+            </button>
+
+            <div className="powered">
+              <div>Powered by </div>
+              <div
+                style={{
+                  backgroundColor: `${primaryColor}`,
+                  borderRadius: '5px',
+                  marginLeft: '5px',
+                  padding: '2px',
+                }}
+              >
+                <img
+                  style={{ marginLeft: '5px' }}
+                  src={logotext}
+                  alt="logo"
+                  width="120px"
+                />
               </div>
             </div>
-          </>
-        )}
+          </div>
+        </>
       </div>
     );
   };
 
   const WebsiteIframe = () => {
     return (
-      <div className="modal">
+      <Container bgColor={backgroundColor!} textColor={textColor!}>
         <iframe
           id="myframe"
           className="modal-iframe"
@@ -244,28 +252,52 @@ const Modal = ({
           src={`${WEBSITE}/?${new URLSearchParams(params).toString()}`}
           allow="camera"
         />
-      </div>
+      </Container>
     );
   };
 
-  if (!account || closeSdk || (isVerified && !polygonId)) {
+  if (!account || closeSdk || (isVerified && !polygonId && !showVcModal)) {
     document.body.style.overflow = 'visible';
     return null;
   }
 
+  const getError = () => {
+    if (someItemFailed) {
+      return failedItem;
+    }
+    if (apiError) {
+      return apiError;
+    }
+    if (errorOnParent) {
+      return errorOnParent;
+    }
+
+    return undefined;
+  };
+
   if (SHOW_FAIL_SCREEN) {
     return (
-      <div
-        style={{ backgroundColor: backgroundColor, color: textColor }}
-        className="modal"
-      >
+      <Container bgColor={backgroundColor!} textColor={textColor!}>
         <ErrorScreen
           customization={customization ? customization : DEFAULT_COLORS}
           nftClaimLink={nftClaimLinks && nftClaimLinks[nftFailed]?.claimLink}
-          failedCheck={apiError ? apiError : failedItem}
-          isApiError={!!apiError}
+          error={getError() ?? ''}
+          type={someItemFailed ? 'failedCheck' : 'apiError'}
+          goBackCallback={errorOnParent ? onGoBack : undefined}
         />
-      </div>
+      </Container>
+    );
+  }
+
+  if (SHOW_VC_MODAL) {
+    return (
+      <VcModal
+        roles={roles}
+        closeModal={closeModal}
+        shouldGetDID={shouldGetDID}
+        response={response}
+        customization={customization ? customization : DEFAULT_COLORS}
+      />
     );
   }
 

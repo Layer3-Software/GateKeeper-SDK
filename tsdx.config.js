@@ -1,5 +1,6 @@
 const images = require('@rollup/plugin-image');
 const postcss = require('rollup-plugin-postcss');
+const replace = require('@rollup/plugin-replace');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 module.exports = {
