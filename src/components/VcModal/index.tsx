@@ -35,6 +35,7 @@ const VcModal = ({
       setIsLoading(true);
 
       if (roles) {
+        await Promise.all(roles.map(async role => doRoleCheck(role, false)));
         const res = await Promise.all(
           roles.map(async role => doRoleCheck(role, false))
         );
