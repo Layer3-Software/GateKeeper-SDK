@@ -106,7 +106,8 @@ nftClaimLinks={{
 ## Issuance
 
 - During this process, if the role or roles you are using have a verifiable credential (VC) available, the user will be able to claim it during the issuance process..
-  ![issuanceExample](statics/issuanceExample.png)
+
+![issuanceExample](statics/issuanceExample.png)
 
 ## Commands
 
