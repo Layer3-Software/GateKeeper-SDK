@@ -65,7 +65,9 @@ const useVerified = ({
   const [apiError, setApiError] = useState('');
   const idsToCheck = checksIds ? checksIds.join(',') : '';
 
-  const checkRoles = async (dryRun: boolean) => {
+  const checkRoles = async (
+    dryRun: boolean
+  ): Promise<{ isVerified: boolean } | undefined> => {
     try {
       const res = await Promise.all(
         roles.map(async role => doRoleCheck(role, dryRun))
@@ -82,19 +84,18 @@ const useVerified = ({
               shouldGetDID: true,
               response: res,
             });
-            return;
+            return { isVerified: false };
           }
 
           setApiError(errorOnCalls.error);
           setIsVerified(false);
-          return;
+          return { isVerified: false };
         }
 
         const allRolesPassed = res.every(res => res.passed === true);
 
         if (allRolesPassed && dryRun) {
-          await checkRoles(false);
-          return;
+          return await checkRoles(false);
         }
 
         if (allRolesPassed && !dryRun) {
@@ -102,14 +103,14 @@ const useVerified = ({
 
           if (!vcIdsArray) {
             setIsVerified(true);
-            return;
+            return { isVerified: true };
           }
 
           setStatus({
             showVcModal: true,
             response: { vcIdsArray },
           });
-          return;
+          return { isVerified: true };
         }
 
         setStatus({
@@ -118,15 +119,17 @@ const useVerified = ({
           response: {},
         });
         setIsVerified(false);
-        return;
+        return { isVerified: false };
       }
+      return { isVerified: false };
     } catch (error) {
       console.error(`Error on check roles:", ${error}`);
       setIsVerified(false);
+      return { isVerified: false };
     }
   };
 
-  const cheksIds = async () => {
+  const cheksIds = async (): Promise<{ isVerified: boolean }> => {
     try {
       const checksResponse: ChecksResponse & Error = await doChecksCheck(
         account,
@@ -139,12 +142,14 @@ const useVerified = ({
       }
 
       if (checksResponse?.error === ONE_CHECK_ERROR && hasPolygonID) {
-        return setIsVerified(false);
+        setIsVerified(false);
+        return { isVerified: false };
       }
 
       if (checksResponse?.error) {
         setApiError(checksResponse.error);
-        return setIsVerified(false);
+        setIsVerified(false);
+        return { isVerified: false };
       }
 
       const status = transformData(checksResponse);
@@ -161,11 +166,16 @@ const useVerified = ({
       });
 
       const allChecksPassed = Object.values(status).every(val => val === true);
-      if (allChecksPassed) setIsVerified(true);
+      if (allChecksPassed) {
+        setIsVerified(true);
+        return { isVerified: true };
+      }
 
-      return setIsVerified(false);
+      setIsVerified(false);
+      return { isVerified: false };
     } catch (error) {
-      setIsVerified(true);
+      setIsVerified(false);
+      return { isVerified: false };
     }
   };
 

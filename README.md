@@ -1,80 +1,100 @@
-# KYC Package
+# Gatekeeper package
 
-Integrate and customize the Gatekeeper KYC frontend with your existing frontend.
+Integrate and customize the Gatekeeper frontend with your existing frontend.
 
-## How to use it
+## Installation
 
-To integrate KYC into your project, only need to install the package first and have web3 connected.
+Install @layer3/gatekeeper-sdk with `npm` or `yarn`
 
 ```bash
-npm i @layer3/gatekeeper-sdk
+npm install @layer3/gatekeeper-sdk
 ```
-
-If you use yarn.
 
 ```bash
 yarn add @layer3/gatekeeper-sdk
 ```
 
-Then on your `app` file or a `main` file, import as:
+## Usage/Examples
 
-```js
+Then on your app file or a main file, import as:
+
+```javascript
 import { GateKeeperModal } from '@layer3/gatekeeper-sdk';
-// CODE HERE....
-const showMintRequirements = (data: {
-    [t: string]: boolean
-}) => {
-    const finalResult = Object.values(data).every((value) => value);
 
-    if (finalResult) {
-        // Do something on success
-        console.log("All requirements are met");
-    } else {
-        // Do something on failure
-        console.log("Not all requirements are met");
-    }
+const GateKeeperModal = () => {
+  const checkCallback = (result: { isVerified: boolean }) => {
+    // Handle any logic within the app based on the result obtained
+  };
 
-    if (!data["exampleId"]) {
-        // Do something on failure
-        console.log("CheckId is not met");
-    } else {
-        // Do something on success
-        console.log("CheckId is met");
-    }
-}
-return (
-  <div>
- <GateKeeper
-    account={address}
-    checkIds={["KYC", "exampleId"]}
-    polygonId={false}
-    checkCallback={showMintRequirements}
-    customization={{
-            primaryColor: "#000000",
-            backgroundColor: "#FFFFFF",
-            buttonTextColor: "#FFFFFF",
-            textColor: "#000000",
-        }}>
-  </div>
-);
+  return (
+    <div>
+      <GateKeeper
+        account={address}
+        checkIds={['KYC', 'exampleId']}
+        roles={['role1', 'role2']}
+        polygonId={false}
+        checkCallback={checkCallback}
+        customization={{
+          primaryColor: '#000000',
+          backgroundColor: '#FFFFFF',
+          buttonTextColor: '#FFFFFF',
+          textColor: '#000000',
+        }}
+      />
+    </div>
+  );
+};
+
+export default GateKeeperModal;
 ```
 
-| Parameter             | Description                             | Type           | Required |
-| --------------------- | --------------------------------------- | -------------- | -------- |
-| **account**           | Wallet Address from the user            | `string`       | Yes      |
-| **polygonId**         | Boolean to allow polygon claim          | `boolean`      | No       |
-| **checkIds**          | Arrays of Ids                           | `string array` | Yes      |
-| **customization**     | Color properties explained below        | `Object`       | No       |
-| **backgroundColor**   | Background color of the modal           | `string`       | No       |
-| **textColor**         | Color for the body text                 | `string`       | No       |
-| **buttonTextColor**   | Color for button texts                  | `string`       | No       |
-| **primaryColor**      | Primary button, info color              | `string`       | No       |
-| **screening**         | Perform additional screening on wallets | `boolean`      | No       |
-| **screeningCallback** | Callback ran if wallet fails screening  | `void()`       | No\*     |
+## Parameters
 
-\* `screeningCallback` is required if screening is set to `true`
+| Parameter         | Description                                     | Type           | Required |
+| ----------------- | ----------------------------------------------- | -------------- | -------- |
+| **account**       | Wallet address from the user                    | `string`       | Yes      |
+| **polygonId**     | Boolean to enable polygon id claim              | `boolean`      | No\*     |
+| **roles**         | Arrays of roles                                 | `string array` | No\*     |
+| **checkIds**      | Arrays of checks ids                            | `string array` | No\*     |
+| **customization** | Color properties explained below                | `Object`       | No\*\*   |
+| **nftClaimLinks** | Object with links to claim the nfts             | `Object`       | No       |
+| **checkCallback** | If provide, callback recieves verification data | `void()`       | No       |
 
-**Customization**
+\* At least one have to be provide: `polygonId` or `roles` or `checkIds`
+\*\* Default customization properties
+\*\*\* If checkCallback is provide, you can control the behavior of the component based on the results obtained
+
+```js
+primaryColor: '#059669',
+textColor: '#e2e8f0',
+buttonTextColor: '#e2e8f0',
+backgroundColor: '#141724',
+```
+
+## Params examples
+
+#### roles:
+
+```js
+roles={['role1', 'role2']}
+```
+
+#### checkIds:
+
+```js
+checkIds={['KYC', 'exampleId']}
+```
+
+#### nftClaimLinks:
+
+```js
+nftClaimLinks={{
+  'nftContractAddress1': 'https://claimNft1.1com',
+  'nftContractAddress2': 'https://claimNft2.com',
+}}
+```
+
+## Customization
 
 | Parameter           | Description                   | Type     | Required |
 | ------------------- | ----------------------------- | -------- | -------- |
@@ -83,73 +103,21 @@ return (
 | **buttonTextColor** | Color for button texts        | `string` | No       |
 | **primaryColor**    | Primary button, info color    | `string` | No       |
 
-**geoIds** by Default as `US`. To set your own array of countries, please use the Alpha-2 codes. [CODES](https://www.iban.com/country-codes)
-
 ## Commands
 
-TSDX scaffolds your new library inside `/src`, and also sets up a [Parcel-based](https://parceljs.org) playground for it inside `/example`.
-
-The recommended workflow is to run TSDX in one terminal:
+To start [TSDX](https://tsdx.io/) helps you develop, test, and publish modern TypeScript packages/
 
 ```bash
 yarn start
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
-
-Then run either Storybook or the example playground:
-
-### Storybook
-
-Run inside another terminal:
+To start [storybook](https://storybook.js.org/) Storybook is a frontend workshop for building UI components and pages in isolation.
 
 ```bash
 yarn storybook
 ```
 
-This loads the stories from `./stories`.
-
-> NOTE: Stories should reference the components as if using the library, similar to the example playground. This means importing from the root project directory. This has been aliased in the tsconfig and the storybook webpack config as a helper.
-
-### Jest
-
-Run inside another terminal:
-
-```bash
-yarn test
-```
-
-This loads the tests from `./test`.
-
-It really important to have many tests as possible if the package start growing to avoid future issues.
-
-### Example
-
-Then run the example inside another:
-
-```bash
-cd example
-yarn
-yarn start
-```
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Bundle analysis
-
-Calculates the real cost of your library using [size-limit](https://github.com/ai/size-limit) with `npm run size` and visulize it with `npm run analyze`.
-
-### Rollup
-
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
-
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-### GitHub Actions
+## GitHub Actions
 
 One actions are added by default:
 
@@ -162,9 +130,3 @@ git add .
 yarn run commit
 git push
 ```
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
