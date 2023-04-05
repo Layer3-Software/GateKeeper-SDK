@@ -25,7 +25,7 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
   const role1 = '19c21725-41f6-4850-aef3-43d4fd68d33e';
 
   const roles = [role1];
-  const checks = [];
+  const checks = [ofac];
 
   // Uniswap colors
   const darkMode = {
