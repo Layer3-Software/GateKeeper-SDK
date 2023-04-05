@@ -1,10 +1,3 @@
-export interface ICustomization {
-  backgroundColor?: string;
-  primaryColor?: string;
-  textColor?: string;
-  buttonTextColor?: string;
-}
-
 export interface IuseVerified {
   account: string;
   checksIds: string[];
@@ -24,7 +17,6 @@ export interface ErrorScreenProps {
 
 export interface ModalProps {
   account: string;
-  geoIds?: string[];
   checksIds?: string[];
   roles?: string[];
   checkCallback?: any;
@@ -37,6 +29,12 @@ export interface nftClaimLinksInterface {
   [checkId: string]: {
     claimLink: string;
   };
+}
+export interface ICustomization {
+  backgroundColor?: string;
+  primaryColor?: string;
+  textColor?: string;
+  buttonTextColor?: string;
 }
 
 export interface ModalTextProps {

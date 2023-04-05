@@ -8,7 +8,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=18.0.0 <19"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -20,8 +20,8 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "semantic-release": "semantic-release --branches main"
   },
   "peerDependencies": {
@@ -53,13 +53,18 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.19.1",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.4",
     "@rollup/plugin-image": "^2.1.1",
     "@size-limit/preset-small-lib": "^8.1.0",
-    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-essentials": "^7.0.2",
     "@storybook/addon-info": "^5.3.21",
-    "@storybook/addon-links": "^6.5.16",
-    "@storybook/addons": "^6.5.16",
-    "@storybook/react": "^6.5.16",
+    "@storybook/addon-links": "^7.0.2",
+    "@storybook/addon-mdx-gfm": "^7.0.2",
+    "@storybook/addons": "^7.0.2",
+    "@storybook/react": "^7.0.2",
+    "@storybook/react-webpack5": "^7.0.2",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.12",
@@ -79,6 +84,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "semantic-release": "^19.0.5",
     "size-limit": "^8.1.0",
+    "storybook": "^7.0.2",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.1",
     "tsdx": "^0.14.1",
