@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
   const nft = '669498c4-604c-4ac0-8c7e-48c816c86f60';
 
-  const role1 = 'afa303b5-5f40-4692-8870-54157b0292fc';
+  const role1 = '19c21725-41f6-4850-aef3-43d4fd68d33e';
 
   const roles = [role1];
   const checks = [];

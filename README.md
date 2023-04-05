@@ -103,6 +103,11 @@ nftClaimLinks={{
 | **buttonTextColor** | Color for button texts        | `string` | No       |
 | **primaryColor**    | Primary button, info color    | `string` | No       |
 
+## Issuance
+
+- During this process, if the role or roles you are using have a verifiable credential (VC) available, the user will be able to claim it during the issuance process..
+  ![issuanceExample](statics/issuanceExample.png)
+
 ## Commands
 
 To start [TSDX](https://tsdx.io/) helps you develop, test, and publish modern TypeScript packages/
