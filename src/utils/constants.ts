@@ -1,7 +1,5 @@
 const isProduction = process.env.GATEKEEPER_PRODUCTION === 'true';
 
-console.log('isProduction', isProduction);
-
 export const BACKEND_URL = isProduction
   ? 'https://api.gatekeeper.software/v1'
   : 'https://gk-prod-backend-staging.azurewebsites.net/v1';
