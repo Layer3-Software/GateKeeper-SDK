@@ -7,6 +7,12 @@ import accountIcon from '../../assets/account.png';
 import { ModalProps } from '../../types';
 import Container from '../Container';
 
+declare global {
+  interface Window {
+    isProduction: boolean;
+  }
+}
+
 const GateKeeperModal = ({
   account,
   polygonId,
@@ -14,9 +20,12 @@ const GateKeeperModal = ({
   checkCallback,
   customization,
   nftClaimLinks,
+  isProduction,
   roles,
 }: ModalProps) => {
   document.body.style.overflow = 'hidden';
+
+  window.isProduction = isProduction || false;
 
   const { doLogin, isLoggedIn, loginStatus } = useAuth();
 
