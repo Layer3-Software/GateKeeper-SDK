@@ -9,7 +9,7 @@ import Container from '../Container';
 
 declare global {
   interface Window {
-    isProduction: boolean;
+    isStaging: boolean;
   }
 }
 
@@ -20,12 +20,12 @@ const GateKeeperModal = ({
   checkCallback,
   customization,
   nftClaimLinks,
-  isProduction,
+  isStaging,
   roles,
 }: ModalProps) => {
   document.body.style.overflow = 'hidden';
 
-  window.isProduction = isProduction || false;
+  window.isStaging = isStaging || false;
 
   const { doLogin, isLoggedIn, loginStatus } = useAuth();
 

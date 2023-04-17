@@ -29,7 +29,7 @@ export interface ModalProps {
   roles?: string[];
   checkCallback?: any;
   polygonId?: boolean;
-  isProduction?: boolean;
+  isStaging?: boolean;
   nftClaimLinks?: nftClaimLinksInterface;
   customization?: ICustomization;
 }
