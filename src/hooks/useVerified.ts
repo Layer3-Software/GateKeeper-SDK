@@ -71,7 +71,7 @@ const useVerified = ({
   ): Promise<{ isVerified: boolean } | undefined> => {
     try {
       const res = await Promise.all(
-        roles.map(async role => doRoleCheck(role, dryRun))
+        roles.map(async role => doRoleCheck(role, isStaging, dryRun))
       );
 
       if (res) {
