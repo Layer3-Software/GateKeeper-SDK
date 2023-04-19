@@ -6,11 +6,11 @@ import metamaskConnection, {
 } from '../utils/metamaskConnection';
 import useAppId from './useAppId';
 
-const useAuth = () => {
+const useAuth = (isStaging: boolean) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginStatus, setLoginStatus] = useState('');
 
-  const { appId } = useAppId();
+  const { appId } = useAppId(isStaging);
 
   const doLogin = async (): Promise<void> => {
     try {
@@ -22,12 +22,12 @@ const useAuth = () => {
 
       if (connection) {
         const { address, signer } = connection as MetamaskConnection;
-        const { nonce } = await getNonce(address);
+        const { nonce } = await getNonce(address, isStaging);
 
         // If nonce is undefined, the address is not registered
         if (nonce === undefined || nonce === null) {
           const signature = await signer.signMessage(SIGN_MESSAGE);
-          const session = await register(address, signature, appId);
+          const session = await register(address, signature, appId, isStaging);
 
           if (session.error) return setLoginStatus(session.error);
 

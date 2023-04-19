@@ -10,6 +10,7 @@ export interface IuseVerified {
   checksIds: string[];
   roles: string[];
   checkCallback: any;
+  isStaging: boolean;
   hasPolygonID: boolean | undefined;
   nftClaimLinks: nftClaimLinksInterface | undefined;
 }
@@ -89,6 +90,7 @@ export interface AuthorizationRequestMessage {
 
 export interface VcModalProps {
   customization: ICustomization;
+  isStaging: boolean;
   roles?: string[];
   response: PolygonAuthorizationResponse | any;
   shouldGetDID: boolean | undefined;
@@ -102,6 +104,7 @@ export interface PolygonAuthorizationResponse {
 
 export interface QrcodeProps {
   title: string;
+  isStaging: boolean;
   qrData: PolygonAuthorizationResponse;
   customization: ICustomization;
   subTitle?: string;
@@ -111,6 +114,7 @@ export interface QrcodeProps {
 export interface PolygonSocket {
   id: string;
   callback: (msg: SocketMessage) => void;
+  isStaging: boolean;
 }
 
 export interface SocketMessage {

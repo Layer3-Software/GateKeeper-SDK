@@ -16,6 +16,7 @@ const VcModal = ({
   response,
   roles,
   shouldGetDID,
+  isStaging,
   closeModal,
 }: VcModalProps) => {
   const { backgroundColor, textColor } = customization;
@@ -51,6 +52,7 @@ const VcModal = ({
   if (showQrCode) {
     return (
       <QrCode
+        isStaging={isStaging}
         title="Lets fetch your polygon DID!"
         subTitle="Scan this QR code with your Polygon DID app to fetch your DID"
         qrData={response as PolygonAuthorizationResponse}

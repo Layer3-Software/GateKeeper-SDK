@@ -11,11 +11,16 @@ const QrCode = ({
   qrData,
   customization,
   handleSocketResponse,
+  isStaging,
 }: QrcodeProps) => {
   const { backgroundColor, textColor } = customization;
 
   useEffect(() => {
-    openPolygonSocket({ id: qrData.sessionId, callback: handleSocketResponse });
+    openPolygonSocket({
+      id: qrData.sessionId,
+      callback: handleSocketResponse,
+      isStaging,
+    });
   }, []);
 
   const qrValue = JSON.stringify(qrData.request);

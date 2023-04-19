@@ -12,14 +12,14 @@ const ROOT_DOMAIN =
     .reverse()
     .join('.');
 
-const useAppId = () => {
+const useAppId = (isStaging: boolean) => {
   const [appId, setAppId] = useState('');
 
   useEffect(() => {
     const ancestorOrigins = document.location.ancestorOrigins[0];
     if (ancestorOrigins) {
       const checkDomainAuthentication = async () => {
-        const { appId } = await authenticateDomain(ROOT_DOMAIN);
+        const { appId } = await authenticateDomain(ROOT_DOMAIN, isStaging);
         setAppId(appId);
       };
 

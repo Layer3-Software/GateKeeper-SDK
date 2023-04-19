@@ -25,9 +25,7 @@ const GateKeeperModal = ({
 }: ModalProps) => {
   document.body.style.overflow = 'hidden';
 
-  window.isStaging = isStaging || false;
-
-  const { doLogin, isLoggedIn, loginStatus } = useAuth();
+  const { doLogin, isLoggedIn, loginStatus } = useAuth(isStaging || false);
 
   const { backgroundColor, buttonTextColor, primaryColor, textColor } =
     customization || DEFAULT_COLORS;
@@ -56,6 +54,7 @@ const GateKeeperModal = ({
 
   return (
     <Modal
+      isStaging={isStaging}
       account={account}
       checkCallback={checkCallback}
       checksIds={checksIds}

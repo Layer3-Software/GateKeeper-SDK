@@ -53,6 +53,7 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
     <GatekeeperModal
       account={accountNotVerified}
       checksIds={checks}
+      isStaging={true}
       roles={roles}
       nftClaimLinks={nftsClaimLinks}
       customization={lightModeOn ? lightMode : darkMode}

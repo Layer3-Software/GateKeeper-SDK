@@ -30,10 +30,11 @@ const Modal = ({
   nftClaimLinks,
   polygonId,
   customization,
+  isStaging,
   roles,
 }: ModalProps) => {
   const IS_POPUP = 'true';
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth(isStaging || false);
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [errorOnParent, setErrorOnParent] = useState('');
@@ -49,6 +50,7 @@ const Modal = ({
     checkCallback,
     hasPolygonID,
     nftClaimLinks,
+    isStaging: isStaging || false,
   };
 
   const { status, isVerified, nftFailed, apiError } = useVerified(
@@ -292,6 +294,7 @@ const Modal = ({
   if (SHOW_VC_MODAL) {
     return (
       <VcModal
+        isStaging={isStaging || false}
         roles={roles}
         closeModal={closeModal}
         shouldGetDID={shouldGetDID}

@@ -46,6 +46,7 @@ const useVerified = ({
   roles,
   nftClaimLinks,
   hasPolygonID,
+  isStaging,
 }: IuseVerified) => {
   const [isVerified, setIsVerified] = useState(true);
   const [nftFailed, setNftFailed] = useState('');
@@ -77,7 +78,7 @@ const useVerified = ({
         const errorOnCalls = res.find(res => res.error);
         if (errorOnCalls) {
           if (errorOnCalls?.error === POLYGON_DID_ERROR) {
-            const res = await polyogonAuth();
+            const res = await polyogonAuth(isStaging);
             setIsVerified(false);
             setStatus({
               showVcModal: true,
@@ -133,7 +134,8 @@ const useVerified = ({
     try {
       const checksResponse: ChecksResponse & Error = await doChecksCheck(
         account,
-        idsToCheck
+        idsToCheck,
+        isStaging
       );
 
       if (nftClaimLinks) {
