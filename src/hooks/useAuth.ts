@@ -41,7 +41,7 @@ const useAuth = (isStaging: boolean) => {
           `${SIGN_MESSAGE} Nonce: ${nonce}`
         );
 
-        const res = await login(address, signature, false);
+        const res = await login(address, signature, isStaging, false);
 
         if (res.error) return setLoginStatus(res.error);
 
