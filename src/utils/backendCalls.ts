@@ -12,7 +12,7 @@ const makeRequest = (
 ) => {
   const isGETmethod = method === 'GET';
 
-  let fetchUrl = isStaging ? STAGING_BACKEND_URL : PRODUCTION_BACKEND_URL;
+  const fetchUrl = isStaging ? STAGING_BACKEND_URL : PRODUCTION_BACKEND_URL;
 
   const finalURL = isGETmethod
     ? `${url}?${new URLSearchParams(body).toString()}`
