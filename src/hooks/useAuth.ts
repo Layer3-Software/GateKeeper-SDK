@@ -1,27 +1,23 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { GateKeeperContext } from '../context/GatekeeperContext';
 import { getNonce, login, register } from '../utils/backendCalls';
 import { SIGN_MESSAGE } from '../utils/constants';
-import metamaskConnection, {
-  MetamaskConnection,
-} from '../utils/metamaskConnection';
 import useAppId from './useAppId';
 
-const useAuth = (isStaging: boolean) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const useAuth = () => {
+  const { isStaging, setIsLoggedIn, signer, address } = useContext(
+    GateKeeperContext
+  );
   const [loginStatus, setLoginStatus] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { appId } = useAppId(isStaging);
-
+  const { appId } = useAppId();
   const doLogin = async (): Promise<void> => {
+    setLoginStatus('');
+    setIsLoading(false);
     try {
-      const connection = await metamaskConnection();
-
-      if (connection.error) {
-        return setLoginStatus(connection.error);
-      }
-
-      if (connection) {
-        const { address, signer } = connection as MetamaskConnection;
+      if (signer && address) {
+        setIsLoading(true);
         const { nonce } = await getNonce(address, isStaging);
 
         // If nonce is undefined, the address is not registered
@@ -43,6 +39,7 @@ const useAuth = (isStaging: boolean) => {
 
         const res = await login(address, signature, isStaging, false);
 
+        setIsLoading(false);
         if (res.error) return setLoginStatus(res.error);
 
         if (res.isUser) {
@@ -56,7 +53,7 @@ const useAuth = (isStaging: boolean) => {
     }
   };
 
-  return { doLogin, isLoggedIn, loginStatus };
+  return { doLogin, isLoading, loginStatus };
 };
 
 export default useAuth;

@@ -10,7 +10,6 @@ export interface IuseVerified {
   checksIds: string[];
   roles: string[];
   checkCallback: any;
-  isStaging: boolean;
   hasPolygonID: boolean | undefined;
   nftClaimLinks: nftClaimLinksInterface | undefined;
 }
@@ -21,18 +20,6 @@ export interface ErrorScreenProps {
   customization: ICustomization;
   nftClaimLink?: string;
   goBackCallback?: () => void | undefined;
-}
-
-export interface ModalProps {
-  account: string;
-  geoIds?: string[];
-  checksIds?: string[];
-  roles?: string[];
-  checkCallback?: any;
-  polygonId?: boolean;
-  isStaging?: boolean;
-  nftClaimLinks?: nftClaimLinksInterface;
-  customization?: ICustomization;
 }
 
 export interface nftClaimLinksInterface {
@@ -121,4 +108,18 @@ export interface SocketMessage {
   success: boolean;
   claimData?: object;
   error?: string;
+}
+
+export interface GateKeeperModalProps {
+  account: string;
+  // checks
+  checksIds?: string[];
+  roles?: string[];
+  //
+  checkCallback?: any;
+  polygonId?: boolean;
+  isStaging?: boolean;
+  signer?: any;
+  nftClaimLinks?: nftClaimLinksInterface;
+  customization?: ICustomization;
 }

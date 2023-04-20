@@ -1,17 +1,11 @@
 import React from 'react';
-import { DEFAULT_COLORS } from '../../utils/constants';
 import '../styles.css';
-import useAuth from '../../hooks/useAuth';
 import Modal from '../Modal';
-import accountIcon from '../../assets/account.png';
-import { ModalProps } from '../../types';
-import Container from '../Container';
-
-declare global {
-  interface Window {
-    isStaging: boolean;
-  }
-}
+import GateKeeperContextProvider from '../../context/GatekeeperContext';
+import { IexternalContext } from '../../context/types';
+import { GateKeeperModalProps } from '../../types';
+import Login from '../Login';
+import { DEFAULT_COLORS } from '../../utils/constants';
 
 const GateKeeperModal = ({
   account,
@@ -22,47 +16,32 @@ const GateKeeperModal = ({
   nftClaimLinks,
   isStaging,
   roles,
-}: ModalProps) => {
+  signer,
+}: GateKeeperModalProps) => {
   document.body.style.overflow = 'hidden';
+  const contextData: IexternalContext = {
+    isStaging: isStaging || false,
+    signer,
+    address: account,
+    customization: customization || DEFAULT_COLORS,
+  };
 
-  const { doLogin, isLoggedIn, loginStatus } = useAuth(isStaging || false);
-
-  const { backgroundColor, buttonTextColor, primaryColor, textColor } =
-    customization || DEFAULT_COLORS;
-
-  if (!isLoggedIn) {
-    return (
-      <Container bgColor={backgroundColor!} textColor={textColor!}>
-        <div className="modal-body">
-          <div className="modal-text">
-            <img src={accountIcon} width="260px" alt="Account" />
-            <h2>Let’s start your journey</h2>
-          </div>
-          <button
-            id="btn-success"
-            onClick={doLogin}
-            className="button-basic"
-            style={{ color: buttonTextColor, backgroundColor: primaryColor }}
-          >
-            Login
-          </button>
-          <h3 style={{ marginTop: '15px' }}>{loginStatus}</h3>
-        </div>
-      </Container>
-    );
-  }
+  if (!account) return null;
 
   return (
-    <Modal
-      isStaging={isStaging}
-      account={account}
-      checkCallback={checkCallback}
-      checksIds={checksIds}
-      roles={roles}
-      customization={customization}
-      polygonId={polygonId}
-      nftClaimLinks={nftClaimLinks}
-    />
+    <GateKeeperContextProvider data={contextData}>
+      <>
+        <Login />
+        <Modal
+          checkCallback={checkCallback}
+          checksIds={checksIds}
+          roles={roles}
+          customization={customization}
+          polygonId={polygonId}
+          nftClaimLinks={nftClaimLinks}
+        />
+      </>
+    </GateKeeperContextProvider>
   );
 };
 

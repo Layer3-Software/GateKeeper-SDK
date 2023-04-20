@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { GateKeeperContext } from '../context/GatekeeperContext';
 import {
   ChecksResponse,
   IuseVerified,
@@ -46,10 +47,11 @@ const useVerified = ({
   roles,
   nftClaimLinks,
   hasPolygonID,
-  isStaging,
 }: IuseVerified) => {
+  const { isStaging, isLoggedIn } = useContext(GateKeeperContext);
   const [isVerified, setIsVerified] = useState(true);
   const [nftFailed, setNftFailed] = useState('');
+  const [isChecking, setIsChecking] = useState(false);
   const [status, setStatus] = useState<{
     response: KeyBooleanPair | PolygonAuthorizationResponse | any;
     someItemFailed?: boolean;
@@ -70,6 +72,7 @@ const useVerified = ({
     dryRun: boolean
   ): Promise<{ isVerified: boolean } | undefined> => {
     try {
+      setIsChecking(true);
       const res = await Promise.all(
         roles.map(async role => doRoleCheck(role, isStaging, dryRun))
       );
@@ -85,11 +88,13 @@ const useVerified = ({
               shouldGetDID: true,
               response: res,
             });
+            setIsChecking(false);
             return { isVerified: false };
           }
 
           setApiError(errorOnCalls.error);
           setIsVerified(false);
+          setIsChecking(false);
           return { isVerified: false };
         }
 
@@ -104,6 +109,7 @@ const useVerified = ({
 
           if (!vcIdsArray) {
             setIsVerified(true);
+            setIsChecking(false);
             return { isVerified: true };
           }
 
@@ -111,6 +117,7 @@ const useVerified = ({
             showVcModal: true,
             response: { vcIdsArray },
           });
+          setIsChecking(false);
           return { isVerified: true };
         }
 
@@ -120,6 +127,7 @@ const useVerified = ({
           response: {},
         });
         setIsVerified(false);
+        setIsChecking(false);
         return { isVerified: false };
       }
       return { isVerified: false };
@@ -132,6 +140,7 @@ const useVerified = ({
 
   const cheksIds = async (): Promise<{ isVerified: boolean }> => {
     try {
+      setIsChecking(true);
       const checksResponse: ChecksResponse & Error = await doChecksCheck(
         account,
         idsToCheck,
@@ -145,12 +154,14 @@ const useVerified = ({
 
       if (checksResponse?.error === ONE_CHECK_ERROR && hasPolygonID) {
         setIsVerified(false);
+        setIsChecking(false);
         return { isVerified: false };
       }
 
       if (checksResponse?.error) {
         setApiError(checksResponse.error);
         setIsVerified(false);
+        setIsChecking(false);
         return { isVerified: false };
       }
 
@@ -170,12 +181,15 @@ const useVerified = ({
       const allChecksPassed = Object.values(status).every(val => val === true);
       if (allChecksPassed) {
         setIsVerified(true);
+        setIsChecking(false);
         return { isVerified: true };
       }
 
       setIsVerified(false);
+      setIsChecking(false);
       return { isVerified: false };
     } catch (error) {
+      setIsChecking(false);
       setIsVerified(false);
       return { isVerified: false };
     }
@@ -196,11 +210,12 @@ const useVerified = ({
       checkCallback(response || {});
     };
 
+    if (!isLoggedIn) return;
     if (checkCallback) customCallBack();
     else detector();
-  }, [account]);
+  }, [account, isLoggedIn]);
 
-  return { isVerified, status, nftFailed, apiError };
+  return { isVerified, status, nftFailed, apiError, isChecking };
 };
 
 export default useVerified;

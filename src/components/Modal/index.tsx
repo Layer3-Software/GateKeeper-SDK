@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import useAuth from '../../hooks/useAuth';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import useVerified from '../../hooks/useVerified';
 import { DEFAULT_COLORS, WEBSITE } from '../../utils/constants';
 import CheckStatus from '../../assets/checkStatus';
@@ -15,26 +14,25 @@ import {
 import ErrorScreen from '../ErrorScreen';
 import VcModal from '../VcModal';
 import {
-  ModalProps,
   Steps,
   KeyBooleanPair,
   Types,
   IuseVerified,
+  GateKeeperModalProps,
 } from '../../types';
 import Container from '../../components/Container';
+import { GateKeeperContext } from '../../context/GatekeeperContext';
 
 const Modal = ({
-  account,
   checksIds,
   checkCallback,
   nftClaimLinks,
   polygonId,
   customization,
-  isStaging,
   roles,
-}: ModalProps) => {
+}: Partial<GateKeeperModalProps>) => {
   const IS_POPUP = 'true';
-  const { isLoggedIn } = useAuth(isStaging || false);
+  const { isStaging, address } = useContext(GateKeeperContext);
   const [iFrameOpen, setIsFrameOpen] = useState(false);
   const [stepIndex, setStepIndex] = useState<number>(0);
   const [errorOnParent, setErrorOnParent] = useState('');
@@ -44,16 +42,15 @@ const Modal = ({
   const hasPolygonID = Boolean(polygonId);
 
   const paramsToVerified: IuseVerified = {
-    account,
+    account: address,
     checksIds: checksIds || [],
     roles: roles || [],
     checkCallback,
     hasPolygonID,
     nftClaimLinks,
-    isStaging: isStaging || false,
   };
 
-  const { status, isVerified, nftFailed, apiError } = useVerified(
+  const { status, isVerified, nftFailed, apiError, isChecking } = useVerified(
     paramsToVerified
   );
 
@@ -79,7 +76,7 @@ const Modal = ({
     }, {} as KeyBooleanPair);
 
     setSucessSteps(successSteps);
-  }, [response, isLoggedIn]);
+  }, [response]);
 
   useEffect(() => {
     window.addEventListener('message', receiveMessage);
@@ -106,7 +103,7 @@ const Modal = ({
     IS_POPUP,
     KYC: shouldShowKyc ? 'true' : 'false',
     polygonId: shouldShowPolygon ? 'true' : 'false',
-    address: account,
+    address,
   };
 
   const buttonText = steps[stepIndex]?.type
@@ -154,6 +151,20 @@ const Modal = ({
 
   const SHOW_FAIL_SCREEN = someItemFailed || apiError || errorOnParent;
   const SHOW_VC_MODAL = showVcModal;
+
+  const getError = () => {
+    if (someItemFailed) {
+      return failedItem;
+    }
+    if (apiError) {
+      return apiError;
+    }
+    if (errorOnParent) {
+      return errorOnParent;
+    }
+
+    return undefined;
+  };
 
   const MainScreen = () => {
     return (
@@ -258,37 +269,25 @@ const Modal = ({
     );
   };
 
-  if (!account || closeSdk || (isVerified && !polygonId && !showVcModal)) {
-    document.body.style.overflow = 'visible';
-    return null;
-  }
-
-  const getError = () => {
-    if (someItemFailed) {
-      return failedItem;
-    }
-    if (apiError) {
-      return apiError;
-    }
-    if (errorOnParent) {
-      return errorOnParent;
-    }
-
-    return undefined;
-  };
-
-  if (SHOW_FAIL_SCREEN) {
+  if (isChecking) {
     return (
       <Container bgColor={backgroundColor!} textColor={textColor!}>
-        <ErrorScreen
-          customization={customization ? customization : DEFAULT_COLORS}
-          nftClaimLink={nftClaimLinks && nftClaimLinks[nftFailed]?.claimLink}
-          error={getError() ?? ''}
-          type={someItemFailed ? 'failedCheck' : 'apiError'}
-          goBackCallback={errorOnParent ? onGoBack : undefined}
-        />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <h1>Loading...</h1>
+        </div>
       </Container>
     );
+  }
+  if (closeSdk || (isVerified && !polygonId && !showVcModal)) {
+    document.body.style.overflow = 'visible';
+    return null;
   }
 
   if (SHOW_VC_MODAL) {
@@ -301,6 +300,20 @@ const Modal = ({
         response={response}
         customization={customization ? customization : DEFAULT_COLORS}
       />
+    );
+  }
+
+  if (SHOW_FAIL_SCREEN) {
+    return (
+      <Container bgColor={backgroundColor!} textColor={textColor!}>
+        <ErrorScreen
+          customization={customization ? customization : DEFAULT_COLORS}
+          nftClaimLink={nftClaimLinks && nftClaimLinks[nftFailed]?.claimLink}
+          error={getError() ?? ''}
+          type={someItemFailed ? 'failedCheck' : 'apiError'}
+          goBackCallback={errorOnParent ? onGoBack : undefined}
+        />
+      </Container>
     );
   }
 

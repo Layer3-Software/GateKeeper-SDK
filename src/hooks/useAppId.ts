@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { GateKeeperContext } from '../context/GatekeeperContext';
 import { authenticateDomain } from '../utils/backendCalls';
 
 const ROOT_DOMAIN =
@@ -12,8 +13,9 @@ const ROOT_DOMAIN =
     .reverse()
     .join('.');
 
-const useAppId = (isStaging: boolean) => {
+const useAppId = () => {
   const [appId, setAppId] = useState('');
+  const { isStaging } = useContext(GateKeeperContext);
 
   useEffect(() => {
     const ancestorOrigins = document.location.ancestorOrigins[0];

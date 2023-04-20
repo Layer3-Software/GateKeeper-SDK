@@ -21,7 +21,7 @@ const makeRequest = (
   return fetch(fetchUrl + finalURL, {
     method,
     mode: 'cors',
-    credentials: options?.credentials ? 'include' : 'include',
+    credentials: options?.credentials ? 'include' : 'omit',
     headers: {
       'Content-Type': 'application/json',
     },

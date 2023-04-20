@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import GatekeeperModal from '../src/components/GateKeeperModal';
 import { DEFAULT_COLORS } from '../src/utils/constants';
+import detectEthereumProvider from '@metamask/detect-provider';
+import {
+  ExternalProvider,
+  JsonRpcSigner,
+  Web3Provider,
+} from '@ethersproject/providers';
+import { MetamaskConnection } from '../src/utils/metamaskConnection';
 
 export default {
   title: 'KYC/Modal',
   component: GatekeeperModal,
 } as ComponentMeta<typeof GatekeeperModal>;
 
+declare global {
+  interface Window {
+    ethereum?: ExternalProvider;
+  }
+}
+
 const Template: ComponentStory<typeof GatekeeperModal> = () => {
-  const accountNotVerified = '0x85d6298705d6b9885Eaa2de262df9442353d0218';
   const customization = {
     primaryColor: DEFAULT_COLORS.primaryColor,
     buttonTextColor: DEFAULT_COLORS.buttonTextColor,
@@ -17,12 +29,33 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
     textColor: DEFAULT_COLORS.textColor,
   };
 
+  const metamaskConnection = async () => {
+    const provider = await detectEthereumProvider();
+    if (provider) {
+      if (window.ethereum && window.ethereum.request) {
+        try {
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+          const provider = new Web3Provider(window.ethereum, 'any');
+
+          const signer = provider.getSigner();
+          const address = await signer.getAddress();
+
+          return { address, signer };
+        } catch (err) {
+          return { error: 'Please connect to MetaMask!' };
+        }
+      }
+    }
+    return { error: 'Please install MetaMask!' };
+  };
+
   const kycCheck = 'e4cce52a-d330-4978-b250-6c6d5626b42e';
   const geoIdCheck = 'aee00f30-1928-4ba3-97aa-823dd0b62572';
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
   const nft = '669498c4-604c-4ac0-8c7e-48c816c86f60';
 
-  const role1 = '19c21725-41f6-4850-aef3-43d4fd68d33e';
+  const role1 = '64726a3f-b5a6-48c4-82c5-295e480f2091';
 
   const roles = [role1];
   const checks = [ofac];
@@ -48,11 +81,24 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
     },
   };
 
+  const [signer, setSigner] = useState<JsonRpcSigner | null>(null);
+  const [address, setAddress] = useState<string>('');
+
+  useEffect(() => {
+    const init = async () => {
+      const connection = await metamaskConnection();
+      const { address, signer } = connection as MetamaskConnection;
+      setAddress(address);
+      setSigner(signer);
+    };
+    init();
+  }, []);
+
   const lightModeOn = false;
   return (
     <GatekeeperModal
-      account={accountNotVerified}
-      checksIds={checks}
+      account={address}
+      signer={signer}
       isStaging={true}
       roles={roles}
       nftClaimLinks={nftsClaimLinks}
