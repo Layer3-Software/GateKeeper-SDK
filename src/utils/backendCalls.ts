@@ -11,13 +11,14 @@ const makeRequest = (
   }
 ) => {
   const isGETmethod = method === 'GET';
+
   const fetchUrl = isStaging ? STAGING_BACKEND_URL : PRODUCTION_BACKEND_URL;
 
   const finalURL = isGETmethod
     ? `${url}?${new URLSearchParams(body).toString()}`
     : url;
 
-  return fetch('https://b446-66-214-202-254.ngrok-free.app/v1' + finalURL, {
+  return fetch(fetchUrl + finalURL, {
     method,
     mode: 'cors',
     credentials: options?.credentials ? 'include' : 'omit',
