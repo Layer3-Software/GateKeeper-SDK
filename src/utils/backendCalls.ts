@@ -63,11 +63,19 @@ export const login = (
   isStaging: boolean,
   forApp?: boolean
 ) => {
-  return makeRequest('/wallets/login', 'POST', isStaging, {
-    walletAddress,
-    signature,
-    forApp,
-  });
+  return makeRequest(
+    '/wallets/login',
+    'POST',
+    isStaging,
+    {
+      walletAddress,
+      signature,
+      forApp,
+    },
+    {
+      credentials: true,
+    }
+  );
 };
 
 export const register = (
