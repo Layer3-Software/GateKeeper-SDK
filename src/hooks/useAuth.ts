@@ -37,12 +37,12 @@ const useAuth = () => {
           `${SIGN_MESSAGE} Nonce: ${nonce}`
         );
 
-        const res = await login(address, signature, isStaging, true);
+        const res = await login(address, signature, isStaging, false);
 
         setIsLoading(false);
         if (res.error) return setLoginStatus(res.error);
 
-        if (res) {
+        if (res.isUser) {
           return setIsLoggedIn(true);
         }
       }
