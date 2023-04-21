@@ -118,6 +118,8 @@ export interface GateKeeperModalProps {
   //
   checkCallback?: any;
   polygonId?: boolean;
+
+  simulateKYC?: boolean;
   isStaging?: boolean;
   signer?: any;
   nftClaimLinks?: nftClaimLinksInterface;

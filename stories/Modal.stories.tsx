@@ -101,7 +101,7 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
       signer={signer}
       isStaging={true}
       roles={roles}
-      nftClaimLinks={nftsClaimLinks}
+      simulateKYC={true}
       customization={lightModeOn ? lightMode : darkMode}
     />
   );

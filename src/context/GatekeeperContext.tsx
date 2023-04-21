@@ -9,6 +9,7 @@ export const GateKeeperContext = createContext<Icontext>({
   setIsLoggedIn: () => {},
   signer: null,
   customization: DEFAULT_COLORS,
+  simulateKYC: false,
 });
 
 const GateKeeperContextProvider = ({

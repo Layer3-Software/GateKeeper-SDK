@@ -17,6 +17,7 @@ const GateKeeperModal = ({
   isStaging,
   roles,
   signer,
+  simulateKYC,
 }: GateKeeperModalProps) => {
   document.body.style.overflow = 'hidden';
   const contextData: IexternalContext = {
@@ -24,6 +25,7 @@ const GateKeeperModal = ({
     signer,
     address: account,
     customization: customization || DEFAULT_COLORS,
+    simulateKYC: simulateKYC || false,
   };
 
   if (!account) return null;

@@ -8,6 +8,7 @@ export interface Icontext {
   isLoggedIn: boolean;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
   customization: ICustomization;
+  simulateKYC: boolean;
 }
 
 export interface IexternalContext {
@@ -15,4 +16,5 @@ export interface IexternalContext {
   signer: any;
   address: string;
   customization: ICustomization;
+  simulateKYC: boolean;
 }

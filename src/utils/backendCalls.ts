@@ -22,9 +22,7 @@ const makeRequest = (
     method,
     mode: 'cors',
     credentials: options?.credentials ? 'include' : 'omit',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: isGETmethod ? null : JSON.stringify(body),
   })
     .then(res => res.json())
@@ -72,9 +70,7 @@ export const login = (
       signature,
       forApp,
     },
-    {
-      credentials: true,
-    }
+    { credentials: true }
   );
 };
 

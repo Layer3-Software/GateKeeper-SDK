@@ -48,7 +48,7 @@ const useVerified = ({
   nftClaimLinks,
   hasPolygonID,
 }: IuseVerified) => {
-  const { isStaging, isLoggedIn } = useContext(GateKeeperContext);
+  const { isStaging, isLoggedIn, simulateKYC } = useContext(GateKeeperContext);
   const [isVerified, setIsVerified] = useState(true);
   const [nftFailed, setNftFailed] = useState('');
   const [isChecking, setIsChecking] = useState(false);
@@ -121,11 +121,24 @@ const useVerified = ({
           return { isVerified: true };
         }
 
+        if (simulateKYC) {
+          setIsChecking(false);
+          setStatus({
+            someItemFailed: false,
+            failedItem: 'Roles',
+            response: {
+              KYC: false,
+            },
+          });
+          return;
+        }
+
         setStatus({
           someItemFailed: true,
           failedItem: 'Roles',
           response: {},
         });
+
         setIsVerified(false);
         setIsChecking(false);
         return { isVerified: false };
