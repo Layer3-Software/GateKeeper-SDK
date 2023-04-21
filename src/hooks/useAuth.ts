@@ -4,6 +4,9 @@ import { getNonce, login, register } from '../utils/backendCalls';
 import { SIGN_MESSAGE } from '../utils/constants';
 import useAppId from './useAppId';
 
+const BUSINESS_ACCOUNT_ERROR =
+  'Wallet is already registered as a business account.';
+
 const useAuth = () => {
   const { isStaging, setIsLoggedIn, signer, address } = useContext(
     GateKeeperContext
@@ -40,7 +43,14 @@ const useAuth = () => {
         const res = await login(address, signature, isStaging, false);
 
         setIsLoading(false);
-        if (res.error) return setLoginStatus(res.error);
+        if (res.error) {
+          if (res.error === BUSINESS_ACCOUNT_ERROR) {
+            setLoginStatus('Please login with your personal account.');
+            return;
+          }
+
+          return setLoginStatus(res.error);
+        }
 
         if (res.isUser) {
           return setIsLoggedIn(true);

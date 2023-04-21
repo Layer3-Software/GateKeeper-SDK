@@ -80,11 +80,19 @@ export const register = (
   appId: any,
   isStaging: boolean
 ) => {
-  return makeRequest('/users/register', 'POST', isStaging, {
-    address,
-    signature,
-    appId,
-  });
+  return makeRequest(
+    '/users/register',
+    'POST',
+    isStaging,
+    {
+      address,
+      signature,
+      appId,
+    },
+    {
+      credentials: true,
+    }
+  );
 };
 
 export const authenticateDomain = (domain: string, isStaging: boolean) => {
