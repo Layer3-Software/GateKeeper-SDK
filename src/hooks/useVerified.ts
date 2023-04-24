@@ -122,6 +122,7 @@ const useVerified = ({
         }
 
         if (simulateKYC) {
+          setIsVerified(false);
           setIsChecking(false);
           setStatus({
             someItemFailed: false,

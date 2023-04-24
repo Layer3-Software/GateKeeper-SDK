@@ -255,6 +255,8 @@ const Modal = ({
   };
 
   const WebsiteIframe = () => {
+    const IFRAME_URL = `${WEBSITE}/?${new URLSearchParams(params).toString()}`;
+
     return (
       <Container bgColor={backgroundColor!} textColor={textColor!}>
         <iframe
@@ -262,7 +264,7 @@ const Modal = ({
           className="modal-iframe"
           style={{ backgroundColor: backgroundColor }}
           name="iframe_a"
-          src={`${WEBSITE}/?${new URLSearchParams(params).toString()}`}
+          src={IFRAME_URL}
           allow="camera"
         />
       </Container>

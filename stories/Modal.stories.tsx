@@ -55,7 +55,7 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
   const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
   const nft = '669498c4-604c-4ac0-8c7e-48c816c86f60';
 
-  const role1 = '64726a3f-b5a6-48c4-82c5-295e480f2091';
+  const role1 = '9c82921d-36aa-483c-bde2-25c33340c0e8';
 
   const roles = [role1];
   const checks = [ofac];
@@ -101,7 +101,7 @@ const Template: ComponentStory<typeof GatekeeperModal> = () => {
       signer={signer}
       isStaging={true}
       roles={roles}
-      simulateKYC={true}
+      simulateKYC={false}
       customization={lightModeOn ? lightMode : darkMode}
     />
   );

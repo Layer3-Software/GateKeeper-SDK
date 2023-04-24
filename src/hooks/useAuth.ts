@@ -59,6 +59,7 @@ const useAuth = () => {
       return setLoginStatus('Missing required connections fields');
     } catch (err) {
       console.error(`Error at login:${err}`);
+      setIsLoading(false);
       return setLoginStatus('Error at login');
     }
   };
