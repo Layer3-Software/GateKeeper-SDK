@@ -8,12 +8,8 @@ const Login = () => {
   const { isLoggedIn, customization } = useContext(GateKeeperContext);
   const { doLogin, loginStatus, isLoading } = useAuth();
 
-  const {
-    backgroundColor,
-    textColor,
-    buttonTextColor,
-    primaryColor,
-  } = customization;
+  const { backgroundColor, textColor, buttonTextColor, primaryColor } =
+    customization;
 
   if (isLoggedIn) return null;
   return (

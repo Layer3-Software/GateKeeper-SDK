@@ -14,7 +14,7 @@ export const openPolygonSocket = ({
     query: { id },
   });
 
-  socket.on('callback', message => {
+  socket.on('callback', (message) => {
     callback(message);
   });
 

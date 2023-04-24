@@ -8,9 +8,8 @@ const BUSINESS_ACCOUNT_ERROR =
   'Wallet is already registered as a business account.';
 
 const useAuth = () => {
-  const { isStaging, setIsLoggedIn, signer, address } = useContext(
-    GateKeeperContext
-  );
+  const { isStaging, setIsLoggedIn, signer, address } =
+    useContext(GateKeeperContext);
   const [loginStatus, setLoginStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 

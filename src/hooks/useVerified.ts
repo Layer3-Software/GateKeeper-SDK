@@ -30,7 +30,7 @@ const transformData = (checksResult: ChecksResponse) => {
 
 const findFailedNft = (response: ChecksResponse) => {
   const nftId = Object.keys(response?.type || {}).find(
-    key => response?.type[key] === 'NFT'
+    (key) => response?.type[key] === 'NFT'
   );
 
   if (nftId && response?.hasOwnProperty(nftId)) {
@@ -74,11 +74,11 @@ const useVerified = ({
     try {
       setIsChecking(true);
       const res = await Promise.all(
-        roles.map(async role => doRoleCheck(role, isStaging, dryRun))
+        roles.map(async (role) => doRoleCheck(role, isStaging, dryRun))
       );
 
       if (res) {
-        const errorOnCalls = res.find(res => res.error);
+        const errorOnCalls = res.find((res) => res.error);
         if (errorOnCalls) {
           if (errorOnCalls?.error === POLYGON_DID_ERROR) {
             const res = await polyogonAuth(isStaging);
@@ -98,14 +98,14 @@ const useVerified = ({
           return { isVerified: false };
         }
 
-        const allRolesPassed = res.every(res => res.passed === true);
+        const allRolesPassed = res.every((res) => res.passed === true);
 
         if (allRolesPassed && dryRun) {
           return await checkRoles(false);
         }
 
         if (allRolesPassed && !dryRun) {
-          const vcIdsArray = res.map(res => res.vcs[0]);
+          const vcIdsArray = res.map((res) => res.vcs[0]);
 
           if (!vcIdsArray) {
             setIsVerified(true);
@@ -181,7 +181,7 @@ const useVerified = ({
 
       const status = transformData(checksResponse);
 
-      const notPassedCheck = Object.keys(status).find(key => {
+      const notPassedCheck = Object.keys(status).find((key) => {
         if (key === 'KYC') return;
         return status[key as keyof typeof status] === false;
       });
@@ -192,7 +192,9 @@ const useVerified = ({
         response: status,
       });
 
-      const allChecksPassed = Object.values(status).every(val => val === true);
+      const allChecksPassed = Object.values(status).every(
+        (val) => val === true
+      );
       if (allChecksPassed) {
         setIsVerified(true);
         setIsChecking(false);

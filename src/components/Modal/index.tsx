@@ -50,17 +50,11 @@ const Modal = ({
     nftClaimLinks,
   };
 
-  const { status, isVerified, nftFailed, apiError, isChecking } = useVerified(
-    paramsToVerified
-  );
+  const { status, isVerified, nftFailed, apiError, isChecking } =
+    useVerified(paramsToVerified);
 
-  const {
-    response,
-    someItemFailed,
-    failedItem,
-    showVcModal,
-    shouldGetDID,
-  } = status;
+  const { response, someItemFailed, failedItem, showVcModal, shouldGetDID } =
+    status;
 
   const openIframe = () => setIsFrameOpen(true);
   const closeIframe = () => setIsFrameOpen(false);
@@ -89,8 +83,8 @@ const Modal = ({
     !showVcModal && (response as KeyBooleanPair).KYC === false;
   const shouldShowKyc = steps[stepIndex]?.type === Types.KYC;
   const shouldShowPolygon = steps[stepIndex]?.type === Types.PolygonID;
-  const hasCompleteOneStep = Object.values(sucessSteps).some(step => step);
-  const hasCompleteAllSteps = Object.values(sucessSteps).every(step => step);
+  const hasCompleteOneStep = Object.values(sucessSteps).some((step) => step);
+  const hasCompleteAllSteps = Object.values(sucessSteps).every((step) => step);
 
   const { backgroundColor, buttonTextColor, primaryColor, textColor } =
     customization || DEFAULT_COLORS;
@@ -132,9 +126,9 @@ const Modal = ({
 
   const updateSteps = (currentStep: Steps) => {
     if (currentStep.complete) return;
-    const rest = steps.filter(step => step.type !== currentStep.type);
+    const rest = steps.filter((step) => step.type !== currentStep.type);
     setSteps([{ type: currentStep.type, complete: true }, ...rest]);
-    setStepIndex(prevStep => prevStep + 1);
+    setStepIndex((prevStep) => prevStep + 1);
   };
 
   const onGoBack = () => {

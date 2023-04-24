@@ -25,8 +25,8 @@ const makeRequest = (
     headers: { 'Content-Type': 'application/json' },
     body: isGETmethod ? null : JSON.stringify(body),
   })
-    .then(res => res.json())
-    .catch(err => console.error(err));
+    .then((res) => res.json())
+    .catch((err) => console.error(err));
 };
 
 export const doChecksCheck = (
