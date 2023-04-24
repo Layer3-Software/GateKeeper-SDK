@@ -17,3 +17,5 @@ export const DEFAULT_COLORS = {
 
 export const ONE_CHECK_ERROR = 'Specify at least one check';
 export const POLYGON_DID_ERROR = 'This role requires a Polygon DID';
+export const BUSINESS_ACCOUNT_ERROR =
+  'Wallet is already registered as a business account.';

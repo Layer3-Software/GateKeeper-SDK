@@ -1,15 +1,13 @@
 import { useContext, useState } from 'react';
 import { GateKeeperContext } from '../context/GatekeeperContext';
 import { getNonce, login, register } from '../utils/backendCalls';
-import { SIGN_MESSAGE } from '../utils/constants';
+import { BUSINESS_ACCOUNT_ERROR, SIGN_MESSAGE } from '../utils/constants';
 import useAppId from './useAppId';
 
-const BUSINESS_ACCOUNT_ERROR =
-  'Wallet is already registered as a business account.';
-
 const useAuth = () => {
-  const { isStaging, setIsLoggedIn, signer, address } =
-    useContext(GateKeeperContext);
+  const { isStaging, setIsLoggedIn, signer, address } = useContext(
+    GateKeeperContext
+  );
   const [loginStatus, setLoginStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
