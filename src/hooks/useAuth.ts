@@ -5,9 +5,8 @@ import { BUSINESS_ACCOUNT_ERROR, SIGN_MESSAGE } from '../utils/constants';
 import useAppId from './useAppId';
 
 const useAuth = () => {
-  const { isStaging, setIsLoggedIn, signer, address } = useContext(
-    GateKeeperContext
-  );
+  const { isStaging, setIsLoggedIn, signer, address } =
+    useContext(GateKeeperContext);
   const [loginStatus, setLoginStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 

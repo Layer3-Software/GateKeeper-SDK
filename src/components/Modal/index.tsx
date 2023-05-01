@@ -11,7 +11,6 @@ import {
   getStepsArr,
   getSuccessDescription,
 } from '../../utils/ModalFunctions';
-import ErrorScreen from '../ErrorScreen';
 import VcModal from '../VcModal';
 import {
   Steps,
@@ -22,6 +21,7 @@ import {
 } from '../../types';
 import Container from '../../components/Container';
 import { GateKeeperContext } from '../../context/GatekeeperContext';
+import ErrorScreen from '../ErrorScreen';
 
 const Modal = ({
   checksIds,
@@ -50,11 +50,17 @@ const Modal = ({
     nftClaimLinks,
   };
 
-  const { status, isVerified, nftFailed, apiError, isChecking } =
-    useVerified(paramsToVerified);
+  const { status, isVerified, nftFailed, apiError, isChecking } = useVerified(
+    paramsToVerified
+  );
 
-  const { response, someItemFailed, failedItem, showVcModal, shouldGetDID } =
-    status;
+  const {
+    response,
+    someItemFailed,
+    failedItem,
+    showVcModal,
+    shouldGetDID,
+  } = status;
 
   const openIframe = () => setIsFrameOpen(true);
   const closeIframe = () => setIsFrameOpen(false);
@@ -83,8 +89,8 @@ const Modal = ({
     !showVcModal && (response as KeyBooleanPair).KYC === false;
   const shouldShowKyc = steps[stepIndex]?.type === Types.KYC;
   const shouldShowPolygon = steps[stepIndex]?.type === Types.PolygonID;
-  const hasCompleteOneStep = Object.values(sucessSteps).some((step) => step);
-  const hasCompleteAllSteps = Object.values(sucessSteps).every((step) => step);
+  const hasCompleteOneStep = Object.values(sucessSteps).some(step => step);
+  const hasCompleteAllSteps = Object.values(sucessSteps).every(step => step);
 
   const { backgroundColor, buttonTextColor, primaryColor, textColor } =
     customization || DEFAULT_COLORS;
@@ -110,9 +116,9 @@ const Modal = ({
         const dataObj = JSON.parse(data?.data);
         const { type } = dataObj;
 
-        if (![Types.KYC, Types.PolygonID].includes(type)) return;
+        if (![Types.PolygonID].includes(type)) return;
 
-        if (dataObj.isClaimSuccessful || dataObj.isVerified) {
+        if (dataObj.isClaimSuccessful) {
           updateSteps(steps[stepIndex]);
           setSucessSteps({ ...sucessSteps, [type]: true });
         } else {
@@ -126,9 +132,9 @@ const Modal = ({
 
   const updateSteps = (currentStep: Steps) => {
     if (currentStep.complete) return;
-    const rest = steps.filter((step) => step.type !== currentStep.type);
+    const rest = steps.filter(step => step.type !== currentStep.type);
     setSteps([{ type: currentStep.type, complete: true }, ...rest]);
-    setStepIndex((prevStep) => prevStep + 1);
+    setStepIndex(prevStep => prevStep + 1);
   };
 
   const onGoBack = () => {
@@ -178,7 +184,15 @@ const Modal = ({
                   </div>
                 </>
               ) : (
-                <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    width: '100%',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   <img src={SuccessIcon} alt="successIcon" />
                   <div className="modal-text">
                     <h2>Yeah! You did it!</h2>
