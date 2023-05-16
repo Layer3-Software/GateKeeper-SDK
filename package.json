@@ -8,35 +8,26 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": "^18.0.0"
   },
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
+    "lint": "eslint '{,!(node_modules)/**/}*.{ts,tsx}' --max-warnings=0",
     "commit": "git-cz",
-    "prettier:fix": "prettier --write src/**/*.{ts,tsx,js,jsx,json}",
+    "prettier:fix": "prettier --write '{,!(node_modules)/**/}*.{ts,tsx}'  --config ./.prettierrc",
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook": "export SET NODE_OPTIONS=--openssl-legacy-provider && storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "semantic-release": "semantic-release --branches main"
-  },
-  "peerDependencies": {
-    "react": ">=16"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "yarn prettier:fix"
     }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
   },
   "name": "@layer3/gatekeeper-sdk",
   "author": "Nico Limo",
@@ -53,13 +44,17 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.19.1",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.5",
     "@rollup/plugin-image": "^2.1.1",
     "@size-limit/preset-small-lib": "^8.1.0",
-    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-essentials": "^7.0.12",
     "@storybook/addon-info": "^5.3.21",
-    "@storybook/addon-links": "^6.5.16",
-    "@storybook/addons": "^6.5.16",
-    "@storybook/react": "^6.5.16",
+    "@storybook/addon-links": "^7.0.12",
+    "@storybook/addons": "^7.0.12",
+    "@storybook/react": "^7.0.12",
+    "@storybook/react-webpack5": "^7.0.12",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.12",
@@ -79,6 +74,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "semantic-release": "^19.0.5",
     "size-limit": "^8.1.0",
+    "storybook": "^7.0.12",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.1",
     "tsdx": "^0.14.1",
@@ -93,12 +89,5 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "dependencies": {
-    "@ethersproject/providers": "^5.7.2",
-    "@metamask/detect-provider": "^2.0.0",
-    "commitizen": "^4.2.5",
-    "qrcode.react": "^3.1.0",
-    "socket.io-client": "^4.5.2"
   }
 }
