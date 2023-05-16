@@ -12,9 +12,10 @@ const GateKeeperModal = ({
   isStaging,
   roles,
 }: GateKeeperModalProps) => {
+  // visible - hidden
   document.body.style.overflow = "hidden";
 
-  // if (!account) return null;
+  if (!account) return null;
 
   const params = {
     bgModal: customization?.backgroundColor ?? "",
@@ -36,22 +37,13 @@ const GateKeeperModal = ({
     roles,
   });
 
-  console.log("render");
-
-  const IFRAME_URL = `http://localhost:3000/kyc?${new URLSearchParams(
+  const IFRAME_URL = `http://localhost:3000/verify?${new URLSearchParams(
     params,
   ).toString()}`;
 
   return (
     <div className="background">
-      <iframe
-        id="gatekeeper-iframe"
-        className="modal-iframe"
-        style={{}}
-        name="Gatekeeper_Iframe"
-        src={IFRAME_URL}
-        allow="camera"
-      />
+      <iframe className="modal-iframe" src={IFRAME_URL} allow="camera" />
     </div>
   );
 };
