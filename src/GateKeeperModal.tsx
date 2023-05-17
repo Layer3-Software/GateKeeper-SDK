@@ -1,16 +1,17 @@
 import { GateKeeperModalProps } from "./types";
 import React from "react";
 import "./global.css";
+import { WEBSITE } from "./config";
 
 const GateKeeperModal = ({
   account,
   polygonId,
   checksIds,
+  roles,
   checkCallback,
   customization,
   nftClaimLinks,
   isStaging,
-  roles,
 }: GateKeeperModalProps) => {
   // visible - hidden
   document.body.style.overflow = "hidden";
@@ -18,26 +19,21 @@ const GateKeeperModal = ({
   if (!account) return null;
 
   const params = {
-    bgModal: customization?.backgroundColor ?? "",
+    bgColor: customization?.backgroundColor ?? "",
+    primaryColor: customization?.primaryColor ?? "",
     textColor: customization?.textColor ?? "",
     buttonTextColor: customization?.buttonTextColor ?? "",
-    primaryColor: customization?.primaryColor ?? "",
     isIframe: "true",
     address: account,
-    checksIds: ["CHECK1", "CHECK2", "CHECK3"].toString(),
-    roles: ["ROLE1", "ROLE2", "ROLE3"].toString(),
+    checksIds: checksIds?.toString() ?? "",
+    roles: roles?.toString() ?? "",
     polygonId: polygonId ? "true" : "false",
+    checkCallback: checkCallback ?? "",
+    nftClaimLinks: nftClaimLinks?.toString() ?? "",
+    isStaging: isStaging ? "true" : "false",
   };
 
-  console.log({
-    checkCallback,
-    checksIds,
-    nftClaimLinks,
-    isStaging,
-    roles,
-  });
-
-  const IFRAME_URL = `http://localhost:3000/verify?${new URLSearchParams(
+  const IFRAME_URL = `${WEBSITE}/verify?${new URLSearchParams(
     params,
   ).toString()}`;
 

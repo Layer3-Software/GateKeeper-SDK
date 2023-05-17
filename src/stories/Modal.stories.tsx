@@ -24,17 +24,31 @@ export const GatekeeperModal: Story = {
       textColor: "rgb(13, 17, 28)",
     };
 
+    // ALL PROPS ??
     const account = "0x85d6298705d6b9885Eaa2de262df9442353d0218";
+    const HAS_POLYGON = true;
+    const CHECKS_IDS = ["check1", "check2", "check3"];
     const ROLES = ["role1", "role2", "role3"];
-    const HAS_POLYGON = false;
+    const CHECK_CALLBACK = () => {};
+    const NFT_CLAIM_LINKS = {
+      id1: {
+        claimLink:
+          "https://opensea.io/assets?search[query]=0xdb46d1dc155634fbc732f92e853b10b288ad5a1d",
+      },
+    };
+    const IS_STAGING = false;
     const IS_DARK = true;
 
     return (
       <GateKeeperModal
         account={account}
         customization={IS_DARK ? darkMode : lightMode}
+        checkCallback={CHECK_CALLBACK}
         roles={ROLES}
+        nftClaimLinks={NFT_CLAIM_LINKS}
+        checksIds={CHECKS_IDS}
         polygonId={HAS_POLYGON}
+        isStaging={IS_STAGING}
       />
     );
   },

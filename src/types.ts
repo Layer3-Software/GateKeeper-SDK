@@ -13,10 +13,8 @@ export interface nftClaimLinksInterface {
 
 export interface GateKeeperModalProps {
   account: string;
-  // checks
   checksIds?: string[];
   roles?: string[];
-  //
   checkCallback?: any;
   polygonId?: boolean;
   isStaging?: boolean;
