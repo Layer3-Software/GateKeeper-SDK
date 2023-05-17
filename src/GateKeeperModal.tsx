@@ -1,7 +1,8 @@
-import { GateKeeperModalProps } from "./types";
-import React from "react";
+import { GateKeeperModalProps, Iparams } from "./types";
 import "./global.css";
 import { WEBSITE } from "./config";
+import React from "react";
+import sortUrlParams from "./utils/sortUrlParams";
 
 const GateKeeperModal = ({
   account,
@@ -18,28 +19,38 @@ const GateKeeperModal = ({
 
   if (!account) return null;
 
-  const params = {
-    bgColor: customization?.backgroundColor ?? "",
-    primaryColor: customization?.primaryColor ?? "",
-    textColor: customization?.textColor ?? "",
-    buttonTextColor: customization?.buttonTextColor ?? "",
+  const params: Iparams = {
+    bgColor: customization?.backgroundColor,
+    primaryColor: customization?.primaryColor,
+    textColor: customization?.textColor,
+    buttonTextColor: customization?.buttonTextColor,
     isIframe: "true",
     address: account,
-    checksIds: checksIds?.toString() ?? "",
-    roles: roles?.toString() ?? "",
-    polygonId: polygonId ? "true" : "false",
-    checkCallback: checkCallback ?? "",
-    nftClaimLinks: nftClaimLinks?.toString() ?? "",
-    isStaging: isStaging ? "true" : "false",
+    checksIds: checksIds?.toString(),
+    roles: roles?.toString(),
+    nftClaimLinks: nftClaimLinks?.toString(),
+    polygonId: polygonId?.toString(),
+    checkCallback,
+    isStaging: isStaging?.toString(),
   };
 
-  const IFRAME_URL = `${WEBSITE}/verify?${new URLSearchParams(
-    params,
-  ).toString()}`;
+  const parsedParams: { [key: string]: string } = {};
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value) parsedParams[key] = value;
+  }
+
+  const sortedUrlParams = sortUrlParams(new URLSearchParams(parsedParams));
+  const IFRAME_URL = `${WEBSITE}/verify?${sortedUrlParams}`;
 
   return (
     <div className="background">
-      <iframe className="modal-iframe" src={IFRAME_URL} allow="camera" />
+      <iframe
+        className="modal-iframe"
+        src={IFRAME_URL}
+        data-testid="gatekeeper_iframe"
+        allow="camera"
+      />
     </div>
   );
 };

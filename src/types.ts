@@ -21,3 +21,18 @@ export interface GateKeeperModalProps {
   nftClaimLinks?: nftClaimLinksInterface;
   customization?: ICustomization;
 }
+
+export interface Iparams {
+  bgColor?: string;
+  primaryColor?: string;
+  textColor?: string;
+  buttonTextColor?: string;
+  isIframe: string;
+  address: string;
+  checksIds?: string;
+  roles?: string;
+  nftClaimLinks?: string;
+  polygonId?: string;
+  checkCallback?: string;
+  isStaging?: string;
+}

@@ -24,7 +24,7 @@ export const GatekeeperModal: Story = {
       textColor: "rgb(13, 17, 28)",
     };
 
-    // ALL PROPS ??
+    // ALL PROPS //
     const account = "0x85d6298705d6b9885Eaa2de262df9442353d0218";
     const HAS_POLYGON = true;
     const CHECKS_IDS = ["check1", "check2", "check3"];
