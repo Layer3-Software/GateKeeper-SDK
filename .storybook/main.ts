@@ -1,12 +1,12 @@
-import type { StorybookConfig } from "@storybook/react-webpack5";
+import { StorybookConfig } from "@storybook/react-webpack5";
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  staticDirs: ["../public"],
+  stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/preset-create-react-app",
+    "@storybook/react-webpack5",
     "@storybook/addon-interactions",
   ],
   docs: {
@@ -18,12 +18,18 @@ const config: StorybookConfig = {
   },
   babel: async options => ({
     // Update your babel configuration here
+
     ...options,
   }),
 
-  webpackFinal: async (config, { configType }) => {
-    // Make whatever fine-grained changes you need
-    // Return the altered config
+  webpackFinal: async config => {
+    if (config && config.module && config.module.rules) {
+      config.module.rules.push({
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      });
+    }
+
     return config;
   },
 };

@@ -1,6 +1,6 @@
 import { GateKeeperModalProps } from "./types";
 import React from "react";
-import "./GateKeeperModal.css";
+import "./global.css";
 
 const GateKeeperModal = ({
   account,
