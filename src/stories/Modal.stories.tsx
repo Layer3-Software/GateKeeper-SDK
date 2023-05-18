@@ -29,7 +29,9 @@ export const GatekeeperModal: Story = {
     const HAS_POLYGON = true;
     const CHECKS_IDS = ["check1", "check2", "check3"];
     const ROLES = ["role1", "role2", "role3"];
-    const CHECK_CALLBACK = () => {};
+    const CHECK_CALLBACK = () => {
+      console.log("callback");
+    };
     const NFT_CLAIM_LINKS = {
       id1: {
         claimLink:

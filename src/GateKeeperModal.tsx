@@ -28,9 +28,9 @@ const GateKeeperModal = ({
     address: account,
     checksIds: checksIds?.toString(),
     roles: roles?.toString(),
-    nftClaimLinks: nftClaimLinks?.toString(),
+    nftClaimLinks: JSON.stringify(nftClaimLinks),
     polygonId: polygonId?.toString(),
-    checkCallback,
+    checkCallback: checkCallback?.toString(),
     isStaging: isStaging?.toString(),
   };
 

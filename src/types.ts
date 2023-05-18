@@ -15,7 +15,7 @@ export interface GateKeeperModalProps {
   account: string;
   checksIds?: string[];
   roles?: string[];
-  checkCallback?: any;
+  checkCallback?: Function;
   polygonId?: boolean;
   isStaging?: boolean;
   nftClaimLinks?: nftClaimLinksInterface;
