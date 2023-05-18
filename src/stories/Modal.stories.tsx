@@ -38,8 +38,10 @@ export const GatekeeperModal: Story = {
           "https://opensea.io/assets?search[query]=0xdb46d1dc155634fbc732f92e853b10b288ad5a1d",
       },
     };
-    const IS_STAGING = false;
+    const IS_STAGING = true;
     const IS_DARK = true;
+
+    const SIGNATURE = "";
 
     return (
       <GateKeeperModal
@@ -47,6 +49,7 @@ export const GatekeeperModal: Story = {
         customization={IS_DARK ? darkMode : lightMode}
         checkCallback={CHECK_CALLBACK}
         roles={ROLES}
+        signature={SIGNATURE}
         nftClaimLinks={NFT_CLAIM_LINKS}
         checksIds={CHECKS_IDS}
         polygonId={HAS_POLYGON}

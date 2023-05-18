@@ -12,6 +12,7 @@ const GateKeeperModal = ({
   checkCallback,
   customization,
   nftClaimLinks,
+  signature,
   isStaging,
 }: GateKeeperModalProps) => {
   // visible - hidden
@@ -25,6 +26,7 @@ const GateKeeperModal = ({
     textColor: customization?.textColor,
     buttonTextColor: customization?.buttonTextColor,
     isIframe: "true",
+    signature,
     address: account,
     checksIds: checksIds?.toString(),
     roles: roles?.toString(),

@@ -16,6 +16,7 @@ export interface GateKeeperModalProps {
   checksIds?: string[];
   roles?: string[];
   checkCallback?: Function;
+  signature?: string;
   polygonId?: boolean;
   isStaging?: boolean;
   nftClaimLinks?: nftClaimLinksInterface;
@@ -24,6 +25,7 @@ export interface GateKeeperModalProps {
 
 export interface Iparams {
   bgColor?: string;
+  signature?: string;
   primaryColor?: string;
   textColor?: string;
   buttonTextColor?: string;
