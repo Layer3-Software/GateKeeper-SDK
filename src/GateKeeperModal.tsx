@@ -24,16 +24,14 @@ const GateKeeperModal = ({
 
   const receiveMessage = (data: MessageEvent) => {
     try {
-      const msgRecieved = JSON.parse(data.data);
-      const isVerified = msgRecieved.isVerified;
+      const msgRecieved = JSON.parse(data.data || "{}");
+      const isVerified = msgRecieved.isVerified || false;
 
       if (isVerified) {
         document.body.style.overflow = "visible";
         setCloseModal(true);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch {}
   };
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-const USE_LOCALHOST = true;
+const USE_LOCALHOST = false;
 
 export const WEBSITE = USE_LOCALHOST
   ? "http://localhost:3000"
