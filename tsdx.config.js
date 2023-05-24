@@ -1,17 +1,17 @@
-const images = require("@rollup/plugin-image");
-const postcss = require("rollup-plugin-postcss");
-const autoprefixer = require("autoprefixer");
-const cssnano = require("cssnano");
-
+const images = require('@rollup/plugin-image');
+const postcss = require('rollup-plugin-postcss');
+const replace = require('@rollup/plugin-replace');
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 module.exports = {
-  rollup(config) {
+  rollup(config, options) {
     config.plugins = [
-      images({ incude: ["**/*.png", "**/*.jpg"] }),
+      images({ incude: ['**/*.png', '**/*.jpg'] }),
       postcss({
         plugins: [
           autoprefixer(),
           cssnano({
-            preset: "default",
+            preset: 'default',
           }),
         ],
         inject: true,

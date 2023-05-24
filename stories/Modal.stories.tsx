@@ -1,0 +1,112 @@
+import React, { useEffect, useState } from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+import GatekeeperModal from '../src/components/GateKeeperModal';
+import { DEFAULT_COLORS } from '../src/utils/constants';
+import detectEthereumProvider from '@metamask/detect-provider';
+import {
+  ExternalProvider,
+  JsonRpcSigner,
+  Web3Provider,
+} from '@ethersproject/providers';
+import { MetamaskConnection } from '../src/utils/metamaskConnection';
+
+export default {
+  title: 'KYC/Modal',
+  component: GatekeeperModal,
+} as ComponentMeta<typeof GatekeeperModal>;
+
+declare global {
+  interface Window {
+    ethereum?: ExternalProvider;
+  }
+}
+
+const Template: ComponentStory<typeof GatekeeperModal> = () => {
+  const customization = {
+    primaryColor: DEFAULT_COLORS.primaryColor,
+    buttonTextColor: DEFAULT_COLORS.buttonTextColor,
+    backgroundColor: DEFAULT_COLORS.backgroundColor,
+    textColor: DEFAULT_COLORS.textColor,
+  };
+
+  const metamaskConnection = async () => {
+    const provider = await detectEthereumProvider();
+    if (provider) {
+      if (window.ethereum && window.ethereum.request) {
+        try {
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+          const provider = new Web3Provider(window.ethereum, 'any');
+
+          const signer = provider.getSigner();
+          const address = await signer.getAddress();
+
+          return { address, signer };
+        } catch (err) {
+          return { error: 'Please connect to MetaMask!' };
+        }
+      }
+    }
+    return { error: 'Please install MetaMask!' };
+  };
+
+  const kycCheck = 'e4cce52a-d330-4978-b250-6c6d5626b42e';
+  const geoIdCheck = 'aee00f30-1928-4ba3-97aa-823dd0b62572';
+  const ofac = '1e460f23-745d-4d0d-98bb-d715bf211608';
+  const nft = '669498c4-604c-4ac0-8c7e-48c816c86f60';
+
+  const role1 = '9c82921d-36aa-483c-bde2-25c33340c0e8';
+
+  const roles = [role1];
+  const checks = [ofac];
+
+  // Uniswap colors
+  const darkMode = {
+    primaryColor: 'rgba(76, 130, 251, 0.24)',
+    buttonTextColor: '#4C82FB',
+    backgroundColor: '#0d1117',
+    textColor: 'rgb(255, 255, 255)',
+  };
+  const lightMode = {
+    primaryColor: 'rgba(251, 17, 142, 0.24)',
+    buttonTextColor: '#FB138E',
+    backgroundColor: 'rgb(255, 255, 255)',
+    textColor: 'rgb(13, 17, 28)',
+  };
+
+  const nftsClaimLinks = {
+    [nft]: {
+      claimLink:
+        'https://opensea.io/assets?search[query]=0xdb46d1dc155634fbc732f92e853b10b288ad5a1d',
+    },
+  };
+
+  const [signer, setSigner] = useState<JsonRpcSigner | null>(null);
+  const [address, setAddress] = useState<string>('');
+
+  useEffect(() => {
+    const init = async () => {
+      const connection = await metamaskConnection();
+      const { address, signer } = connection as MetamaskConnection;
+      setAddress(address);
+      setSigner(signer);
+    };
+    init();
+  }, []);
+
+  const lightModeOn = false;
+  return (
+    <GatekeeperModal
+      account={address}
+      signer={signer}
+      isStaging={true}
+      roles={roles}
+      simulateKYC={true}
+      customization={lightModeOn ? lightMode : darkMode}
+    />
+  );
+};
+
+export const ModalTemplate = Template.bind({});
+
+ModalTemplate.args = {};
