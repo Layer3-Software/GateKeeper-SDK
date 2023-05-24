@@ -1,7 +1,7 @@
 import { GateKeeperModalProps, Iparams } from "./types";
 import "./global.css";
 import { WEBSITE } from "./config";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import sortUrlParams from "./utils/sortUrlParams";
 
 const GateKeeperModal = ({
