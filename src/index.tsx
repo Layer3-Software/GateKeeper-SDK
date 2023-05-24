@@ -1,1 +1,1 @@
-export * from "./GateKeeperModal";
+export * from './components';

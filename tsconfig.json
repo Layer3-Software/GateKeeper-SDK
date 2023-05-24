@@ -1,8 +1,8 @@
 {
   "include": ["src", "types", "src/react-app-env.d.ts"],
   "compilerOptions": {
-    "module": "ES6",
-    "lib": ["dom", "ES6"],
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
