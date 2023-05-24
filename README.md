@@ -19,26 +19,22 @@ yarn add @layer3/gatekeeper-sdk
 Then on your app file or a main file, import as:
 
 ```javascript
-import { GateKeeperModal } from '@layer3/gatekeeper-sdk';
+import GateKeeperModal from "@layer3/gatekeeper-sdk";
 
 const GateKeeperModal = () => {
-  const checkCallback = (result: { isVerified: boolean }) => {
-    // Handle any logic within the app based on the result obtained
-  };
-
   return (
     <div>
       <GateKeeper
         account={address}
-        checkIds={['KYC', 'exampleId']}
-        roles={['role1', 'role2']}
+        checkIds={["KYC", "exampleId"]}
+        roles={["role1", "role2"]}
         polygonId={false}
         checkCallback={checkCallback}
         customization={{
-          primaryColor: '#000000',
-          backgroundColor: '#FFFFFF',
-          buttonTextColor: '#FFFFFF',
-          textColor: '#000000',
+          primaryColor: "#000000",
+          backgroundColor: "#FFFFFF",
+          buttonTextColor: "#FFFFFF",
+          textColor: "#000000",
         }}
       />
     </div>
@@ -50,19 +46,20 @@ export default GateKeeperModal;
 
 ## Parameters
 
-| Parameter         | Description                                     | Type           | Required |
-| ----------------- | ----------------------------------------------- | -------------- | -------- |
-| **account**       | Wallet address from the user                    | `string`       | Yes      |
-| **polygonId**     | Boolean to enable polygon id claim              | `boolean`      | No\*     |
-| **roles**         | Arrays of roles                                 | `string array` | No\*     |
-| **checkIds**      | Arrays of checks ids                            | `string array` | No\*     |
-| **customization** | Color properties explained below                | `Object`       | No\*\*   |
-| **nftClaimLinks** | Object with links to claim the nfts             | `Object`       | No       |
-| **checkCallback** | If provide, callback recieves verification data | `void()`       | No       |
+| Parameter         | Description                                                     | Type           | Required |
+| ----------------- | --------------------------------------------------------------- | -------------- | -------- |
+| **account**       | Wallet address from the user                                    | `string`       | Yes      |
+| **polygonId**     | Boolean to enable polygon id claim                              | `boolean`      | No\*     |
+| **roles**         | Arrays of roles                                                 | `string array` | No\*     |
+| **checkIds**      | Arrays of checks ids                                            | `string array` | No\*     |
+| **customization** | Color properties explained below                                | `Object`       | No\*\*   |
+| **nftClaimLinks** | Object with links to claim the nfts                             | `Object`       | No       |
+| **signature**     | String provided to make the auth part with out user interaction | `string`       | No       |
+| **isStaging**     | Boolean to change between staging/production url                | `boolean`      | No\*\*\* |
 
 \* At least one have to be provide: `polygonId` or `roles` or `checkIds`
 \*\* Default customization properties
-\*\*\* If checkCallback is provide, you can control the behavior of the component based on the results obtained
+\*\*\* `isStaging` by default is `false`
 
 ```js
 primaryColor: '#059669',
@@ -73,19 +70,19 @@ backgroundColor: '#141724',
 
 ## Params examples
 
-#### roles:
+#### Roles:
 
 ```js
 roles={['role1', 'role2']}
 ```
 
-#### checkIds:
+#### CheckIds:
 
 ```js
 checkIds={['KYC', 'exampleId']}
 ```
 
-#### nftClaimLinks:
+#### NftClaimLinks:
 
 ```js
 nftClaimLinks={{

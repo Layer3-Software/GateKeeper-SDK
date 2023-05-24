@@ -47,7 +47,7 @@ describe("Gatekeeper modal", () => {
       buttonTextColor: customization?.buttonTextColor,
       isIframe: "true",
       polygonId: "true",
-      roles: roles?.toString(),
+      roles: roles.toString(),
     };
 
     const sortedUrlParams = sortUrlParams(new URLSearchParams(params));
@@ -88,6 +88,7 @@ describe("Gatekeeper modal", () => {
       address: account,
       polygonId: "true",
       checksIds: checks?.toString(),
+      isStaging: "true",
     };
 
     const sortedUrlParams = sortUrlParams(new URLSearchParams(params));
@@ -99,6 +100,7 @@ describe("Gatekeeper modal", () => {
         account={account}
         checksIds={checks}
         polygonId={true}
+        isStaging={true}
         customization={customization}
       />,
     );

@@ -1,5 +1,5 @@
 import React from "react";
-import GateKeeperModal from "../GateKeeperModal";
+import GateKeeperModal from "../index";
 import { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof GateKeeperModal> = {

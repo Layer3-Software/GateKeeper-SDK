@@ -1,1 +1,2 @@
-export * from "./GateKeeperModal";
+import GateKeeperModal from "./GateKeeperModal";
+export default GateKeeperModal;
