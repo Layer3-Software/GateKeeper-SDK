@@ -30,7 +30,9 @@ const GateKeeperModal = ({
         document.body.style.overflow = "visible";
         setCloseModal(true);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
