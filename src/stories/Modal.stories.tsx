@@ -28,7 +28,15 @@ export const GatekeeperModal: Story = {
     const account = "0x85d6298705d6b9885Eaa2de262df9442353d0218";
     const HAS_POLYGON = true;
     const CHECKS_IDS = ["check1", "check2", "check3"];
-    const ROLES = ["role1", "role2", "role3"];
+
+    const creditScore = "c7a6d91c-0d27-4450-a336-9ca67c2d87f6";
+    const geoIdAllowArg = "6a021c4e-53f8-41fd-b83f-ef644957be5e";
+    const geoIdDenyArg = "127d2795-e854-4441-a5eb-1ef863034075";
+    const kyc = "30912fad-042e-48c0-a035-02292233af2a";
+    const ofac = "7d39f54b-3a48-40e7-a3de-8514eff0d9b2";
+
+    const ROLES = [""];
+
     const CHECK_CALLBACK = () => {
       console.log("callback");
     };

@@ -1,7 +1,7 @@
 import { GateKeeperModalProps, Iparams } from "./types";
 import "./global.css";
 import { WEBSITE } from "./config";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import sortUrlParams from "./utils/sortUrlParams";
 
 const GateKeeperModal = ({
@@ -19,6 +19,27 @@ const GateKeeperModal = ({
   document.body.style.overflow = "hidden";
 
   if (!account) return null;
+
+  const [closeModal, setCloseModal] = useState(false);
+
+  const receiveMessage = (data: MessageEvent) => {
+    try {
+      const msgRecieved = JSON.parse(data?.data);
+      const isVerified = msgRecieved?.isVerified;
+
+      if (isVerified) {
+        document.body.style.overflow = "visible";
+        setCloseModal(true);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    window.addEventListener("message", receiveMessage);
+    return () => {
+      window.removeEventListener("message", receiveMessage);
+    };
+  }, []);
 
   const params: Iparams = {
     bgColor: customization?.backgroundColor,
@@ -44,6 +65,8 @@ const GateKeeperModal = ({
 
   const sortedUrlParams = sortUrlParams(new URLSearchParams(parsedParams));
   const IFRAME_URL = `${WEBSITE}/verify?${sortedUrlParams}`;
+
+  if (closeModal) return null;
 
   return (
     <div className="background">
