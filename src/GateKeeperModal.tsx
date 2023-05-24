@@ -15,7 +15,6 @@ const GateKeeperModal = ({
   signature,
   isStaging,
 }: GateKeeperModalProps) => {
-  // visible - hidden
   document.body.style.overflow = "hidden";
 
   if (!account) return null;
