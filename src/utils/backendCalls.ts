@@ -2,8 +2,6 @@ const PRODUCTION_BACKEND_URL = "https://api.gatekeeper.software/v1";
 const STAGING_BACKEND_URL =
   "https://gk-prod-backend-staging.azurewebsites.net/v1";
 
-import axios, { AxiosRequestConfig } from "axios";
-
 const makeRequest = (
   url: string,
   method: string,
@@ -17,19 +15,14 @@ const makeRequest = (
     ? `${url}?${new URLSearchParams(body).toString()}`
     : url;
 
-  const config: AxiosRequestConfig = {
+  return fetch(fetchUrl + finalURL, {
     method,
-    url: fetchUrl + finalURL,
+    mode: "cors",
     headers: { "Content-Type": "application/json" },
-    data: isGETmethod ? undefined : JSON.stringify(body),
-  };
-
-  return axios(config)
-    .then(res => res.data)
-    .catch(err => {
-      console.log(err);
-      return err;
-    });
+    body: isGETmethod ? null : JSON.stringify(body),
+  })
+    .then(res => res.json())
+    .catch(err => console.error(err));
 };
 
 export const getNonce = (address: string, isStaging: boolean) => {
@@ -47,4 +40,8 @@ export const register = (
     signature,
     appId,
   });
+};
+
+export const authenticateDomain = (domain: string, isStaging: boolean) => {
+  return makeRequest("/authenticate", "GET", isStaging, { domain });
 };
