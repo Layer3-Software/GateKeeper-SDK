@@ -41,7 +41,3 @@ export const register = (
     appId,
   });
 };
-
-export const authenticateDomain = (domain: string, isStaging: boolean) => {
-  return makeRequest("/authenticate", "GET", isStaging, { domain });
-};
