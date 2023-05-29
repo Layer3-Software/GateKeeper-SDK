@@ -18,10 +18,16 @@ export const GatekeeperModal: Story = {
       textColor: "rgb(255, 255, 255)",
     };
     const lightMode = {
-      primaryColor: "rgba(251, 17, 142, 0.24)",
-      buttonTextColor: "#FB138E",
-      backgroundColor: "rgb(255, 255, 255)",
-      textColor: "rgb(13, 17, 28)",
+      primaryColor: "red",
+      buttonTextColor: "blue",
+      backgroundColor: "#FB138E",
+      textColor: "yellow",
+    };
+    const DEFAULT_COLORS = {
+      primaryColor: "#006a65",
+      textColor: "white",
+      buttonTextColor: "white",
+      backgroundColor: "#37444d",
     };
 
     // ALL PROPS //
@@ -49,15 +55,16 @@ export const GatekeeperModal: Story = {
     const IS_STAGING = true;
     const IS_DARK = true;
 
-    const SIGNATURE = "";
+    const SIGNATURE =
+      "0xc0b3bde3bb9fdef41fb23ea4261873a3bde4d9b79d574155609b15e6ce6ecb0d445bf1f040202f8e0fdede3dfcf5178467308205ceb59bc6714dfa901d870ad01b";
 
     return (
       <GateKeeperModal
         account={account}
-        customization={IS_DARK ? darkMode : lightMode}
+        customization={DEFAULT_COLORS}
         checkCallback={CHECK_CALLBACK}
         roles={ROLES}
-        signature={SIGNATURE}
+        // signature={SIGNATURE}
         nftClaimLinks={NFT_CLAIM_LINKS}
         checksIds={CHECKS_IDS}
         polygonId={HAS_POLYGON}
