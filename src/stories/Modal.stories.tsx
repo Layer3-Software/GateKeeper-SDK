@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import GateKeeperModal from "../index";
 import { Meta, StoryObj } from "@storybook/react";
 
@@ -32,7 +32,7 @@ export const GatekeeperModal: Story = {
 
     // ALL PROPS //
     const account = "0x85d6298705d6b9885Eaa2de262df9442353d0218";
-    const HAS_POLYGON = true;
+    const polygonID = "29f03ca7-13e1-484b-a523-286890d9a606";
     const CHECKS_IDS = ["check1", "check2", "check3"];
 
     const creditScore = "c7a6d91c-0d27-4450-a336-9ca67c2d87f6";
@@ -67,7 +67,7 @@ export const GatekeeperModal: Story = {
         // signature={SIGNATURE}
         nftClaimLinks={NFT_CLAIM_LINKS}
         checksIds={CHECKS_IDS}
-        polygonId={HAS_POLYGON}
+        polygonId={polygonID}
         isStaging={IS_STAGING}
       />
     );

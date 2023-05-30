@@ -15,6 +15,7 @@ const GateKeeperModal = ({
   nftClaimLinks,
   signature,
   isStaging,
+  ...props
 }: GateKeeperModalProps) => {
   document.body.style.overflow = "hidden";
 
@@ -60,7 +61,7 @@ const GateKeeperModal = ({
     checksIds: checksIds ? checksIds.toString() : undefined,
     roles: roles ? roles.toString() : undefined,
     nftClaimLinks: JSON.stringify(nftClaimLinks || {}),
-    polygonId: polygonId ? "true" : undefined,
+    polygonId,
     checkCallback: checkCallback ? checkCallback.toString() : undefined,
     isStaging: isStaging ? "true" : undefined,
   };
@@ -85,7 +86,7 @@ const GateKeeperModal = ({
   if (closeModal) return null;
 
   return (
-    <div className="background">
+    <div {...props} className="background">
       <iframe
         className="modal-iframe"
         src={IFRAME_URL}

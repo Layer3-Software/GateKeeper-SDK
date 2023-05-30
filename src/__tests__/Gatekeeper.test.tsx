@@ -46,7 +46,7 @@ describe("Gatekeeper modal", () => {
       textColor: customization?.textColor,
       buttonTextColor: customization?.buttonTextColor,
       isIframe: "true",
-      polygonId: "true",
+      polygonId: "1234PolygonID",
       roles: roles.toString(),
     };
 
@@ -57,7 +57,7 @@ describe("Gatekeeper modal", () => {
       <GateKeeperModal
         account={account}
         roles={roles}
-        polygonId={true}
+        polygonId="1234PolygonID"
         customization={customization}
       />,
     );
@@ -86,7 +86,7 @@ describe("Gatekeeper modal", () => {
       buttonTextColor: customization?.buttonTextColor,
       isIframe: "true",
       address: account,
-      polygonId: "true",
+      polygonId: "1234PolygonID",
       checksIds: checks?.toString(),
       isStaging: "true",
     };
@@ -99,7 +99,7 @@ describe("Gatekeeper modal", () => {
       <GateKeeperModal
         account={account}
         checksIds={checks}
-        polygonId={true}
+        polygonId="1234PolygonID"
         isStaging={true}
         customization={customization}
       />,

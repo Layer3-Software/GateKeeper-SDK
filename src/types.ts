@@ -1,3 +1,5 @@
+import { DetailedHTMLProps, HTMLAttributes } from "react";
+
 export interface ICustomization {
   backgroundColor?: string;
   primaryColor?: string;
@@ -11,13 +13,14 @@ export interface nftClaimLinksInterface {
   };
 }
 
-export interface GateKeeperModalProps {
+export interface GateKeeperModalProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   account: string;
   checksIds?: string[];
   roles?: string[];
   checkCallback?: Function;
   signature?: string;
-  polygonId?: boolean;
+  polygonId?: string;
   isStaging?: boolean;
   nftClaimLinks?: nftClaimLinksInterface;
   customization?: ICustomization;
