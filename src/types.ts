@@ -13,7 +13,7 @@ export interface nftClaimLinksInterface {
   };
 }
 
-export interface GateKeeperModalProps
+export interface AccessControlModalProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   account: string;
   checksIds?: string[];

@@ -1,4 +1,4 @@
-import { GateKeeperModalProps, Iparams } from "./types";
+import { AccessControlModalProps, Iparams } from "./types";
 import "./global.css";
 import { WEBSITE } from "./config";
 import React, { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ const AccessControlModal = ({
   signature,
   isStaging,
   ...props
-}: GateKeeperModalProps) => {
+}: AccessControlModalProps) => {
   document.body.style.overflow = "hidden";
 
   if (!account) return null;

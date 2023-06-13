@@ -19,12 +19,12 @@ yarn add @layer3/gatekeeper-sdk
 Then on your app file or a main file, import as:
 
 ```javascript
-import GateKeeperModal from "@layer3/gatekeeper-sdk";
+import AccessControlModal from "@layer3/gatekeeper-sdk";
 
 const GateKeeperModal = () => {
   return (
     <div>
-      <GateKeeper
+      <AccessControlModal
         account={address}
         checkIds={["KYC", "exampleId"]}
         roles={["role1", "role2"]}

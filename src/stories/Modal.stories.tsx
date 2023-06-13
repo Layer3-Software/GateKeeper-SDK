@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
-import GateKeeperModal from "../index";
+import AccessControlModal from "../index";
 import { Meta, StoryObj } from "@storybook/react";
 
-const meta: Meta<typeof GateKeeperModal> = {
+const meta: Meta<typeof AccessControlModal> = {
   title: "Modal",
-  component: GateKeeperModal,
+  component: AccessControlModal,
 };
 
-type Story = StoryObj<typeof GateKeeperModal>;
+type Story = StoryObj<typeof AccessControlModal>;
 
 export const GatekeeperModal: Story = {
   render: () => {
@@ -59,7 +59,7 @@ export const GatekeeperModal: Story = {
       "0xc0b3bde3bb9fdef41fb23ea4261873a3bde4d9b79d574155609b15e6ce6ecb0d445bf1f040202f8e0fdede3dfcf5178467308205ceb59bc6714dfa901d870ad01b";
 
     return (
-      <GateKeeperModal
+      <AccessControlModal
         account={account}
         customization={DEFAULT_COLORS}
         checkCallback={CHECK_CALLBACK}

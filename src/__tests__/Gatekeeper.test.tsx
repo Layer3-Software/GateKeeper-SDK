@@ -4,7 +4,7 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import GateKeeperModal from "../AccessControlModal";
+import AccessControlModal from "../AccessControlModal";
 import { WEBSITE } from "../config";
 import sortUrlParams from "../utils/sortUrlParams";
 
@@ -12,14 +12,14 @@ describe("Gatekeeper modal", () => {
   const DATA_TEST_ID = "gatekeeper_iframe";
 
   test("Should return null if account is not provide", () => {
-    const { queryByTestId } = render(<GateKeeperModal account="" />);
+    const { queryByTestId } = render(<AccessControlModal account="" />);
     const iframeElement = queryByTestId(DATA_TEST_ID);
     expect(iframeElement).toBeNull();
   });
 
   test("Should load without issues", async () => {
     const account = "account1";
-    const { getByTestId } = render(<GateKeeperModal account={account} />);
+    const { getByTestId } = render(<AccessControlModal account={account} />);
     const iframeElement = getByTestId(DATA_TEST_ID);
     expect(iframeElement).toBeDefined();
 
@@ -54,7 +54,7 @@ describe("Gatekeeper modal", () => {
     const expectedSrc = `${WEBSITE}/verify?${sortedUrlParams}`;
 
     const { getByTestId } = render(
-      <GateKeeperModal
+      <AccessControlModal
         account={account}
         roles={roles}
         polygonId="1234PolygonID"
@@ -96,7 +96,7 @@ describe("Gatekeeper modal", () => {
     const expectedSrc = `${WEBSITE}/verify?${sortedUrlParams}`;
 
     const { getByTestId } = render(
-      <GateKeeperModal
+      <AccessControlModal
         account={account}
         checksIds={checks}
         polygonId="1234PolygonID"
