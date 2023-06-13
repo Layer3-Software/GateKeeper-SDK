@@ -31,7 +31,7 @@ export const GatekeeperModal: Story = {
     };
 
     // ALL PROPS //
-    const account = "0x85d6298705d6b9885Eaa2de262df9442353d0218";
+    const account = "";
     const polygonID = "29f03ca7-13e1-484b-a523-286890d9a606";
     const CHECKS_IDS = ["check1", "check2", "check3"];
 
