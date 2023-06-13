@@ -34,7 +34,9 @@ const AccessControlModal = ({
           <h4
             style={{
               width: "80%",
-              lineHeight: "2",
+              fontWeight: 400,
+              lineHeight: "28px",
+              fontSize: "18px",
             }}
           >
             Please connect you wallet to get start with the GateKeeper
