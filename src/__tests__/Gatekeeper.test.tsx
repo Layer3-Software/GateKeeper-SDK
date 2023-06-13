@@ -4,7 +4,7 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import GateKeeperModal from "../GateKeeperModal";
+import GateKeeperModal from "../AccessControlModal";
 import { WEBSITE } from "../config";
 import sortUrlParams from "../utils/sortUrlParams";
 

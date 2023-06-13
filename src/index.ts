@@ -1,4 +1,4 @@
-import GateKeeperModal from "./GateKeeperModal";
+import GateKeeperModal from "./AccessControlModal";
 import getSignature from "./utils/getSignature";
 import { getNonce, register } from "./utils/backendCalls";
 

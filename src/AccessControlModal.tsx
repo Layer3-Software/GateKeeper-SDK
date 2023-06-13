@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import sortUrlParams from "./utils/sortUrlParams";
 import { DEFAULT_COLORS } from "./utils/defaultColor";
 
-const GateKeeperModal = ({
+const AccessControlModal = ({
   account,
   polygonId,
   checksIds,
@@ -97,4 +97,4 @@ const GateKeeperModal = ({
   );
 };
 
-export default GateKeeperModal;
+export default AccessControlModal;
