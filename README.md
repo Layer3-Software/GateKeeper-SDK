@@ -109,7 +109,7 @@ nftClaimLinks={{
 
 ## Security
 
-![Check Here](security.md) for details on gating access to components/routes.
+[Check Here](security.md) for details on gating access to components/routes.
 
 ## Customization
 
