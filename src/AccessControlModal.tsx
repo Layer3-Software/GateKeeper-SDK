@@ -20,6 +20,34 @@ const AccessControlModal = ({
 }: AccessControlModalProps) => {
   document.body.style.overflow = "hidden";
 
+  if (!account) {
+    return (
+      <div {...props} className="background">
+        <div
+          className="modal-iframe"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <h4
+            style={{
+              width: "80%",
+              fontWeight: 400,
+              lineHeight: "28px",
+              fontSize: "18px",
+            }}
+          >
+            Please connect you wallet to get start with the GateKeeper
+            verification process.
+          </h4>
+        </div>
+      </div>
+    );
+  }
+
   const [closeModal, setCloseModal] = useState(false);
   const { verify } = useContext(GatekeeperContext);
 
