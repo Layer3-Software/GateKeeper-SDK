@@ -1,9 +1,10 @@
 import { AccessControlModalProps, Iparams } from "./types";
 import "./global.css";
 import { WEBSITE } from "./config";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import sortUrlParams from "./utils/sortUrlParams";
 import { DEFAULT_COLORS } from "./utils/defaultColor";
+import GatekeeperContext from "./contexts/GatekeeperContext";
 
 const AccessControlModal = ({
   account,
@@ -48,15 +49,20 @@ const AccessControlModal = ({
   }
 
   const [closeModal, setCloseModal] = useState(false);
+  const { verify } = useContext(GatekeeperContext);
+
+  if (!account) return null;
 
   const receiveMessage = (data: MessageEvent) => {
     try {
       const msgRecieved = JSON.parse(data.data || "{}");
       const isVerified = msgRecieved.isVerified || false;
+      checkCallback && checkCallback(msgRecieved);
 
       if (isVerified) {
         document.body.style.overflow = "visible";
         setCloseModal(true);
+        verify();
       }
     } catch {}
   };
@@ -88,7 +94,6 @@ const AccessControlModal = ({
     roles: roles ? roles.toString() : undefined,
     nftClaimLinks: JSON.stringify(nftClaimLinks || {}),
     polygonId,
-    checkCallback: checkCallback ? checkCallback.toString() : undefined,
     isStaging: isStaging ? "true" : undefined,
   };
 
@@ -112,7 +117,7 @@ const AccessControlModal = ({
   if (closeModal) return null;
 
   return (
-    <div {...props} className="background">
+    <div {...props} className="modal-bg">
       <iframe
         className="modal-iframe"
         src={IFRAME_URL}

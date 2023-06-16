@@ -16,7 +16,23 @@ yarn add @layer3/gatekeeper-sdk
 
 ## Usage/Examples
 
-Then on your app file or a main file, import as:
+First, you'll need to setup the `GatekeeperContext`, you use it like any other React context:
+
+```ts
+import { GatekeeperContextProvider } from "@layer3/gatekeeper-sdk";
+
+root.render(
+  <GatekeeperContextProvider>
+    <AppContextProvider>
+      <Router>
+        <App />
+      </Router>
+    </AppContextProvider>
+  </GatekeeperContextProvider>
+);
+```
+
+Then anywhere in your app, import as:
 
 ```javascript
 import AccessControlModal from "@layer3/gatekeeper-sdk";
@@ -90,6 +106,10 @@ nftClaimLinks={{
   'nftContractAddress2': 'https://claimNft2.com',
 }}
 ```
+
+## Security
+
+[Check Here](security.md) for details on gating access to components/routes.
 
 ## Customization
 
