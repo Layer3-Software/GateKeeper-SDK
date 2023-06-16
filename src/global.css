@@ -14,15 +14,8 @@ body {
   font-family: "Albert Sans", sans-serif;
 }
 
-.background {
-  background-color: rgba(0, 0, 0, 0.5);
-  height: 100vh;
-  width: 100vw;
-  z-index: 9999;
-  left: 0;
-  top: 0;
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.modal-bg {
+  z-index: 10000;
+  position: sticky;
+  pointer-events: all;
 }

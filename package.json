@@ -74,8 +74,6 @@
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "postcss": "^8.4.16",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
     "react-testing-library": "^8.0.1",
     "rollup-plugin-image-files": "^1.4.2",
@@ -101,5 +99,9 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }
