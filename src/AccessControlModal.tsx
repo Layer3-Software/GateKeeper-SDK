@@ -1,6 +1,6 @@
 import { AccessControlModalProps, Iparams } from "./types";
 import "./global.css";
-import { WEBSITE } from "./config";
+import { PRODUCTION_WEBSITE, STAGING_WEBSITE } from "./config";
 import React, { useContext, useEffect, useState } from "react";
 import sortUrlParams from "./utils/sortUrlParams";
 import { DEFAULT_COLORS } from "./utils/defaultColor";
@@ -94,7 +94,6 @@ const AccessControlModal = ({
     roles: roles ? roles.toString() : undefined,
     nftClaimLinks: JSON.stringify(nftClaimLinks || {}),
     polygonId,
-    isStaging: isStaging ? "true" : undefined,
   };
 
   const parsedParams: { [key: string]: string } = {};
@@ -112,7 +111,9 @@ const AccessControlModal = ({
 
   const sortedUrlParams = sortUrlParams(new URLSearchParams(parsedParams));
 
-  const IFRAME_URL = `${WEBSITE}/verify?${sortedUrlParams}`;
+  const IFRAME_URL = `${
+    isStaging ? STAGING_WEBSITE : PRODUCTION_WEBSITE
+  }/verify?${sortedUrlParams}`;
 
   if (closeModal) return null;
 
