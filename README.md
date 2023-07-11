@@ -28,7 +28,7 @@ root.render(
         <App />
       </Router>
     </AppContextProvider>
-  </GatekeeperContextProvider>
+  </GatekeeperContextProvider>,
 );
 ```
 
@@ -125,6 +125,34 @@ nftClaimLinks={{
 - During this process, if the role or roles you are using have a verifiable credential (VC) available, the user will be able to claim it during the issuance process..
 
 ![issuanceExample](statics/issuanceExample.png)
+
+## Funtions
+
+| Function name    | Description                                                  | Parameters | Return type |
+| ---------------- | ------------------------------------------------------------ | ---------- | ----------- |
+| **getSignature** | Returns the user signature to avoid login process on the sdk | `Object`   | `string`    |
+| **getNonce**     | Returns the currect Nonce for a provided user address        | `string`   | `number`    |
+
+#### Parameters details
+
+- **`getSignature`**
+
+```js
+const params = {
+  address: string;
+  signer: any;
+  appId?: string;
+  allowUserRegistration?: boolean; // Default is true
+  isStaging?: boolean; // Default is false
+}
+const signature = getSignature(params)
+```
+
+- **`getNonce`**
+
+```js
+  const {nonce} = getNonce(address: string, isStaging?: boolean)
+```
 
 ## Commands
 

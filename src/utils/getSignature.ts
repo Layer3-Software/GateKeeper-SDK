@@ -8,13 +8,21 @@ export interface SignatureResponse {
   error?: string;
 }
 
-const getSignature = async (
-  address: string,
-  signer: any,
-  appId?: string,
-  allowUserRegistration: boolean = true,
-  isStaging: boolean = false,
-): Promise<SignatureResponse> => {
+interface getSignatureParams {
+  address: string;
+  signer: any;
+  appId?: string;
+  allowUserRegistration?: boolean; // Default is true
+  isStaging?: boolean; // Default is false
+}
+
+const getSignature = async ({
+  address,
+  signer,
+  appId,
+  allowUserRegistration = true,
+  isStaging = false,
+}: getSignatureParams): Promise<SignatureResponse> => {
   if (!address) return { error: "No address provided", signature: "" };
   if (!signer) return { error: "No signer provided", signature: "" };
 
