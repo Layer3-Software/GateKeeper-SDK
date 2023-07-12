@@ -17,7 +17,6 @@ const makeRequest = (
 
   return fetch(fetchUrl + finalURL, {
     method,
-    mode: "cors",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: isGETmethod ? null : JSON.stringify(body),
