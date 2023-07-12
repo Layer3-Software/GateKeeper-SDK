@@ -5,8 +5,8 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import AccessControlModal from "../AccessControlModal";
-import { WEBSITE } from "../config";
 import sortUrlParams from "../utils/sortUrlParams";
+import { STAGING_WEBSITE } from "../config";
 
 describe("Gatekeeper modal", () => {
   const DATA_TEST_ID = "gatekeeper_iframe";
@@ -51,12 +51,13 @@ describe("Gatekeeper modal", () => {
     };
 
     const sortedUrlParams = sortUrlParams(new URLSearchParams(params));
-    const expectedSrc = `${WEBSITE}/verify?${sortedUrlParams}`;
+    const expectedSrc = `${STAGING_WEBSITE}/verify?${sortedUrlParams}`;
 
     const { getByTestId } = render(
       <AccessControlModal
         account={account}
         roles={roles}
+        isStaging={true}
         polygonId="1234PolygonID"
         customization={customization}
       />,
@@ -88,12 +89,11 @@ describe("Gatekeeper modal", () => {
       address: account,
       polygonId: "1234PolygonID",
       checksIds: checks?.toString(),
-      isStaging: "true",
     };
 
     const sortedUrlParams = sortUrlParams(new URLSearchParams(params));
 
-    const expectedSrc = `${WEBSITE}/verify?${sortedUrlParams}`;
+    const expectedSrc = `${STAGING_WEBSITE}/verify?${sortedUrlParams}`;
 
     const { getByTestId } = render(
       <AccessControlModal

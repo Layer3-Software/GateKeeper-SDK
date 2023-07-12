@@ -8,40 +8,26 @@ describe("getSignature function", () => {
     const address = "";
     const signer = () => {};
 
-    const res: SignatureResponse = await getSignature(
+    const res: SignatureResponse = await getSignature({
       address,
       signer,
       appId,
       isStaging,
-    );
+    });
 
-    expect(res).toStrictEqual({ error: "No address provided" });
+    expect(res).toStrictEqual({ error: "No address provided.", signature: "" });
   });
 
   it("should return error if no signer provide", async () => {
     const address = "1234xx";
     const signer = undefined;
-    const res: SignatureResponse = await getSignature(
+    const res: SignatureResponse = await getSignature({
       address,
       signer,
       appId,
       isStaging,
-    );
+    });
 
-    expect(res).toStrictEqual({ error: "No signer provided" });
-  });
-
-  it("should return error if no appId provide", async () => {
-    const address = "1234xx";
-    const signer = () => {};
-    const appId = "";
-    const res: SignatureResponse = await getSignature(
-      address,
-      signer,
-      appId,
-      isStaging,
-    );
-
-    expect(res).toStrictEqual({ error: "No appId provided" });
+    expect(res).toStrictEqual({ error: "No signer provided.", signature: "" });
   });
 });
