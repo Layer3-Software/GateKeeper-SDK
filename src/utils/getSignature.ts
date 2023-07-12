@@ -29,6 +29,10 @@ const getSignature = async ({
   try {
     const res = await getNonce(address, isStaging);
 
+    if (res.error) {
+      return { error: res.error, signature: "" };
+    }
+
     if (allowUserRegistration) {
       if (!appId) return { error: "No appId provided", signature: "" };
       if (res.nonce === undefined || res.nonce === null) {
@@ -43,17 +47,13 @@ const getSignature = async ({
       }
     }
 
-    if (res.error) {
-      return { error: res.error, signature: "" };
-    }
-
     const signature = await signer.signMessage(
       `${SIGN_MESSAGE} Nonce: ${res.nonce}`,
     );
 
     return { signature };
   } catch (error) {
-    return { error: "Something went wrong getting nonce.", signature: "" };
+    throw new Error(`Error in getSignature function: ' + ${error}`);
   }
 };
 
