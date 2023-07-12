@@ -23,23 +23,38 @@ const getSignature = async ({
   allowUserRegistration = true,
   isStaging = false,
 }: getSignatureParams): Promise<SignatureResponse> => {
-  if (!address) return { error: "No address provided", signature: "" };
-  if (!signer) return { error: "No signer provided", signature: "" };
+  if (!address) return { error: "No address provided.", signature: "" };
+  if (!signer) return { error: "No signer provided.", signature: "" };
 
-  const { nonce } = await getNonce(address, isStaging);
+  try {
+    const res = await getNonce(address, isStaging);
 
-  if (allowUserRegistration) {
-    if (!appId) return { error: "No appId provided", signature: "" };
-    if (nonce === undefined || nonce === null) {
-      const signature = await signer.signMessage(SIGN_MESSAGE);
-      await register(address, signature, appId, isStaging);
-      return { signature };
+    if (allowUserRegistration) {
+      if (!appId) return { error: "No appId provided", signature: "" };
+      if (res.nonce === undefined || res.nonce === null) {
+        const signature = await signer.signMessage(SIGN_MESSAGE);
+        const res = await register(address, signature, appId, isStaging);
+
+        if (res.error) {
+          return { error: res.error, signature: "" };
+        }
+
+        return { signature };
+      }
     }
+
+    if (res.error) {
+      return { error: res.error, signature: "" };
+    }
+
+    const signature = await signer.signMessage(
+      `${SIGN_MESSAGE} Nonce: ${res.nonce}`,
+    );
+
+    return { signature };
+  } catch (error) {
+    return { error: "Something went wrong getting nonce.", signature: "" };
   }
-
-  const signature = await signer.signMessage(`${SIGN_MESSAGE} Nonce: ${nonce}`);
-
-  return { signature };
 };
 
 export default getSignature;
